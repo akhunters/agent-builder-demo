@@ -99,6 +99,10 @@ export interface Workflow {
   version: string
   nodes: WorkflowNode[]
   edges: Edge[]
+  createdAt?: string
+  updatedAt?: string
+  author?: string
+  description?: string
 }
 
 export interface NodeDefinition {
