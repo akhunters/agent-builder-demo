@@ -103,6 +103,7 @@ export interface Workflow {
   updatedAt?: string
   author?: string
   description?: string
+  isTemplate?: boolean
 }
 
 export interface NodeDefinition {

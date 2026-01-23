@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useCallback, useRef, useEffect } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { useState, useCallback, useRef, useEffect, Suspense, useMemo } from 'react'
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import {
   ReactFlow,
   Node,
@@ -15,11 +15,14 @@ import {
   Panel,
   ReactFlowProvider,
   BackgroundVariant,
+  useReactFlow,
 } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
 import NodePalette from '@/components/NodePalette'
 import NodeConfigPanel from '@/components/NodeConfigPanel'
 import TopBar from '@/components/TopBar'
+import WorkflowSidebar from '@/components/WorkflowSidebar'
+import CenterFlow from '@/components/CenterFlow'
 import { useWorkflowStore } from '@/lib/store'
 import { WorkflowNode, NodeType } from '@/types'
 import StartNode from '@/components/nodes/StartNode'
@@ -53,8 +56,10 @@ const nodeTypes = {
 function FlowEditor() {
   const params = useParams()
   const router = useRouter()
+  const searchParams = useSearchParams()
   const workflowId = params.id as string
-  const { getWorkflow, updateWorkflow } = useWorkflowStore()
+  const isViewMode = searchParams.get('view') === 'true'
+  const { getWorkflow, updateWorkflow, loadWorkflows, workflows } = useWorkflowStore()
   
   const reactFlowWrapper = useRef<HTMLDivElement>(null)
   const [workflowName, setWorkflowName] = useState('Untitled Workflow')
@@ -62,27 +67,51 @@ function FlowEditor() {
   const [selectedNode, setSelectedNode] = useState<Node | null>(null)
   const [showPreview, setShowPreview] = useState(false)
   const [showCode, setShowCode] = useState(false)
+  const [showSidebar, setShowSidebar] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
-  // Load workflow from store
+  // Load workflows from storage on mount
+  useEffect(() => {
+    loadWorkflows()
+    // Small delay to ensure workflows are loaded
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 100)
+    return () => clearTimeout(timer)
+  }, [loadWorkflows])
+
+  // Load workflow from store - re-check when workflows change
   const workflow = getWorkflow(workflowId)
+  const isTemplate = workflow?.isTemplate === true
+
+  useEffect(() => {
+    if (workflow) {
+      console.log('Workflow loaded:', workflow.id, workflow.name)
+    } else if (workflowId && !isLoading) {
+      console.warn('Workflow not found after loading:', workflowId)
+      console.log('Available workflow IDs:', workflows.map(w => w.id))
+    }
+  }, [workflow, workflowId, isLoading, workflows])
   
   const [nodes, setNodes, onNodesChange] = useNodesState(
     workflow?.nodes || [
       {
         id: 'start-default',
         type: 'start',
-        position: { x: 250, y: 100 },
+        position: { x: 100, y: 200 },
         data: { label: 'Start', isDefault: true },
       },
       {
         id: 'end-default',
         type: 'end',
-        position: { x: 250, y: 300 },
+        position: { x: 300, y: 200 },
         data: { label: 'End', isDefault: true },
       },
     ]
   )
   const [edges, setEdges, onEdgesChange] = useEdgesState(workflow?.edges || [])
+  const reactFlowInstance = useRef<any>(null)
+  const hasInitialized = useRef(false)
 
   // Initialize from workflow
   useEffect(() => {
@@ -92,9 +121,9 @@ function FlowEditor() {
     }
   }, [workflow])
 
-  // Auto-save workflow
+  // Auto-save workflow (skip if viewing template)
   useEffect(() => {
-    if (workflowId && workflow) {
+    if (workflowId && workflow && !isViewMode && !isTemplate) {
       const saveTimeout = setTimeout(() => {
         updateWorkflow(workflowId, {
           name: workflowName,
@@ -106,7 +135,24 @@ function FlowEditor() {
 
       return () => clearTimeout(saveTimeout)
     }
-  }, [workflowName, workflowStatus, nodes, edges, workflowId, updateWorkflow])
+  }, [workflowName, workflowStatus, nodes, edges, workflowId, updateWorkflow, isViewMode, isTemplate, workflow])
+
+  // Load nodes from workflow when workflow is first loaded or workflow ID changes
+  useEffect(() => {
+    if (workflow && workflow.nodes && workflow.nodes.length > 0) {
+      // Check if nodes need to be updated (different workflow or nodes not loaded)
+      const currentNodes = nodes
+      const shouldUpdate = 
+        currentNodes.length === 0 || 
+        currentNodes[0]?.id !== workflow.nodes[0]?.id ||
+        currentNodes[0]?.position?.x !== workflow.nodes[0]?.position?.x ||
+        currentNodes[0]?.position?.y !== workflow.nodes[0]?.position?.y
+      
+      if (shouldUpdate) {
+        setNodes(workflow.nodes as Node[])
+      }
+    }
+  }, [workflow?.id, workflow?.nodes]) // Update when workflow ID or nodes change
 
   const onConnect = useCallback(
     (params: Connection) => {
@@ -128,6 +174,8 @@ function FlowEditor() {
 
   const handleAddNode = useCallback(
     (nodeType: NodeType, position: { x: number; y: number }) => {
+      // Prevent adding nodes in view mode
+      if (isViewMode || isTemplate) return
       const newNode: WorkflowNode = {
         id: `${nodeType}-${Date.now()}`,
         type: nodeType,
@@ -210,6 +258,9 @@ function FlowEditor() {
 
   const handleNodeUpdate = useCallback(
     (nodeId: string, data: any) => {
+      // Prevent updates in view mode
+      if (isViewMode || isTemplate) return
+      
       setNodes((nds) =>
         nds.map((node) =>
           node.id === nodeId ? { ...node, data: { ...node.data, ...data } } : node
@@ -219,11 +270,14 @@ function FlowEditor() {
         setSelectedNode({ ...selectedNode, data: { ...selectedNode.data, ...data } })
       }
     },
-    [setNodes, selectedNode]
+    [setNodes, selectedNode, isViewMode, isTemplate]
   )
 
   const handleNodeDelete = useCallback(
     (nodeId: string) => {
+      // Prevent deletion in view mode
+      if (isViewMode || isTemplate) return
+      
       const nodeToDelete = nodes.find((n) => n.id === nodeId)
       if (nodeToDelete?.data?.isDefault || nodeToDelete?.type === 'start' || nodeToDelete?.type === 'end') {
         return
@@ -232,7 +286,7 @@ function FlowEditor() {
       setEdges((eds) => eds.filter((edge) => edge.source !== nodeId && edge.target !== nodeId))
       setSelectedNode(null)
     },
-    [setNodes, setEdges, nodes]
+    [setNodes, setEdges, nodes, isViewMode, isTemplate]
   )
 
   useEffect(() => {
@@ -278,13 +332,26 @@ function FlowEditor() {
     [handleAddNode]
   )
 
-  if (!workflow && workflowId !== 'new') {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen bg-black text-white">
         <div className="text-center">
-          <p className="text-xl mb-4">Workflow not found</p>
+          <p className="text-xl">Loading workflow...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!workflow && workflowId !== 'new') {
+    console.error('Workflow not found:', workflowId)
+    console.log('Available workflows:', useWorkflowStore.getState().workflows.map(w => w.id))
+    return (
+      <div className="flex items-center justify-center h-screen bg-black text-white">
+        <div className="text-center">
+          <p className="text-xl mb-2">Workflow not found</p>
+          <p className="text-sm text-[#6b7280] mb-4">ID: {workflowId}</p>
           <button
-            onClick={() => router.push('/dashboard')}
+            onClick={() => window.location.href = '/dashboard'}
             className="px-4 py-2 bg-[#3b82f6] rounded-md hover:bg-[#2563eb]"
           >
             Back to Dashboard
@@ -296,15 +363,24 @@ function FlowEditor() {
 
   return (
     <div className="flex h-screen bg-black text-white overflow-hidden relative">
+      {/* Workflow Sidebar */}
+      {showSidebar && (
+        <div className="absolute left-0 top-0 bottom-0 z-30">
+          <WorkflowSidebar currentWorkflowId={workflowId} onClose={() => setShowSidebar(false)} />
+        </div>
+      )}
+      
       <div className="flex-1 flex flex-col">
         <TopBar
           workflowName={workflowName}
           workflowStatus={workflowStatus}
-          onNameChange={setWorkflowName}
-          onStatusChange={setWorkflowStatus}
+          onNameChange={isViewMode || isTemplate ? undefined : setWorkflowName}
+          onStatusChange={isViewMode || isTemplate ? undefined : setWorkflowStatus}
           onPreview={() => setShowPreview(true)}
           onCode={() => setShowCode(true)}
-          onDeploy={() => setWorkflowStatus('production')}
+          onDeploy={isViewMode || isTemplate ? undefined : () => setWorkflowStatus('production')}
+          isReadOnly={isViewMode || isTemplate}
+          onToggleSidebar={() => setShowSidebar(!showSidebar)}
         />
         <div className="flex-1 relative" ref={reactFlowWrapper}>
           <ReactFlow
@@ -318,7 +394,29 @@ function FlowEditor() {
             onPaneClick={onPaneClick}
             onDrop={onDrop}
             onDragOver={onDragOver}
-            fitView
+            onInit={(instance) => {
+              reactFlowInstance.current = instance
+              // Calculate and set initial viewport immediately to prevent jitter
+              if (nodes.length > 0 && !hasInitialized.current) {
+                const zoom = 0.8
+                const minX = Math.min(...nodes.map(n => n.position.x))
+                const maxX = Math.max(...nodes.map(n => n.position.x + (n.width || 200)))
+                const minY = Math.min(...nodes.map(n => n.position.y))
+                const maxY = Math.max(...nodes.map(n => n.position.y + (n.height || 100)))
+                
+                const centerX = (minX + maxX) / 2
+                const centerY = (minY + maxY) / 2
+                
+                const viewportWidth = window.innerWidth
+                const viewportHeight = window.innerHeight
+                
+                const x = viewportWidth / 2 - centerX * zoom
+                const y = viewportHeight / 2 - centerY * zoom
+                
+                instance.setViewport({ x, y, zoom }, { duration: 0 })
+                hasInitialized.current = true
+              }
+            }}
             className="bg-black"
             defaultEdgeOptions={{
               style: { stroke: '#6b7280', strokeWidth: 2 },
@@ -326,6 +424,7 @@ function FlowEditor() {
             }}
           >
             <Background color="#1a1a1a" gap={20} size={1} variant={BackgroundVariant.Dots} />
+            <CenterFlow zoom={0.8} nodesCount={nodes.length} />
             <Panel position="bottom-center" className="!bottom-5 !left-1/2 !transform !-translate-x-1/2">
               <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-full px-2 py-1.5 shadow-lg flex items-center justify-center gap-1">
                 <Controls showInteractive={false} />
@@ -333,11 +432,21 @@ function FlowEditor() {
             </Panel>
           </ReactFlow>
 
-          <div className="absolute top-0 left-0 w-[20%] h-[85%] z-10 pointer-events-none">
-            <div className="pointer-events-auto h-full">
-              <NodePalette onAddNode={handleAddNode} />
+          {!isViewMode && !isTemplate && (
+            <div className={`absolute top-0 ${showSidebar ? 'left-80' : 'left-0'} w-[20%] h-[85%] z-10 pointer-events-none transition-all duration-300`}>
+              <div className="pointer-events-auto h-full">
+                <NodePalette onAddNode={handleAddNode} />
+              </div>
             </div>
-          </div>
+          )}
+          
+          {(isViewMode || isTemplate) && (
+            <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-20 bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg px-4 py-2">
+              <p className="text-sm text-white">
+                {isTemplate ? 'Template View - Read Only' : 'View Mode - Read Only'}
+              </p>
+            </div>
+          )}
 
           {selectedNode && (
             <div className="absolute top-14 right-0 bottom-[5%] z-20 flex flex-col justify-end">
@@ -358,7 +467,13 @@ function FlowEditor() {
 export default function WorkflowPage() {
   return (
     <ReactFlowProvider>
-      <FlowEditor />
+      <Suspense fallback={<div className="flex items-center justify-center h-screen bg-black text-white">Loading...</div>}>
+        <FlowEditorWrapper />
+      </Suspense>
     </ReactFlowProvider>
   )
+}
+
+function FlowEditorWrapper() {
+  return <FlowEditor />
 }

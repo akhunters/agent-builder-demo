@@ -18,14 +18,7 @@ export default function GuardrailsNode({ data }: { data: any }) {
       <Handle 
         type="source" 
         position={Position.Right} 
-        id="pass" 
         className="!bg-[#6b7280] !border-[#1a1a1a] !w-2 !h-2 !right-[-6px]"
-      />
-      <Handle 
-        type="source" 
-        position={Position.Bottom} 
-        id="fail" 
-        className="!bg-[#6b7280] !border-[#1a1a1a] !w-2 !h-2 !bottom-[-6px]"
       />
     </div>
   )

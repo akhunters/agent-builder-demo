@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { Workflow } from '@/types'
+import { TEMPLATES } from './templates'
 
 const STORAGE_KEY = 'workflow-storage'
 
@@ -10,7 +11,10 @@ interface WorkflowStore {
   deleteWorkflow: (id: string) => void
   getWorkflow: (id: string) => Workflow | undefined
   getWorkflowsByStatus: (status: 'draft' | 'production') => Workflow[]
+  getTemplates: () => Workflow[]
   loadWorkflows: () => void
+  initializeTemplates: () => void
+  clearAllData: () => void
 }
 
 const loadFromStorage = (): Workflow[] => {
@@ -79,7 +83,74 @@ export const useWorkflowStore = create<WorkflowStore>((set, get) => ({
   },
 
   getWorkflowsByStatus: (status) => {
-    return get().workflows.filter((w) => w.status === status)
+    return get().workflows.filter((w) => w.status === status && !w.isTemplate)
+  },
+
+  getTemplates: () => {
+    return get().workflows.filter((w) => w.isTemplate === true)
+  },
+
+  initializeTemplates: () => {
+    const existing = get().workflows
+    const existingTemplateIds = existing.filter((w) => w.isTemplate).map((w) => w.id)
+    
+    const templatesToAdd = Object.values(TEMPLATES).filter(
+      (template) => !existingTemplateIds.includes(template.id)
+    )
+
+    if (templatesToAdd.length > 0) {
+      const newWorkflows = templatesToAdd.map((template) => ({
+        ...template.workflow,
+        id: template.id,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }))
+      
+      const workflows = [...existing, ...newWorkflows]
+      set({ workflows })
+      saveToStorage(workflows)
+    }
+  },
+
+  clearAllData: () => {
+    if (typeof window === 'undefined') return
+    
+    // Clear localStorage
+    try {
+      localStorage.removeItem(STORAGE_KEY)
+      // Also try to clear any other potential storage keys
+      const keys = Object.keys(localStorage)
+      keys.forEach(key => {
+        if (key.includes('workflow') || key.includes('xyflow') || key.includes('react-flow')) {
+          localStorage.removeItem(key)
+        }
+      })
+    } catch (error) {
+      console.error('Failed to clear localStorage:', error)
+    }
+
+    // Clear IndexedDB if it exists
+    if ('indexedDB' in window) {
+      indexedDB.databases().then(databases => {
+        databases.forEach(db => {
+          if (db.name) {
+            indexedDB.deleteDatabase(db.name).catch(err => {
+              console.error(`Failed to delete database ${db.name}:`, err)
+            })
+          }
+        })
+      }).catch(err => {
+        console.error('Failed to clear IndexedDB:', err)
+      })
+    }
+
+    // Reset state
+    set({ workflows: [] })
+    
+    // Re-initialize templates
+    setTimeout(() => {
+      get().initializeTemplates()
+    }, 100)
   },
 }))
 
