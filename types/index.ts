@@ -56,6 +56,42 @@ export interface IfElseNodeData extends NodeData {
   }>
 }
 
+export interface WhileNodeData extends NodeData {
+  condition: string
+  maxIterations?: number
+}
+
+export interface UserApprovalNodeData extends NodeData {
+  message?: string
+  timeout?: number
+}
+
+export interface TransformNodeData extends NodeData {
+  expression: string
+  outputType?: 'json' | 'text'
+}
+
+export interface SetStateNodeData extends NodeData {
+  variableName: string
+  value: string
+}
+
+export interface NoteNodeData extends NodeData {
+  content: string
+}
+
+export interface FileSearchNodeData extends NodeData {
+  query?: string
+  maxResults?: number
+  vectorStoreId?: string
+}
+
+export interface MCPNodeData extends NodeData {
+  serverName?: string
+  toolName?: string
+  parameters?: Record<string, any>
+}
+
 export interface Workflow {
   id: string
   name: string

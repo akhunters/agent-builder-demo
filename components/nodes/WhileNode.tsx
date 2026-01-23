@@ -1,15 +1,15 @@
 'use client'
 
 import { Handle, Position } from '@xyflow/react'
-import { FolderSearch } from 'lucide-react'
+import { RotateCcw } from 'lucide-react'
 
-export default function FileSearchNode({ data }: { data: any }) {
+export default function WhileNode({ data }: { data: any }) {
   return (
     <div className="px-3 py-2.5 bg-[#1a1a1a] rounded-xl shadow-lg border border-[#3a3a3a]/50 min-w-[130px] flex items-center gap-2.5 ring-1 ring-white/5">
-      <div className="w-8 h-8 rounded-full bg-[#eab308] flex items-center justify-center flex-shrink-0 shadow-sm">
-        <FolderSearch className="w-4 h-4 text-white fill-white" />
+      <div className="w-8 h-8 rounded-full bg-[#f97316] flex items-center justify-center flex-shrink-0 shadow-sm">
+        <RotateCcw className="w-4 h-4 text-white fill-white" />
       </div>
-      <span className="text-white font-medium text-sm">{data.label || 'File Search'}</span>
+      <span className="text-white font-medium text-sm">{data.label || 'While'}</span>
       <Handle 
         type="target" 
         position={Position.Left} 

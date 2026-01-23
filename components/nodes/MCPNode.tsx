@@ -5,7 +5,7 @@ import { Plug } from 'lucide-react'
 
 export default function MCPNode({ data }: { data: any }) {
   return (
-    <div className="px-3 py-2.5 bg-[#1a1a1a] rounded-lg shadow-lg border border-[#2a2a2a] min-w-[110px] flex items-center gap-2.5">
+    <div className="px-3 py-2.5 bg-[#1a1a1a] rounded-xl shadow-lg border border-[#3a3a3a]/50 min-w-[110px] flex items-center gap-2.5 ring-1 ring-white/5">
       <div className="w-8 h-8 rounded-full bg-[#eab308] flex items-center justify-center flex-shrink-0 shadow-sm">
         <Plug className="w-4 h-4 text-white fill-white" />
       </div>

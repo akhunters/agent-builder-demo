@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import {
   ReactFlow,
   Node,
@@ -13,6 +13,7 @@ import {
   Controls,
   Panel,
   ReactFlowProvider,
+  BackgroundVariant,
 } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
 import NodePalette from '@/components/NodePalette'
@@ -27,6 +28,10 @@ import IfElseNode from '@/components/nodes/IfElseNode'
 import NoteNode from '@/components/nodes/NoteNode'
 import MCPNode from '@/components/nodes/MCPNode'
 import FileSearchNode from '@/components/nodes/FileSearchNode'
+import WhileNode from '@/components/nodes/WhileNode'
+import UserApprovalNode from '@/components/nodes/UserApprovalNode'
+import TransformNode from '@/components/nodes/TransformNode'
+import SetStateNode from '@/components/nodes/SetStateNode'
 
 const nodeTypes = {
   start: StartNode,
@@ -37,16 +42,26 @@ const nodeTypes = {
   note: NoteNode,
   mcp: MCPNode,
   fileSearch: FileSearchNode,
+  while: WhileNode,
+  userApproval: UserApprovalNode,
+  transform: TransformNode,
+  setState: SetStateNode,
 }
 
 function FlowEditor() {
   const reactFlowWrapper = useRef<HTMLDivElement>(null)
   const [nodes, setNodes, onNodesChange] = useNodesState([
     {
-      id: 'start-1',
+      id: 'start-default',
       type: 'start',
       position: { x: 250, y: 100 },
-      data: { label: 'Start' },
+      data: { label: 'Start', isDefault: true },
+    },
+    {
+      id: 'end-default',
+      type: 'end',
+      position: { x: 250, y: 300 },
+      data: { label: 'End', isDefault: true },
     },
   ])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
@@ -62,6 +77,10 @@ function FlowEditor() {
   )
 
   const onNodeClick = useCallback((_event: React.MouseEvent, node: Node) => {
+    // Don't open popup for start and end nodes
+    if (node.type === 'start' || node.type === 'end') {
+      return
+    }
     setSelectedNode(node)
   }, [])
 
@@ -119,12 +138,51 @@ function FlowEditor() {
     } else if (nodeType === 'ifElse') {
       newNode.data = {
         ...newNode.data,
-        conditions: [{ expression: '' }],
+        conditions: [{ expression: 'input.output_parsed.classification == "flight_info"' }],
+        showElse: true,
+      }
+    } else if (nodeType === 'while') {
+      newNode.data = {
+        ...newNode.data,
+        condition: '',
+        maxIterations: undefined,
+      }
+    } else if (nodeType === 'userApproval') {
+      newNode.data = {
+        ...newNode.data,
+        message: 'Please approve this action',
+        timeout: undefined,
+      }
+    } else if (nodeType === 'transform') {
+      newNode.data = {
+        ...newNode.data,
+        expression: '',
+        outputType: 'json',
+      }
+    } else if (nodeType === 'setState') {
+      newNode.data = {
+        ...newNode.data,
+        variableName: '',
+        value: '',
       }
     } else if (nodeType === 'note') {
       newNode.data = {
         ...newNode.data,
         content: 'Add your note here',
+      }
+    } else if (nodeType === 'fileSearch') {
+      newNode.data = {
+        ...newNode.data,
+        query: '',
+        maxResults: undefined,
+        vectorStoreId: undefined,
+      }
+    } else if (nodeType === 'mcp') {
+      newNode.data = {
+        ...newNode.data,
+        serverName: '',
+        toolName: '',
+        parameters: {},
       }
     }
 
@@ -141,6 +199,37 @@ function FlowEditor() {
       setSelectedNode({ ...selectedNode, data: { ...selectedNode.data, ...data } })
     }
   }, [setNodes, selectedNode])
+
+  const handleNodeDelete = useCallback((nodeId: string) => {
+    const nodeToDelete = nodes.find((n) => n.id === nodeId)
+    // Prevent deletion of default Start and End nodes
+    if (nodeToDelete?.data?.isDefault || nodeToDelete?.type === 'start' || nodeToDelete?.type === 'end') {
+      return
+    }
+    setNodes((nds) => nds.filter((node) => node.id !== nodeId))
+    setEdges((eds) => eds.filter((edge) => edge.source !== nodeId && edge.target !== nodeId))
+    setSelectedNode(null)
+  }, [setNodes, setEdges, nodes])
+
+  // Keyboard shortcut for delete
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement
+      const isInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable
+      
+      if ((event.key === 'Delete' || event.key === 'Backspace') && selectedNode && !isInput) {
+        // Prevent deletion of default Start and End nodes
+        const isDefaultNode = selectedNode.data?.isDefault || selectedNode.type === 'start' || selectedNode.type === 'end'
+        if (!isDefaultNode) {
+          event.preventDefault()
+          handleNodeDelete(selectedNode.id)
+        }
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [selectedNode, handleNodeDelete])
 
   const onDragOver = useCallback((event: React.DragEvent) => {
     event.preventDefault()
@@ -195,14 +284,14 @@ function FlowEditor() {
             className="bg-black"
             defaultEdgeOptions={{
               style: { stroke: '#6b7280', strokeWidth: 2 },
-              type: 'smoothstep',
+              type: 'default',
             }}
           >
             <Background 
               color="#1a1a1a" 
               gap={20}
               size={1}
-              variant="dots"
+              variant={BackgroundVariant.Dots}
             />
             <Panel position="bottom-center" className="!bottom-5 !left-1/2 !transform !-translate-x-1/2">
               <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-full px-2 py-1.5 shadow-lg flex items-center justify-center gap-1">
@@ -218,12 +307,13 @@ function FlowEditor() {
             </div>
           </div>
           
-          {/* Floating Config Panel - Top Left Below Header */}
+          {/* Floating Config Panel - Top Right, 5% from bottom */}
           {selectedNode && (
-            <div className="absolute top-14 left-0 z-20">
+            <div className="absolute top-14 right-0 bottom-[5%] z-20 flex flex-col justify-end">
               <NodeConfigPanel
                 node={selectedNode}
                 onUpdate={handleNodeUpdate}
+                onDelete={handleNodeDelete}
                 onClose={() => setSelectedNode(null)}
               />
             </div>
