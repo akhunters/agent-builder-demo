@@ -171,63 +171,65 @@ export default function NodePalette({ onAddNode }: NodePaletteProps) {
   }
 
   return (
-    <div className="w-64 bg-[#1a1a1a] border-r border-[#2a2a2a] flex flex-col">
-      <div className="p-4 border-b border-[#2a2a2a]">
+    <div className="w-full h-full bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg flex flex-col shadow-2xl overflow-hidden m-2">
+      <div className="p-3 border-b border-[#2a2a2a]">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#6b7280]" />
           <input
             type="text"
             placeholder="Q Insert node..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md pl-9 pr-3 py-2 text-sm text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
           />
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-2">
-        {categories.map((category) => {
-          const categoryNodes = filteredNodes.filter((node) => node.category === category.id)
-          const isExpanded = expandedCategories.has(category.id)
+      <div className="flex-1 overflow-y-auto p-3">
+        <div className="flex flex-col gap-4">
+          {categories.map((category) => {
+            const categoryNodes = filteredNodes.filter((node) => node.category === category.id)
+            const isExpanded = expandedCategories.has(category.id)
 
-          if (categoryNodes.length === 0) return null
+            if (categoryNodes.length === 0) return null
 
-          return (
-            <div key={category.id} className="mb-4">
-              <button
-                onClick={() => toggleCategory(category.id)}
-                className="w-full flex items-center justify-between px-2 py-1 text-xs font-medium text-gray-400 hover:text-white transition-colors"
-              >
-                <span>{category.label}</span>
-                <span>{isExpanded ? '−' : '+'}</span>
-              </button>
-              {isExpanded && (
-                <div className="mt-2 space-y-1">
-                  {categoryNodes.map((node) => {
-                    const Icon = iconMap[node.icon] || Play
-                    return (
-                      <div
-                        key={node.type}
-                        draggable
-                        onDragStart={(e) => handleDragStart(e, node.type)}
-                        onClick={() => onAddNode(node.type, { x: 250, y: 250 })}
-                        className="flex items-center gap-2 px-2 py-2 rounded-lg hover:bg-[#2a2a2a] cursor-move transition-colors group"
-                      >
-                        <div className={`w-8 h-8 rounded-lg ${node.color} flex items-center justify-center flex-shrink-0`}>
-                          <Icon className="w-4 h-4 text-white" />
+            return (
+              <div key={category.id}>
+                <button
+                  onClick={() => toggleCategory(category.id)}
+                  className="w-full flex items-center justify-between px-2 py-1.5 text-xs font-semibold text-[#9ca3af] hover:text-white transition-colors uppercase tracking-wider"
+                >
+                  <span>{category.label}</span>
+                  <span className="text-[#6b7280]">{isExpanded ? '−' : '+'}</span>
+                </button>
+                {isExpanded && (
+                  <div className="mt-1.5 space-y-1">
+                    {categoryNodes.map((node) => {
+                      const Icon = iconMap[node.icon] || Play
+                      return (
+                        <div
+                          key={node.type}
+                          draggable
+                          onDragStart={(e) => handleDragStart(e, node.type)}
+                          onClick={() => onAddNode(node.type, { x: 250, y: 250 })}
+                          className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-[#2a2a2a] cursor-move transition-colors group"
+                        >
+                          <div className={`w-7 h-7 rounded-md ${node.color} flex items-center justify-center flex-shrink-0 shadow-sm`}>
+                            <Icon className="w-3.5 h-3.5 text-white" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="text-sm font-medium text-white">{node.label}</div>
+                            <div className="text-xs text-[#6b7280] truncate leading-tight">{node.description}</div>
+                          </div>
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="text-sm font-medium text-white">{node.label}</div>
-                          <div className="text-xs text-gray-400 truncate">{node.description}</div>
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-              )}
-            </div>
-          )
-        })}
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
       </div>
     </div>
   )

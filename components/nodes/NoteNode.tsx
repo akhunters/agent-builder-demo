@@ -4,10 +4,10 @@ import { FileText } from 'lucide-react'
 
 export default function NoteNode({ data }: { data: any }) {
   return (
-    <div className="px-4 py-3 bg-yellow-100 rounded-lg shadow-lg border-2 border-yellow-300 min-w-[200px] max-w-[300px]">
+    <div className="px-3 py-2 bg-[#fef3c7] rounded shadow-md border border-[#fbbf24] min-w-[180px] max-w-[280px]">
       <div className="flex items-start gap-2">
-        <FileText className="w-4 h-4 text-yellow-800 mt-0.5 flex-shrink-0" />
-        <p className="text-yellow-900 text-sm">{data.content || data.label || 'Note'}</p>
+        <FileText className="w-3.5 h-3.5 text-[#92400e] mt-0.5 flex-shrink-0" />
+        <p className="text-[#78350f] text-xs leading-relaxed">{data.content || data.label || 'Note'}</p>
       </div>
     </div>
   )

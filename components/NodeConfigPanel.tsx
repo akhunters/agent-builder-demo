@@ -29,12 +29,12 @@ export default function NodeConfigPanel({ node, onUpdate, onClose }: NodeConfigP
     return (
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium mb-2">Name</label>
+          <label className="block text-sm font-medium mb-2 text-white">Name</label>
           <input
             type="text"
             value={data.name || ''}
             onChange={(e) => handleChange('name', e.target.value)}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
           />
         </div>
 
@@ -49,7 +49,7 @@ export default function NodeConfigPanel({ node, onUpdate, onClose }: NodeConfigP
             value={data.instructions || ''}
             onChange={(e) => handleChange('instructions', e.target.value)}
             rows={6}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500 resize-none"
+            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none"
             placeholder="Call the model with your instructions and tools."
           />
         </div>
@@ -61,9 +61,9 @@ export default function NodeConfigPanel({ node, onUpdate, onClose }: NodeConfigP
               type="checkbox"
               checked={data.includeChatHistory ?? true}
               onChange={(e) => handleChange('includeChatHistory', e.target.checked)}
-              className="w-4 h-4 text-blue-500 bg-[#0a0a0a] border-[#2a2a2a] rounded focus:ring-blue-500"
+              className="w-4 h-4 text-[#3b82f6] bg-[#0a0a0a] border-[#2a2a2a] rounded focus:ring-[#3b82f6]"
             />
-            <span className="text-sm">On</span>
+            <span className="text-sm text-white">On</span>
           </label>
         </div>
 
@@ -72,7 +72,7 @@ export default function NodeConfigPanel({ node, onUpdate, onClose }: NodeConfigP
           <select
             value={data.model || 'gpt-5'}
             onChange={(e) => handleChange('model', e.target.value)}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
           >
             <option value="gpt-5">GPT-5</option>
             <option value="gpt-5-mini">GPT-5 Mini</option>
@@ -85,7 +85,7 @@ export default function NodeConfigPanel({ node, onUpdate, onClose }: NodeConfigP
           <select
             value={data.reasoning || 'medium'}
             onChange={(e) => handleChange('reasoning', e.target.value)}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
           >
             <option value="minimum">Minimum</option>
             <option value="medium">Medium</option>
@@ -98,7 +98,7 @@ export default function NodeConfigPanel({ node, onUpdate, onClose }: NodeConfigP
           <select
             value={data.outputFormat || 'text'}
             onChange={(e) => handleChange('outputFormat', e.target.value)}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
           >
             <option value="text">Text</option>
             <option value="json">JSON</option>
@@ -111,7 +111,7 @@ export default function NodeConfigPanel({ node, onUpdate, onClose }: NodeConfigP
           <select
             value={data.verbosity || 'medium'}
             onChange={(e) => handleChange('verbosity', e.target.value)}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
           >
             <option value="low">Low</option>
             <option value="medium">Medium</option>
@@ -124,7 +124,7 @@ export default function NodeConfigPanel({ node, onUpdate, onClose }: NodeConfigP
           <select
             value={data.summary || 'null'}
             onChange={(e) => handleChange('summary', e.target.value)}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
           >
             <option value="null">Null</option>
             <option value="low">Low</option>
@@ -153,7 +153,7 @@ export default function NodeConfigPanel({ node, onUpdate, onClose }: NodeConfigP
               ))}
             </div>
           ) : (
-            <div className="text-sm text-gray-400">No tools added</div>
+            <div className="text-sm text-[#6b7280]">No tools added</div>
           )}
         </div>
       </div>
@@ -196,7 +196,7 @@ export default function NodeConfigPanel({ node, onUpdate, onClose }: NodeConfigP
           <select
             value={data.moderation || 'off'}
             onChange={(e) => handleChange('moderation', e.target.value)}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
           >
             <option value="off">Off</option>
             <option value="critical">Critical</option>
@@ -212,7 +212,7 @@ export default function NodeConfigPanel({ node, onUpdate, onClose }: NodeConfigP
               onChange={(e) => handleChange('jailbreak', e.target.checked)}
               className="w-4 h-4 text-blue-500 bg-[#0a0a0a] border-[#2a2a2a] rounded"
             />
-            <span className="text-sm">Jailbreak</span>
+            <span className="text-sm text-white">Jailbreak</span>
           </label>
         </div>
 
@@ -224,7 +224,7 @@ export default function NodeConfigPanel({ node, onUpdate, onClose }: NodeConfigP
               onChange={(e) => handleChange('hallucination', e.target.checked)}
               className="w-4 h-4 text-blue-500 bg-[#0a0a0a] border-[#2a2a2a] rounded"
             />
-            <span className="text-sm">Hallucination</span>
+            <span className="text-sm text-white">Hallucination</span>
           </label>
         </div>
       </div>
@@ -259,7 +259,7 @@ export default function NodeConfigPanel({ node, onUpdate, onClose }: NodeConfigP
                   handleChange('conditions', newConditions)
                 }}
                 rows={3}
-                className="w-full bg-blue-500/10 border border-blue-500 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500 resize-none text-sm"
+                className="w-full bg-[#3b82f6]/10 border border-[#3b82f6] rounded-md px-3 py-2 focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none text-sm text-white placeholder:text-[#6b7280]"
               />
             </div>
           ))}
@@ -288,7 +288,7 @@ export default function NodeConfigPanel({ node, onUpdate, onClose }: NodeConfigP
         return renderIfElseConfig()
       default:
         return (
-          <div className="text-sm text-gray-400">
+          <div className="text-sm text-[#6b7280]">
             Configuration for {node.type} nodes coming soon
           </div>
         )
@@ -299,28 +299,28 @@ export default function NodeConfigPanel({ node, onUpdate, onClose }: NodeConfigP
     <div className="w-96 bg-[#1a1a1a] border-l border-[#2a2a2a] flex flex-col">
       <div className="p-4 border-b border-[#2a2a2a] flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold">{config.label || node.type}</h3>
+          <h3 className="text-base font-semibold text-white">{config.label || node.type}</h3>
           {node.type === 'agent' && (
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-xs text-[#9ca3af] mt-1">
               Call the model with your instructions and tools.
             </p>
           )}
           {node.type === 'guardrails' && (
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-xs text-[#9ca3af] mt-1">
               Add safety checks for input and output.
             </p>
           )}
           {node.type === 'ifElse' && (
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-xs text-[#9ca3af] mt-1">
               Create conditions to branch your workflow
             </p>
           )}
         </div>
         <button
           onClick={onClose}
-          className="p-1 hover:bg-[#2a2a2a] rounded transition-colors"
+          className="p-1.5 hover:bg-[#2a2a2a] rounded-md transition-colors text-[#9ca3af] hover:text-white"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4" />
         </button>
       </div>
 
@@ -329,8 +329,8 @@ export default function NodeConfigPanel({ node, onUpdate, onClose }: NodeConfigP
       </div>
 
       <div className="p-4 border-t border-[#2a2a2a] flex items-center justify-between">
-        <button className="text-sm text-gray-400 hover:text-white">Less</button>
-        <button className="px-4 py-2 bg-blue-500 hover:bg-blue-600 rounded-lg text-sm">
+        <button className="text-sm text-[#9ca3af] hover:text-white transition-colors">Less</button>
+        <button className="px-4 py-2 bg-[#3b82f6] hover:bg-[#2563eb] rounded-md text-sm text-white font-medium transition-colors">
           Evaluate
         </button>
       </div>

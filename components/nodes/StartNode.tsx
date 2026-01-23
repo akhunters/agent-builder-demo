@@ -5,15 +5,15 @@ import { Play } from 'lucide-react'
 
 export default function StartNode({ data }: { data: any }) {
   return (
-    <div className="px-4 py-2.5 bg-[#22c55e] rounded-lg shadow-md border border-[#16a34a] min-w-[100px]">
-      <div className="flex items-center gap-2">
+    <div className="px-3 py-2.5 bg-[#1a1a1a] rounded-lg shadow-lg border border-[#2a2a2a] min-w-[120px] flex items-center gap-2.5">
+      <div className="w-8 h-8 rounded-full bg-[#22c55e] flex items-center justify-center flex-shrink-0 shadow-sm">
         <Play className="w-4 h-4 text-white fill-white" />
-        <span className="text-white font-medium text-sm">{data.label || 'Start'}</span>
       </div>
+      <span className="text-white font-medium text-sm">{data.label || 'Start'}</span>
       <Handle 
         type="source" 
-        position={Position.Bottom} 
-        className="!bg-[#16a34a] !border-[#000] !w-3 !h-3"
+        position={Position.Right} 
+        className="!bg-[#6b7280] !border-[#1a1a1a] !w-2 !h-2 !right-[-6px]"
       />
     </div>
   )

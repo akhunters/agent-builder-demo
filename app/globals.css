@@ -54,11 +54,11 @@ body {
 }
 
 .xyflow__handle {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  border: 2px solid #000000;
-  background: #4a4a4a;
+  border: 2px solid #1a1a1a;
+  background: #6b7280;
 }
 
 .xyflow__handle.xyflow__handle-top {
@@ -79,11 +79,21 @@ body {
 
 .xyflow__edge-path {
   stroke-width: 2;
-  stroke: #4a4a4a;
+  stroke: #6b7280;
+  fill: none;
 }
 
 .xyflow__edge.selected .xyflow__edge-path {
   stroke: #60a5fa;
+}
+
+.xyflow__edge {
+  stroke: #6b7280;
+}
+
+.xyflow__edge-path {
+  stroke: #6b7280 !important;
+  stroke-width: 2 !important;
 }
 
 .xyflow__edge-text {
@@ -91,32 +101,161 @@ body {
   font-size: 12px;
 }
 
-.xyflow__controls {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  border: 1px solid #2a2a2a;
-  background: #1a1a1a;
-  border-radius: 6px;
-  overflow: hidden;
+/* React Flow Controls Styling - High Specificity */
+div[class*="controls"],
+.xyflow__controls,
+.react-flow__controls,
+[class*="xyflow__controls"],
+[class*="react-flow__controls"] {
+  box-shadow: none !important;
+  border: none !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
+  backdrop-filter: none !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  padding: 0 !important;
+  position: relative !important;
+  margin: 0 !important;
 }
 
-.xyflow__controls-button {
-  background: #1a1a1a;
-  border-bottom: 1px solid #2a2a2a;
-  color: #e5e7eb;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+button[class*="controls-button"],
+.xyflow__controls-button,
+.react-flow__controls-button,
+[class*="xyflow__controls-button"],
+[class*="react-flow__controls-button"] {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: none !important;
+  color: #e5e7eb !important;
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+  position: relative !important;
+  border-radius: 50% !important;
+  margin: 0 3px !important;
+  flex-shrink: 0 !important;
 }
 
-.xyflow__controls-button:hover {
-  background: #2a2a2a;
+button[class*="controls-button"]:hover,
+.xyflow__controls-button:hover,
+.react-flow__controls-button:hover,
+[class*="xyflow__controls-button"]:hover,
+[class*="react-flow__controls-button"]:hover {
+  background: #2a2a2a !important;
 }
 
-.xyflow__controls-button svg {
-  width: 16px;
-  height: 16px;
+button[class*="controls-button"]:active,
+.xyflow__controls-button:active,
+.react-flow__controls-button:active,
+[class*="xyflow__controls-button"]:active,
+[class*="react-flow__controls-button"]:active {
+  background: #3a3a3a !important;
+}
+
+/* Active/Selected button state */
+button[class*="controls-button"][aria-pressed="true"],
+.xyflow__controls-button[aria-pressed="true"],
+.react-flow__controls-button[aria-pressed="true"],
+button[class*="controls-button"].active,
+.xyflow__controls-button.active,
+.react-flow__controls-button.active {
+  background: #2a2a2a !important;
+  border: 1px solid #3a3a3a !important;
+}
+
+.xyflow__controls-button:last-child,
+.react-flow__controls-button:last-child {
+  border-bottom: none !important;
+}
+
+.xyflow__controls-button:hover,
+.react-flow__controls-button:hover {
+  background: #2a2a2a !important;
+  color: #ffffff !important;
+}
+
+.xyflow__controls-button:active,
+.react-flow__controls-button:active {
+  background: #3a3a3a !important;
+  transform: scale(0.95) !important;
+}
+
+.xyflow__controls-button svg,
+.react-flow__controls-button svg {
+  width: 18px !important;
+  height: 18px !important;
+  stroke: #e5e7eb !important;
+  fill: none !important;
+  stroke-width: 2 !important;
+  transition: stroke 0.2s ease !important;
+}
+
+.xyflow__controls-button:hover svg,
+.react-flow__controls-button:hover svg {
+  stroke: #ffffff !important;
+}
+
+.xyflow__controls-button svg path,
+.react-flow__controls-button svg path {
+  stroke: #e5e7eb !important;
+  fill: none !important;
+}
+
+.xyflow__controls-button:hover svg path,
+.react-flow__controls-button:hover svg path {
+  stroke: #ffffff !important;
+}
+
+.xyflow__controls-button svg line,
+.react-flow__controls-button svg line {
+  stroke: #e5e7eb !important;
+}
+
+.xyflow__controls-button:hover svg line,
+.react-flow__controls-button:hover svg line {
+  stroke: #ffffff !important;
+}
+
+.xyflow__controls-button svg circle,
+.react-flow__controls-button svg circle {
+  stroke: #e5e7eb !important;
+  fill: none !important;
+}
+
+.xyflow__controls-button:hover svg circle,
+.react-flow__controls-button:hover svg circle {
+  stroke: #ffffff !important;
+}
+
+/* Additional specificity for nested elements */
+.xyflow__controls .xyflow__controls-button,
+.react-flow__controls .react-flow__controls-button {
+  background: #1a1a1a !important;
+}
+
+.xyflow__controls .xyflow__controls-button:hover,
+.react-flow__controls .react-flow__controls-button:hover {
+  background: #2a2a2a !important;
+}
+
+/* Hide React Flow watermark/attribution */
+.xyflow__attribution,
+.xyflow__pro-attribution,
+[class*="attribution"],
+[class*="watermark"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
 }
 
 .xyflow__minimap {
@@ -131,5 +270,25 @@ body {
   background-image: 
     radial-gradient(circle, #1a1a1a 1px, transparent 1px);
   background-size: 20px 20px;
+}
+
+/* Form elements styling */
+select {
+  color: white;
+}
+
+select option {
+  background: #1a1a1a;
+  color: white;
+  padding: 8px;
+}
+
+input[type="range"] {
+  accent-color: #3b82f6;
+}
+
+/* Button hover effects */
+button:active {
+  transform: scale(0.98);
 }
 

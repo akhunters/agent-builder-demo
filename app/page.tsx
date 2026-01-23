@@ -11,7 +11,7 @@ import {
   Connection,
   Background,
   Controls,
-  MiniMap,
+  Panel,
   ReactFlowProvider,
 } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
@@ -168,8 +168,7 @@ function FlowEditor() {
   )
 
   return (
-    <div className="flex h-screen bg-black text-white overflow-hidden">
-      <NodePalette onAddNode={handleAddNode} />
+    <div className="flex h-screen bg-black text-white overflow-hidden relative">
       <div className="flex-1 flex flex-col">
         <TopBar
           workflowName={workflowName}
@@ -193,21 +192,44 @@ function FlowEditor() {
             onDrop={onDrop}
             onDragOver={onDragOver}
             fitView
-            className="bg-[#0a0a0a]"
+            className="bg-black"
+            defaultEdgeOptions={{
+              style: { stroke: '#6b7280', strokeWidth: 2 },
+              type: 'smoothstep',
+            }}
           >
-            <Background color="#1a1a1a" gap={20} />
-            <Controls />
-            <MiniMap />
+            <Background 
+              color="#1a1a1a" 
+              gap={20}
+              size={1}
+              variant="dots"
+            />
+            <Panel position="bottom-center" className="!bottom-5 !left-1/2 !transform !-translate-x-1/2">
+              <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-full px-2 py-1.5 shadow-lg flex items-center justify-center gap-1">
+                <Controls showInteractive={false} />
+              </div>
+            </Panel>
           </ReactFlow>
+          
+          {/* Floating Sidebar - Top Left Corner */}
+          <div className="absolute top-0 left-0 w-[20%] h-[85%] z-10 pointer-events-none">
+            <div className="pointer-events-auto h-full">
+              <NodePalette onAddNode={handleAddNode} />
+            </div>
+          </div>
+          
+          {/* Floating Config Panel - Top Left Below Header */}
+          {selectedNode && (
+            <div className="absolute top-14 left-0 z-20">
+              <NodeConfigPanel
+                node={selectedNode}
+                onUpdate={handleNodeUpdate}
+                onClose={() => setSelectedNode(null)}
+              />
+            </div>
+          )}
         </div>
       </div>
-      {selectedNode && (
-        <NodeConfigPanel
-          node={selectedNode}
-          onUpdate={handleNodeUpdate}
-          onClose={() => setSelectedNode(null)}
-        />
-      )}
     </div>
   )
 }

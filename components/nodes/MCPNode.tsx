@@ -5,13 +5,21 @@ import { Plug } from 'lucide-react'
 
 export default function MCPNode({ data }: { data: any }) {
   return (
-    <div className="px-4 py-3 bg-yellow-500 rounded-lg shadow-lg border-2 border-yellow-400 min-w-[120px]">
-      <div className="flex items-center gap-2">
-        <Plug className="w-5 h-5 text-white" />
-        <span className="text-white font-semibold">{data.label || 'MCP'}</span>
+    <div className="px-3 py-2.5 bg-[#1a1a1a] rounded-lg shadow-lg border border-[#2a2a2a] min-w-[110px] flex items-center gap-2.5">
+      <div className="w-8 h-8 rounded-full bg-[#eab308] flex items-center justify-center flex-shrink-0 shadow-sm">
+        <Plug className="w-4 h-4 text-white fill-white" />
       </div>
-      <Handle type="target" position={Position.Top} className="w-3 h-3 bg-yellow-400" />
-      <Handle type="source" position={Position.Bottom} className="w-3 h-3 bg-yellow-400" />
+      <span className="text-white font-medium text-sm">{data.label || 'MCP'}</span>
+      <Handle 
+        type="target" 
+        position={Position.Left} 
+        className="!bg-[#6b7280] !border-[#1a1a1a] !w-2 !h-2 !left-[-6px]"
+      />
+      <Handle 
+        type="source" 
+        position={Position.Right} 
+        className="!bg-[#6b7280] !border-[#1a1a1a] !w-2 !h-2 !right-[-6px]"
+      />
     </div>
   )
 }
