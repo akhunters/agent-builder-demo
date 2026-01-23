@@ -148,7 +148,7 @@ const iconMap: Record<string, any> = {
 export default function NodePalette({ onAddNode }: NodePaletteProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [expandedCategories, setExpandedCategories] = useState<Set<NodeCategory>>(
-    new Set(['core', 'tools', 'logic', 'data'])
+    new Set<NodeCategory>(['core', 'tools', 'logic', 'data'] as NodeCategory[])
   )
 
   const filteredNodes = nodeDefinitions.filter((node) =>

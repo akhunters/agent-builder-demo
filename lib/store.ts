@@ -130,19 +130,20 @@ export const useWorkflowStore = create<WorkflowStore>((set, get) => ({
     }
 
     // Clear IndexedDB if it exists
-    if ('indexedDB' in window) {
-      indexedDB.databases().then(databases => {
-        databases.forEach(db => {
-          if (db.name) {
-            indexedDB.deleteDatabase(db.name).catch(err => {
-              console.error(`Failed to delete database ${db.name}:`, err)
-            })
-          }
+      if ('indexedDB' in window) {
+        indexedDB.databases().then(databases => {
+          databases.forEach(db => {
+            if (db.name) {
+              const deleteRequest = indexedDB.deleteDatabase(db.name)
+              deleteRequest.onerror = () => {
+                console.error(`Failed to delete database ${db.name}`)
+              }
+            }
+          })
+        }).catch(err => {
+          console.error('Failed to clear IndexedDB:', err)
         })
-      }).catch(err => {
-        console.error('Failed to clear IndexedDB:', err)
-      })
-    }
+      }
 
     // Reset state
     set({ workflows: [] })

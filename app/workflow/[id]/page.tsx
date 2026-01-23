@@ -38,6 +38,24 @@ import UserApprovalNode from '@/components/nodes/UserApprovalNode'
 import TransformNode from '@/components/nodes/TransformNode'
 import SetStateNode from '@/components/nodes/SetStateNode'
 
+const VALID_NODE_TYPES: NodeType[] = [
+  'start',
+  'agent',
+  'end',
+  'note',
+  'fileSearch',
+  'guardrails',
+  'mcp',
+  'ifElse',
+  'while',
+  'userApproval',
+  'transform',
+  'setState',
+]
+
+const isValidNodeType = (t: unknown): t is NodeType =>
+  typeof t === 'string' && (VALID_NODE_TYPES as readonly string[]).includes(t)
+
 const nodeTypes = {
   start: StartNode,
   agent: AgentNode,
@@ -149,7 +167,19 @@ function FlowEditor() {
         currentNodes[0]?.position?.y !== workflow.nodes[0]?.position?.y
       
       if (shouldUpdate) {
-        setNodes(workflow.nodes as Node[])
+        const hydratedNodes: WorkflowNode[] = (workflow.nodes as unknown[]).map((n: any) => {
+          const nodeType: NodeType = isValidNodeType(n?.type) ? n.type : 'agent'
+          return {
+            ...n,
+            type: nodeType,
+            data: {
+              ...(n?.data || {}),
+              label: (n?.data?.label as string) || (typeof n?.label === 'string' ? n.label : nodeType),
+            },
+          } as WorkflowNode
+        })
+
+        setNodes(hydratedNodes)
       }
     }
   }, [workflow?.id, workflow?.nodes]) // Update when workflow ID or nodes change

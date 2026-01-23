@@ -13,7 +13,7 @@ interface NodeConfigPanelProps {
 }
 
 export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: NodeConfigPanelProps) {
-  const [config, setConfig] = useState(node.data)
+  const [config, setConfig] = useState<Record<string, any>>((node.data || {}) as Record<string, any>)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [showMCPModal, setShowMCPModal] = useState(false)
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null)
@@ -650,7 +650,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
     <div className="w-96 bg-[#1a1a1a] border border-[#2a2a2a] flex flex-col shadow-2xl rounded-lg m-2 max-h-[calc(95vh-56px)] overflow-hidden scale-in">
       <div className="p-4 border-b border-[#2a2a2a] flex items-center justify-between">
         <div>
-          <h3 className="text-base font-semibold text-white">{config.label || node.type}</h3>
+          <h3 className="text-base font-semibold text-white">{String(config.label ?? node.type)}</h3>
           {node.type === 'agent' && (
             <p className="text-xs text-[#9ca3af] mt-1">
               Call the model with your instructions and tools.
