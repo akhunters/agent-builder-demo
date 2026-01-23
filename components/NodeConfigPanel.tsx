@@ -647,7 +647,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
   }
 
   return (
-    <div className="w-96 bg-[#1a1a1a] border border-[#2a2a2a] flex flex-col shadow-2xl rounded-lg m-2 max-h-[calc(95vh-56px)] overflow-hidden">
+    <div className="w-96 bg-[#1a1a1a] border border-[#2a2a2a] flex flex-col shadow-2xl rounded-lg m-2 max-h-[calc(95vh-56px)] overflow-hidden scale-in">
       <div className="p-4 border-b border-[#2a2a2a] flex items-center justify-between">
         <div>
           <h3 className="text-base font-semibold text-white">{config.label || node.type}</h3>

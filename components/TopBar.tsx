@@ -37,10 +37,10 @@ export default function TopBar({
       <div className="flex items-center gap-3">
         <button
           onClick={handleBack}
-          className="p-2 hover:bg-[#2a2a2a] rounded-md transition-colors text-[#9ca3af] hover:text-white"
+          className="p-2 hover:bg-[#2a2a2a] rounded-md transition-all text-[#9ca3af] hover:text-white group"
           title="Back to Dashboard"
         >
-          <ArrowLeft className="w-5 h-5" />
+          <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
         </button>
         {onToggleSidebar && (
           <button

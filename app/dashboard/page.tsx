@@ -38,27 +38,38 @@ export default function Dashboard() {
   }, [activeTab, workflows, productionWorkflows, draftWorkflows, templates])
 
   const handleCreateWorkflow = () => {
-    const id = addWorkflow({
-      name: 'Untitled Workflow',
-      status: 'draft',
-      version: '1.0.0',
-      nodes: [
-        {
-          id: 'start-default',
-          type: 'start',
-          position: { x: 100, y: 200 },
-          data: { label: 'Start', isDefault: true },
-        },
-        {
-          id: 'end-default',
-          type: 'end',
-          position: { x: 300, y: 200 },
-          data: { label: 'End', isDefault: true },
-        },
-      ],
-      edges: [],
-    })
-    router.push(`/workflow/${id}`)
+    try {
+      console.log('handleCreateWorkflow called')
+      const id = addWorkflow({
+        name: 'Untitled Workflow',
+        status: 'draft',
+        version: '1.0.0',
+        nodes: [
+          {
+            id: 'start-default',
+            type: 'start',
+            position: { x: 100, y: 200 },
+            data: { label: 'Start', isDefault: true },
+          },
+          {
+            id: 'end-default',
+            type: 'end',
+            position: { x: 300, y: 200 },
+            data: { label: 'End', isDefault: true },
+          },
+        ],
+        edges: [],
+      })
+      console.log('Workflow created with ID:', id)
+      const path = `/workflow/${encodeURIComponent(id)}`
+      console.log('Navigating to:', path)
+      
+      // Use window.location.href for reliable navigation
+      window.location.href = path
+    } catch (error) {
+      console.error('Error creating workflow:', error)
+      alert('Failed to create workflow. Please try again.')
+    }
   }
 
   const handleWorkflowClick = (id: string) => {
@@ -166,8 +177,14 @@ export default function Dashboard() {
           <h2 className="text-3xl font-semibold mb-2">Create a workflow</h2>
           <p className="text-[#9ca3af] mb-6">Build a chat agent workflow with custom logic and tools</p>
           <button
-            onClick={handleCreateWorkflow}
-            className="px-6 py-3 bg-white text-black rounded-lg font-medium hover:bg-gray-100 transition-colors flex items-center gap-2 mx-auto"
+            type="button"
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              console.log('Create button clicked')
+              handleCreateWorkflow()
+            }}
+            className="px-6 py-3 bg-white text-black rounded-lg font-medium hover:bg-gray-100 transition-all flex items-center gap-2 mx-auto"
           >
             <Plus className="w-5 h-5" />
             Create
@@ -229,7 +246,7 @@ export default function Dashboard() {
                     handleWorkflowClick(workflow.id)
                   }
                 }}
-                className={`bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg p-4 hover:border-[#3a3a3a] transition-colors relative group ${
+                className={`bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg p-4 hover:border-[#3a3a3a] transition-all relative group fade-in ${
                   activeTab !== 'templates' ? 'cursor-pointer' : ''
                 }`}
               >

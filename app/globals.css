@@ -409,7 +409,416 @@ input[type="email"]:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0 1000px #0a0a0a inset, 0 0 0 1px #3b82f6 !important;
 }
 
-/* Button hover effects */
+/* ============================================
+   SMOOTH MICRO ANIMATIONS
+   ============================================ */
+
+/* Global transition defaults */
+* {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Button animations - Smooth hover and active states */
+button {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Icon animations in buttons */
+button svg {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:hover svg {
+  transform: scale(1.1);
+}
+
+button:active svg {
+  transform: scale(0.95);
+}
+
+/* Card hover animations */
+.bg-\[#1a1a1a\] {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Workflow cards - Dashboard */
+.group {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.group:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Modal animations - Fade in with scale */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes modalFadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes backdropFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal backdrop */
+.fixed.inset-0.bg-black\/60 {
+  animation: backdropFadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Modal content */
+.bg-\[#1a1a1a\].border.border-\[#2a2a2a\].rounded-lg.shadow-2xl {
+  animation: modalFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Sidebar slide animations */
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutLeft {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+/* Node Palette animations */
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Node Config Panel animations */
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Node palette items - Stagger animation */
+.node-palette-item {
+  animation: slideInFromLeft 0.3s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+}
+
+.node-palette-item:nth-child(1) { animation-delay: 0.05s; }
+.node-palette-item:nth-child(2) { animation-delay: 0.1s; }
+.node-palette-item:nth-child(3) { animation-delay: 0.15s; }
+.node-palette-item:nth-child(4) { animation-delay: 0.2s; }
+.node-palette-item:nth-child(5) { animation-delay: 0.25s; }
+.node-palette-item:nth-child(6) { animation-delay: 0.3s; }
+
+/* Node hover effects */
+.xyflow__node {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.xyflow__node:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+}
+
+.xyflow__node.selected {
+  transform: scale(1.02);
+  box-shadow: 
+    0 6px 16px rgba(59, 130, 246, 0.3),
+    0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+/* Edge animations */
+.xyflow__edge-path {
+  transition: stroke 0.2s cubic-bezier(0.4, 0, 0.2, 1), stroke-width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.xyflow__edge:hover .xyflow__edge-path {
+  stroke-width: 3;
+  stroke: #60a5fa;
+}
+
+/* Handle animations */
+.xyflow__handle {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.xyflow__handle:hover {
+  transform: scale(1.3);
+  background: #60a5fa !important;
+  border-color: #3b82f6 !important;
+}
+
+/* Input focus animations */
+input[type="text"],
+input[type="email"],
+textarea,
+select {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus,
+select:focus {
+  transform: scale(1.01);
+}
+
+/* Tab animations */
+button[role="tab"] {
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button[role="tab"]:hover {
+  color: white;
+}
+
+button[role="tab"]::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: white;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button[role="tab"]:has(.border-b-2)::after,
+button[role="tab"].active::after {
+  width: 100%;
+}
+
+/* Checkbox animations */
+input[type="checkbox"] {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+input[type="checkbox"]:checked::before {
+  animation: checkmarkDraw 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes checkmarkDraw {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  50% {
+    width: 4px;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    width: 4px;
+    height: 8px;
+    opacity: 1;
+  }
+}
+
+/* Tooltip animations */
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+[title]:hover::after {
+  animation: tooltipFadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dropdown/Select animations */
+select {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+select:hover {
+  transform: translateY(-1px);
+}
+
+/* Scrollbar animations */
+::-webkit-scrollbar-thumb {
+  transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Pulse animation for loading states */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Fade in animation for content */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Scale in animation */
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.scale-in {
+  animation: scaleIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Slide up animation */
+@keyframes slideUp {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-up {
+  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Slide in animation for sidebars */
+.slide-in {
+  animation: slideInLeft 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Ripple effect for buttons */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Smooth opacity transitions */
+.opacity-0 {
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.opacity-100 {
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth color transitions */
+.transition-colors {
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth transform transitions */
+.transition-transform {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth all transitions */
+.transition-all {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Button hover effects - Enhanced */
 button:active {
   transform: scale(0.98);
 }

@@ -82,7 +82,7 @@ export default function WorkflowSidebar({ currentWorkflowId, onClose }: Workflow
   }
 
   return (
-    <div className="w-80 bg-[#1a1a1a] border-r border-[#2a2a2a] h-full flex flex-col">
+    <div className="w-80 bg-[#1a1a1a] border-r border-[#2a2a2a] h-full flex flex-col slide-in">
       {/* Header */}
       <div className="p-4 border-b border-[#2a2a2a] flex items-center justify-between">
         <h2 className="text-lg font-semibold text-white">Workflows</h2>

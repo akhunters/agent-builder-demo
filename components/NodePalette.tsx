@@ -212,7 +212,7 @@ export default function NodePalette({ onAddNode }: NodePaletteProps) {
                           draggable
                           onDragStart={(e) => handleDragStart(e, node.type)}
                           onClick={() => onAddNode(node.type, { x: 250, y: 250 })}
-                          className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-[#2a2a2a] cursor-move transition-colors group"
+                          className="node-palette-item flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-[#2a2a2a] cursor-move transition-all group hover:translate-x-1"
                         >
                           <div className={`w-7 h-7 rounded-md ${node.color} flex items-center justify-center flex-shrink-0 shadow-sm`}>
                             <Icon className="w-3.5 h-3.5 text-white" />
