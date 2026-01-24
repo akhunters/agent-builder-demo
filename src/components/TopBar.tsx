@@ -1,7 +1,5 @@
-'use client'
-
 import { Code, Play, Rocket, MoreVertical, Settings, Menu, ArrowLeft } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { useNavigate } from 'react-router-dom'
 
 interface TopBarProps {
   workflowName: string
@@ -26,10 +24,10 @@ export default function TopBar({
   isReadOnly = false,
   onToggleSidebar,
 }: TopBarProps) {
-  const router = useRouter()
+  const navigate = useNavigate()
 
   const handleBack = () => {
-    window.location.href = '/dashboard'
+    navigate('/dashboard')
   }
 
   return (

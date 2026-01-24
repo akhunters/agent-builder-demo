@@ -1,7 +1,5 @@
-'use client'
-
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useNavigate } from 'react-router-dom'
 import { useWorkflowStore } from '@/lib/store'
 import { Workflow } from '@/types'
 import { Plus, GitBranch, Trash2, Eye, Trash } from 'lucide-react'
@@ -9,7 +7,7 @@ import { Plus, GitBranch, Trash2, Eye, Trash } from 'lucide-react'
 type TabType = 'workflows' | 'drafts' | 'templates'
 
 export default function Dashboard() {
-  const router = useRouter()
+  const navigate = useNavigate()
   const { workflows, addWorkflow, deleteWorkflow, loadWorkflows, getTemplates, initializeTemplates, clearAllData } = useWorkflowStore()
   const [activeTab, setActiveTab] = useState<TabType>('workflows')
   const [filteredWorkflows, setFilteredWorkflows] = useState<Workflow[]>([])
@@ -61,11 +59,7 @@ export default function Dashboard() {
         edges: [],
       })
       console.log('Workflow created with ID:', id)
-      const path = `/workflow/${encodeURIComponent(id)}`
-      console.log('Navigating to:', path)
-      
-      // Use window.location.href for reliable navigation
-      window.location.href = path
+      navigate(`/workflow/${encodeURIComponent(id)}`)
     } catch (error) {
       console.error('Error creating workflow:', error)
       alert('Failed to create workflow. Please try again.')
@@ -79,19 +73,7 @@ export default function Dashboard() {
     }
     
     console.log('Navigating to workflow:', id)
-    console.log('All workflows:', workflows.map(w => ({ id: w.id, name: w.name })))
-    
-    const path = `/workflow/${encodeURIComponent(id)}`
-    console.log('Path:', path)
-    
-    // Use window.location as primary method for more reliable navigation
-    try {
-      window.location.href = path
-    } catch (error) {
-      console.error('Navigation failed:', error)
-      // Fallback to router
-      router.push(path)
-    }
+    navigate(`/workflow/${encodeURIComponent(id)}`)
   }
 
   const handleTemplateClick = (templateId: string, action: 'view' | 'use') => {
@@ -99,14 +81,7 @@ export default function Dashboard() {
     if (template) {
       if (action === 'view') {
         // View template in read-only mode
-        const path = `/workflow/${encodeURIComponent(templateId)}?view=true`
-        console.log('Navigating to template view:', path)
-        try {
-          window.location.href = path
-        } catch (error) {
-          console.error('Navigation failed:', error)
-          router.push(path)
-        }
+        navigate(`/workflow/${encodeURIComponent(templateId)}?view=true`)
       } else {
         // Create a new workflow from template
         const newId = addWorkflow({
@@ -115,14 +90,7 @@ export default function Dashboard() {
           isTemplate: false,
           status: 'draft',
         })
-        const path = `/workflow/${encodeURIComponent(newId)}`
-        console.log('Navigating to new workflow from template:', path)
-        try {
-          window.location.href = path
-        } catch (error) {
-          console.error('Navigation failed:', error)
-          router.push(path)
-        }
+        navigate(`/workflow/${encodeURIComponent(newId)}`)
       }
     }
   }

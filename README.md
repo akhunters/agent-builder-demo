@@ -1,96 +1,85 @@
-# OpenAI Agent Builder Replica
+# Agent Builder Demo
 
-A visual node-based workflow builder replica of OpenAI's Agent Builder interface, matching the exact theme and functionality.
+A visual, node-based workflow editor for building AI agents, now powered by React + Vite instead of Next.js.
 
-## Features
+## 🚀 Quick Start
 
-- **Visual Workflow Canvas**: Drag-and-drop nodes onto a canvas to build agent workflows
-- **Node Palette**: Categorized nodes (Core, Tools, Logic, Data) in a sidebar
-- **Node Types**:
-  - **Core**: Start, Agent, End, Note
-  - **Tools**: File Search, Guardrails, MCP
-  - **Logic**: If/Else, While, User Approval
-  - **Data**: Transform, Set State
-- **Node Configuration**: Right panel for configuring selected nodes
-- **Visual Connections**: Connect nodes visually to create workflows
-- **Top Bar**: Workflow name, status, and action buttons (Code, Preview, Deploy)
-
-## Getting Started
-
-1. Install dependencies:
 ```bash
+# Install dependencies
 npm install
-```
 
-2. Set up your OpenAI API key (for future API integration):
-```bash
-cp .env.local.example .env.local
-# Edit .env.local and add your OPENAI_API_KEY
-```
-
-3. Run the development server:
-```bash
+# Start development server
 npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+The application will be available at `http://localhost:3000`
 
-## Usage
+## 🏗️ Architecture
 
-1. **Add Nodes**: Click on nodes in the left palette or drag them onto the canvas
-2. **Connect Nodes**: Click and drag from a node's output handle to another node's input handle
-3. **Configure Nodes**: Click on a node to open its configuration panel on the right
-4. **Build Workflows**: Create complex agent workflows by connecting multiple nodes
-5. **Preview & Deploy**: Use the top bar buttons to preview and deploy your workflows
+- **Frontend**: React 18 with TypeScript
+- **Build Tool**: Vite for fast development and optimized builds
+- **Routing**: React Router v6 for client-side routing
+- **UI Framework**: Tailwind CSS for styling
+- **Node Editor**: @xyflow/react for the visual workflow editor
+- **State Management**: Zustand for global state
+- **Storage**: Browser localStorage and IndexedDB for persistence
 
-## Tech Stack
-
-- Next.js 14
-- React 18
-- TypeScript
-- Tailwind CSS
-- React Flow (for visual workflow builder)
-- OpenAI Assistants API (for backend integration)
-
-## Project Structure
+## 📁 Project Structure
 
 ```
-├── app/
-│   ├── page.tsx              # Main workflow builder page
-│   ├── layout.tsx             # Root layout
-│   ├── globals.css           # Global styles
-│   └── api/                   # API routes for OpenAI integration
-├── components/
-│   ├── NodePalette.tsx       # Left sidebar with node categories
-│   ├── TopBar.tsx            # Top bar with workflow controls
-│   ├── NodeConfigPanel.tsx   # Right panel for node configuration
-│   └── nodes/                 # Individual node components
-│       ├── StartNode.tsx
-│       ├── AgentNode.tsx
-│       ├── EndNode.tsx
-│       ├── GuardrailsNode.tsx
-│       ├── IfElseNode.tsx
-│       └── ...
-└── types/
-    └── index.ts               # TypeScript type definitions
+src/
+├── components/          # Reusable UI components
+│   ├── nodes/          # Custom node components for the workflow editor
+│   ├── NodePalette.tsx # Left sidebar for adding nodes
+│   ├── NodeConfigPanel.tsx # Right panel for configuring nodes
+│   ├── TopBar.tsx      # Top navigation bar
+│   └── ...
+├── pages/              # Main page components
+│   ├── Dashboard.tsx   # Workflow list and management
+│   └── Workflow.tsx    # Visual workflow editor
+├── lib/                # Utilities and business logic
+│   ├── store.ts        # Zustand state management
+│   ├── templates.ts    # Pre-built workflow templates
+│   └── ...
+├── types/              # TypeScript type definitions
+└── globals.css         # Global styles and Tailwind utilities
 ```
 
-## Matching OpenAI Agent Builder
+## 🎨 Features
 
-This replica matches:
-- ✅ Dark theme with black background and subtle grid pattern
-- ✅ Node-based visual workflow builder
-- ✅ Categorized node palette (Core, Tools, Logic, Data)
-- ✅ Node configuration panel on the right
-- ✅ Top bar with workflow name, status, and action buttons
-- ✅ Visual node connections
-- ✅ Drag-and-drop functionality
+- **Visual Workflow Builder**: Drag-and-drop interface for creating AI agent workflows
+- **Node Types**: Various node types including Agent, Note, File Search, MCP, If/Else, While loops, etc.
+- **Templates**: Pre-built workflow templates for common use cases
+- **Real-time Editing**: Changes are auto-saved as you work
+- **Responsive Design**: Works on desktop and tablet devices
+- **Dark Theme**: Modern dark UI with glass-like effects
 
-## Future Enhancements
+## 🔄 Migration from Next.js
 
-- Preview functionality with chat interface
-- Code export (TypeScript/Python)
-- Deploy functionality
-- MCP server integration
-- Vector store file upload
-- Workflow versioning
+This project was converted from Next.js to a standard React application using Vite. Key changes include:
+
+- **Routing**: Converted from Next.js App Router to React Router v6
+- **Build System**: Replaced Next.js with Vite for faster builds and HMR
+- **Font Loading**: Changed from Next.js font optimization to Google Fonts CDN
+- **Project Structure**: Moved from `app/` directory to standard `src/` structure
+- **Configuration**: Updated TypeScript, Tailwind, and other configs for Vite
+
+## 🛠️ Development
+
+The project uses modern development tools:
+
+- **Hot Module Replacement (HMR)** with Vite for instant updates
+- **TypeScript** for type safety
+- **ESLint** for code linting
+- **Tailwind CSS** for utility-first styling
+- **Plus Jakarta Sans** font from Google Fonts
+
+## 📦 Build Output
+
+The production build creates optimized static files in the `dist/` directory that can be served by any static file server or CDN.

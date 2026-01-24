@@ -1,7 +1,5 @@
-'use client'
-
-import { useState, useCallback, useRef, useEffect, Suspense, useMemo } from 'react'
-import { useParams, useRouter, useSearchParams } from 'next/navigation'
+import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import {
   ReactFlow,
   Node,
@@ -73,8 +71,8 @@ const nodeTypes = {
 
 function FlowEditor() {
   const params = useParams()
-  const router = useRouter()
-  const searchParams = useSearchParams()
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const workflowId = params.id as string
   const isViewMode = searchParams.get('view') === 'true'
   const { getWorkflow, updateWorkflow, loadWorkflows, workflows } = useWorkflowStore()
@@ -381,7 +379,7 @@ function FlowEditor() {
           <p className="text-xl mb-2">Workflow not found</p>
           <p className="text-sm text-[#6b7280] mb-4">ID: {workflowId}</p>
           <button
-            onClick={() => window.location.href = '/dashboard'}
+            onClick={() => navigate('/dashboard')}
             className="px-4 py-2 bg-[#3b82f6] rounded-md hover:bg-[#2563eb]"
           >
             Back to Dashboard
@@ -497,13 +495,7 @@ function FlowEditor() {
 export default function WorkflowPage() {
   return (
     <ReactFlowProvider>
-      <Suspense fallback={<div className="flex items-center justify-center h-screen bg-black text-white">Loading...</div>}>
-        <FlowEditorWrapper />
-      </Suspense>
+      <FlowEditor />
     </ReactFlowProvider>
   )
-}
-
-function FlowEditorWrapper() {
-  return <FlowEditor />
 }

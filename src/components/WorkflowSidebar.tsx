@@ -1,7 +1,5 @@
-'use client'
-
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useNavigate } from 'react-router-dom'
 import { useWorkflowStore } from '@/lib/store'
 import { Workflow } from '@/types'
 import { X, GitBranch, ChevronRight, ChevronDown, Home } from 'lucide-react'
@@ -12,7 +10,7 @@ interface WorkflowSidebarProps {
 }
 
 export default function WorkflowSidebar({ currentWorkflowId, onClose }: WorkflowSidebarProps) {
-  const router = useRouter()
+  const navigate = useNavigate()
   const { workflows, getTemplates } = useWorkflowStore()
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
     workflows: true,
@@ -38,9 +36,9 @@ export default function WorkflowSidebar({ currentWorkflowId, onClose }: Workflow
 
   const handleWorkflowClick = (id: string, isTemplate: boolean = false) => {
     if (isTemplate) {
-      router.push(`/workflow/${id}?view=true`)
+      navigate(`/workflow/${id}?view=true`)
     } else {
-      router.push(`/workflow/${id}`)
+      navigate(`/workflow/${id}`)
     }
     onClose?.()
   }
@@ -88,7 +86,7 @@ export default function WorkflowSidebar({ currentWorkflowId, onClose }: Workflow
         <h2 className="text-lg font-semibold text-white">Workflows</h2>
         <div className="flex items-center gap-2">
           <button
-            onClick={() => router.push('/dashboard')}
+            onClick={() => navigate('/dashboard')}
             className="p-1.5 hover:bg-[#2a2a2a] rounded-md transition-colors text-[#9ca3af] hover:text-white"
             title="Go to Dashboard"
           >
