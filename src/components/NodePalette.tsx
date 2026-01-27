@@ -14,6 +14,7 @@ import {
   ArrowRightLeft,
   CircleDot,
   Search,
+  List,
 } from 'lucide-react'
 import { NodeType, NodeCategory, NodeDefinition } from '@/types'
 
@@ -38,6 +39,14 @@ const nodeDefinitions: NodeDefinition[] = [
     icon: 'play',
     color: 'bg-blue-500',
     description: 'Call the model with your instructions and tools',
+  },
+  {
+    type: 'classify',
+    category: 'core',
+    label: 'Classify',
+    icon: 'list',
+    color: 'bg-orange-500',
+    description: 'Sort messages into categories with a model',
   },
   {
     type: 'end',
@@ -143,6 +152,7 @@ const iconMap: Record<string, any> = {
   'user-check': UserCheck,
   'arrow-right-left': ArrowRightLeft,
   'circle-dot': CircleDot,
+  list: List,
 }
 
 export default function NodePalette({ onAddNode }: NodePaletteProps) {
@@ -152,7 +162,7 @@ export default function NodePalette({ onAddNode }: NodePaletteProps) {
   )
 
   const filteredNodes = nodeDefinitions.filter((node) =>
-    node.label.toLowerCase().includes(searchQuery.toLowerCase())
+    node.type !== 'start' && node.label.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
   const toggleCategory = (category: NodeCategory) => {

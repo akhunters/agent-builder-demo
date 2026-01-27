@@ -18,6 +18,7 @@ import {
 import '@xyflow/react/dist/style.css'
 import NodePalette from '@/components/NodePalette'
 import NodeConfigPanel from '@/components/NodeConfigPanel'
+import EdgeConfigPanel from '@/components/EdgeConfigPanel'
 import TopBar from '@/components/TopBar'
 import WorkflowSidebar from '@/components/WorkflowSidebar'
 import CenterFlow from '@/components/CenterFlow'
@@ -35,6 +36,7 @@ import WhileNode from '@/components/nodes/WhileNode'
 import UserApprovalNode from '@/components/nodes/UserApprovalNode'
 import TransformNode from '@/components/nodes/TransformNode'
 import SetStateNode from '@/components/nodes/SetStateNode'
+import ClassifyNode from '@/components/nodes/ClassifyNode'
 
 const VALID_NODE_TYPES: NodeType[] = [
   'start',
@@ -49,6 +51,7 @@ const VALID_NODE_TYPES: NodeType[] = [
   'userApproval',
   'transform',
   'setState',
+  'classify',
 ]
 
 const isValidNodeType = (t: unknown): t is NodeType =>
@@ -67,6 +70,7 @@ const nodeTypes = {
   userApproval: UserApprovalNode,
   transform: TransformNode,
   setState: SetStateNode,
+  classify: ClassifyNode,
 }
 
 function FlowEditor() {
@@ -81,6 +85,7 @@ function FlowEditor() {
   const [workflowName, setWorkflowName] = useState('Untitled Workflow')
   const [workflowStatus, setWorkflowStatus] = useState<'draft' | 'production'>('draft')
   const [selectedNode, setSelectedNode] = useState<Node | null>(null)
+  const [selectedEdge, setSelectedEdge] = useState<Edge | null>(null)
   const [showPreview, setShowPreview] = useState(false)
   const [showCode, setShowCode] = useState(false)
   const [showSidebar, setShowSidebar] = useState(false)
@@ -115,7 +120,12 @@ function FlowEditor() {
         id: 'start-default',
         type: 'start',
         position: { x: 100, y: 200 },
-        data: { label: 'Start', isDefault: true },
+        data: { 
+          label: 'Start', 
+          isDefault: true,
+          inputVariables: [{ name: 'input_as_text', type: 'string' }],
+          stateVariables: [],
+        },
       },
       {
         id: 'end-default',
@@ -190,14 +200,18 @@ function FlowEditor() {
   )
 
   const onNodeClick = useCallback((_event: React.MouseEvent, node: Node) => {
-    if (node.type === 'start' || node.type === 'end') {
-      return
-    }
     setSelectedNode(node)
+    setSelectedEdge(null)
+  }, [])
+
+  const onEdgeClick = useCallback((_event: React.MouseEvent, edge: Edge) => {
+    setSelectedEdge(edge)
+    setSelectedNode(null)
   }, [])
 
   const onPaneClick = useCallback(() => {
     setSelectedNode(null)
+    setSelectedEdge(null)
   }, [])
 
   const handleAddNode = useCallback(
@@ -277,6 +291,18 @@ function FlowEditor() {
           toolName: '',
           parameters: {},
         }
+      } else if (nodeType === 'classify') {
+        newNode.data = {
+          ...newNode.data,
+          name: 'Classify',
+          input: 'input_as_text',
+          inputType: 'STRING',
+          categories: [],
+          classifier: 'gpt-4.1',
+          examples: [
+            { input: '', category: '' },
+          ],
+        }
       }
 
       setNodes((nds) => [...nds, newNode])
@@ -307,14 +333,26 @@ function FlowEditor() {
       if (isViewMode || isTemplate) return
       
       const nodeToDelete = nodes.find((n) => n.id === nodeId)
-      if (nodeToDelete?.data?.isDefault || nodeToDelete?.type === 'start' || nodeToDelete?.type === 'end') {
+      if (nodeToDelete?.data?.isDefault || nodeToDelete?.type === 'start') {
         return
       }
       setNodes((nds) => nds.filter((node) => node.id !== nodeId))
       setEdges((eds) => eds.filter((edge) => edge.source !== nodeId && edge.target !== nodeId))
       setSelectedNode(null)
+      setSelectedEdge(null)
     },
     [setNodes, setEdges, nodes, isViewMode, isTemplate]
+  )
+
+  const handleEdgeDelete = useCallback(
+    (edgeId: string) => {
+      // Prevent deletion in view mode
+      if (isViewMode || isTemplate) return
+      
+      setEdges((eds) => eds.filter((edge) => edge.id !== edgeId))
+      setSelectedEdge(null)
+    },
+    [setEdges, isViewMode, isTemplate]
   )
 
   useEffect(() => {
@@ -323,7 +361,7 @@ function FlowEditor() {
       const isInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable
 
       if ((event.key === 'Delete' || event.key === 'Backspace') && selectedNode && !isInput) {
-        const isDefaultNode = selectedNode.data?.isDefault || selectedNode.type === 'start' || selectedNode.type === 'end'
+        const isDefaultNode = selectedNode.data?.isDefault || selectedNode.type === 'start'
         if (!isDefaultNode) {
           event.preventDefault()
           handleNodeDelete(selectedNode.id)
@@ -419,6 +457,7 @@ function FlowEditor() {
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
             onNodeClick={onNodeClick}
+            onEdgeClick={onEdgeClick}
             onPaneClick={onPaneClick}
             onDrop={onDrop}
             onDragOver={onDragOver}
@@ -483,6 +522,18 @@ function FlowEditor() {
                 onUpdate={handleNodeUpdate}
                 onDelete={handleNodeDelete}
                 onClose={() => setSelectedNode(null)}
+              />
+            </div>
+          )}
+
+          {selectedEdge && (
+            <div className="absolute top-14 right-0 bottom-[5%] z-20 flex flex-col justify-end">
+              <EdgeConfigPanel
+                edge={selectedEdge}
+                sourceNode={nodes.find((n) => n.id === selectedEdge.source) || null}
+                targetNode={nodes.find((n) => n.id === selectedEdge.target) || null}
+                onDelete={handleEdgeDelete}
+                onClose={() => setSelectedEdge(null)}
               />
             </div>
           )}

@@ -13,6 +13,7 @@ export type NodeType =
   | 'userApproval'
   | 'transform'
   | 'setState'
+  | 'classify'
 
 export type NodeCategory = 'core' | 'tools' | 'logic' | 'data'
 
@@ -90,6 +91,56 @@ export interface MCPNodeData extends NodeData {
   serverName?: string
   toolName?: string
   parameters?: Record<string, any>
+}
+
+export interface ClassifyNodeData extends NodeData {
+  name: string
+  input?: string
+  inputType?: string
+  categories: string[]
+  classifier: string
+  examples?: Array<{
+    input: string
+    category: string
+  }>
+}
+
+export interface JSONSchemaProperty {
+  name: string
+  type: 'STR' | 'NUM' | 'BOOL' | 'ENUM' | 'OBJ' | 'ARR'
+  description?: string
+  default?: any
+  required?: boolean
+}
+
+export interface JSONSchema {
+  type: 'object'
+  properties: Record<string, {
+    type: string
+    description?: string
+    default?: any
+  }>
+  additionalProperties: boolean
+  required: string[]
+}
+
+export interface StartNodeStateVariable {
+  name: string
+  type?: 'string' | 'number' | 'boolean' | 'object' | 'list'
+  defaultValue?: string | number | boolean | string[]
+  schema?: JSONSchema
+}
+
+export interface StartNodeData extends NodeData {
+  inputVariables?: Array<{
+    name: string
+    type: string
+  }>
+  stateVariables?: StartNodeStateVariable[]
+}
+
+export interface EndNodeData extends NodeData {
+  schema?: JSONSchema
 }
 
 export interface Workflow {
