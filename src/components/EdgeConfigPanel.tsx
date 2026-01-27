@@ -200,13 +200,22 @@ export default function EdgeConfigPanel({
           <h3 className="text-base font-semibold text-white">Edge</h3>
           <p className="text-xs text-[#9ca3af] mt-1">Inspect connection</p>
         </div>
-        <button
-          onClick={() => setShowDeleteConfirm(true)}
-          className="p-1.5 hover:bg-red-500/20 rounded-md transition-colors text-[#9ca3af] hover:text-red-400"
-          title="Delete edge"
-        >
-          <Trash2 className="w-4 h-4" />
-        </button>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => setShowDeleteConfirm(true)}
+            className="p-1.5 hover:bg-red-500/20 rounded-md transition-colors text-[#9ca3af] hover:text-red-400"
+            title="Delete edge"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
+          <button
+            onClick={onClose}
+            className="p-1.5 hover:bg-[#2a2a2a] rounded-md transition-colors text-[#9ca3af] hover:text-white"
+            title="Close"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
