@@ -125,14 +125,14 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-[#1c3557] text-white">
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-2xl font-semibold">Agent Builder</h1>
           <button
             onClick={handleClearAll}
-            className="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 border border-red-500/50 rounded-lg text-sm text-red-400 font-medium transition-colors flex items-center gap-2"
+            className="px-4 py-2 bg-transparent hover:bg-red-500/20 border border-red-500/50 hover:border-red-500/70 rounded-md text-sm text-red-400 font-medium transition-colors flex items-center gap-2"
             title="Clear all workflows and data"
           >
             <Trash className="w-4 h-4" />
@@ -152,7 +152,7 @@ export default function Dashboard() {
               console.log('Create button clicked')
               handleCreateWorkflow()
             }}
-            className="px-6 py-3 bg-white text-black rounded-lg font-medium hover:bg-gray-100 transition-all flex items-center gap-2 mx-auto"
+            className="px-6 py-3 bg-white hover:bg-gray-100 text-black rounded-md font-medium transition-colors flex items-center gap-2 mx-auto"
           >
             <Plus className="w-5 h-5" />
             Create
@@ -160,7 +160,7 @@ export default function Dashboard() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 mb-6 border-b border-[#2a2a2a]">
+        <div className="flex gap-1 mb-6 border-b border-white/15">
           <button
             onClick={() => setActiveTab('workflows')}
             className={`px-4 py-2 text-sm font-medium transition-colors ${
@@ -214,7 +214,7 @@ export default function Dashboard() {
                     handleWorkflowClick(workflow.id)
                   }
                 }}
-                className={`bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg p-4 hover:border-[#3a3a3a] transition-all relative group fade-in ${
+                className={`bg-[#294060] border border-white/15 rounded-lg p-4 hover:border-white/25 transition-all relative group fade-in ${
                   activeTab !== 'templates' ? 'cursor-pointer' : ''
                 }`}
               >
@@ -243,7 +243,7 @@ export default function Dashboard() {
                             e.stopPropagation()
                             handleTemplateClick(workflow.id, 'view')
                           }}
-                          className="p-1.5 hover:bg-[#2a2a2a] rounded-md transition-colors text-[#9ca3af] hover:text-white"
+                          className="p-1.5 hover:bg-[#072448] rounded-md transition-colors text-[#9ca3af] hover:text-white"
                           title="View template"
                         >
                           <Eye className="w-4 h-4" />
@@ -304,7 +304,7 @@ export default function Dashboard() {
         {/* Delete Confirmation Modal */}
         {deleteConfirm && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setDeleteConfirm(null)}>
-            <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg shadow-2xl p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+            <div className="bg-[#173153] border border-white/15 rounded-lg shadow-2xl p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
               <h3 className="text-lg font-semibold text-white mb-2">Delete Workflow</h3>
               <p className="text-sm text-[#9ca3af] mb-6">
                 Are you sure you want to delete "{deleteConfirm.name}"? This action cannot be undone.
@@ -312,7 +312,7 @@ export default function Dashboard() {
               <div className="flex items-center justify-end gap-3">
                 <button
                   onClick={() => setDeleteConfirm(null)}
-                  className="px-4 py-2 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-md text-sm text-white font-medium transition-colors"
+                  className="px-4 py-2 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-md text-sm text-white font-medium transition-colors"
                 >
                   Cancel
                 </button>
@@ -330,7 +330,7 @@ export default function Dashboard() {
         {/* Clear All Data Confirmation Modal */}
         {clearConfirm && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setClearConfirm(false)}>
-            <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg shadow-2xl p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+            <div className="bg-[#173153] border border-white/15 rounded-lg shadow-2xl p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
               <h3 className="text-lg font-semibold text-white mb-2">Clear All Data</h3>
               <p className="text-sm text-[#9ca3af] mb-6">
                 Are you sure you want to clear all workflows, drafts, and data? This will delete everything including localStorage and IndexedDB. This action cannot be undone.
@@ -338,7 +338,7 @@ export default function Dashboard() {
               <div className="flex items-center justify-end gap-3">
                 <button
                   onClick={() => setClearConfirm(false)}
-                  className="px-4 py-2 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-md text-sm text-white font-medium transition-colors"
+                  className="px-4 py-2 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-md text-sm text-white font-medium transition-colors"
                 >
                   Cancel
                 </button>

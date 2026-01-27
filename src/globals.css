@@ -31,21 +31,23 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1a1a1a;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2a2a2a;
-  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3a3a3a;
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 /* XYFlow customizations */
@@ -186,7 +188,7 @@ button[class*="controls-button"].active,
 .xyflow__controls-button.active,
 .react-flow__controls-button.active {
   background: #2a2a2a !important;
-  border: 1px solid #3a3a3a !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
 }
 
 .xyflow__controls-button:last-child,
@@ -276,13 +278,13 @@ button[class*="controls-button"].active,
 
 .xyflow__minimap {
   background: #1a1a1a;
-  border: 1px solid #2a2a2a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 6px;
   overflow: hidden;
 }
 
 .xyflow__background {
-  background-color: #000000;
+  background-color: #072447;
   background-image: 
     radial-gradient(circle, #1a1a1a 1px, transparent 1px);
   background-size: 20px 20px;
@@ -291,7 +293,7 @@ button[class*="controls-button"].active,
 /* Form elements styling - Select dropdowns */
 select {
   color: white !important;
-  background-color: #0a0a0a !important;
+  background-color: #072448 !important;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239ca3af' d='M6 9L1 4h10z'/%3E%3C/svg%3E") !important;
   background-repeat: no-repeat !important;
   background-position: right 12px center !important;
@@ -305,15 +307,15 @@ select {
 }
 
 select:hover {
-  background-color: #1a1a1a !important;
-  border-color: #3a3a3a !important;
+  background-color: #072448 !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
 }
 
 select:focus {
   outline: none !important;
   border-color: #3b82f6 !important;
   box-shadow: 0 0 0 1px #3b82f6 !important;
-  background-color: #0a0a0a !important;
+  background-color: #072448 !important;
 }
 
 select option {
@@ -325,7 +327,7 @@ select option {
 
 select option:hover,
 select option:focus {
-  background: #2a2a2a !important;
+  background: #072448 !important;
 }
 
 select option:checked,
@@ -347,8 +349,8 @@ input[type="checkbox"] {
   height: 18px !important;
   min-width: 18px !important;
   min-height: 18px !important;
-  background-color: #0a0a0a !important;
-  border: 1.5px solid #2a2a2a !important;
+  background-color: #072448 !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
   border-radius: 4px !important;
   cursor: pointer !important;
   position: relative !important;
@@ -360,7 +362,7 @@ input[type="checkbox"] {
 
 input[type="checkbox"]:hover {
   background-color: #1a1a1a !important;
-  border-color: #3a3a3a !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
 }
 
 input[type="checkbox"]:focus {

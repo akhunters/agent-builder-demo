@@ -59,7 +59,7 @@ export default function WorkflowSidebar({ currentWorkflowId, onClose }: Workflow
         className={`px-3 py-2 rounded-md cursor-pointer transition-colors mb-1 ${
           isActive
             ? 'bg-[#3b82f6]/20 border border-[#3b82f6]'
-            : 'hover:bg-[#2a2a2a]'
+            : 'hover:bg-[#072448]'
         }`}
       >
         <div className="flex items-center gap-2">
@@ -80,9 +80,9 @@ export default function WorkflowSidebar({ currentWorkflowId, onClose }: Workflow
   }
 
   return (
-    <div className="w-80 bg-[#1a1a1a] border-r border-[#2a2a2a] h-full flex flex-col slide-in">
+    <div className="w-80 bg-[#1a1a1a] border-r border-white/15 h-full flex flex-col slide-in">
       {/* Header */}
-      <div className="p-4 border-b border-[#2a2a2a] flex items-center justify-between">
+      <div className="p-4 border-b border-white/15 flex items-center justify-between">
         <h2 className="text-lg font-semibold text-white">Workflows</h2>
         <div className="flex items-center gap-2">
           <button

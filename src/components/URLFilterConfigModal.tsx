@@ -71,11 +71,11 @@ export default function URLFilterConfigModal({ isOpen, onClose, onSave, initialC
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
       <div 
-        className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg shadow-2xl w-full max-w-lg overflow-hidden flex flex-col"
+        className="bg-[#173153] border border-white/15 rounded-lg shadow-2xl w-full max-w-lg overflow-hidden flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="px-6 py-4 border-b border-[#2a2a2a]">
+        <div className="px-6 py-4 border-b border-white/15">
           <h2 className="text-xl font-semibold text-white">URL filter guardrail</h2>
           <p className="text-sm text-[#9ca3af] mt-1">
             Blocks URLs that fall outside your allow list or violate allowed schemes.
@@ -94,11 +94,11 @@ export default function URLFilterConfigModal({ isOpen, onClose, onSave, initialC
                 onChange={(e) => setUrlInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleAddUrl()}
                 placeholder="example.com"
-                className="flex-1 bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+                className="flex-1 bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
               />
               <button
                 onClick={handleAddUrl}
-                className="w-10 h-10 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-full flex items-center justify-center transition-colors"
+                className="w-10 h-10 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-full flex items-center justify-center transition-colors"
               >
                 <Plus className="w-5 h-5 text-white" />
               </button>
@@ -112,7 +112,7 @@ export default function URLFilterConfigModal({ isOpen, onClose, onSave, initialC
                 {allowedUrls.map((url) => (
                   <div
                     key={url}
-                    className="flex items-center gap-1 bg-[#2a2a2a] border border-[#3a3a3a] rounded-md px-2 py-1 text-sm text-white"
+                    className="flex items-center gap-1 bg-[#072448] border border-white/15 rounded-md px-2 py-1 text-sm text-white"
                   >
                     <span>{url}</span>
                     <button
@@ -137,11 +137,11 @@ export default function URLFilterConfigModal({ isOpen, onClose, onSave, initialC
                 onChange={(e) => setSchemeInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleAddScheme()}
                 placeholder="https"
-                className="flex-1 bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+                className="flex-1 bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
               />
               <button
                 onClick={handleAddScheme}
-                className="w-10 h-10 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-full flex items-center justify-center transition-colors"
+                className="w-10 h-10 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-full flex items-center justify-center transition-colors"
               >
                 <Plus className="w-5 h-5 text-white" />
               </button>
@@ -154,7 +154,7 @@ export default function URLFilterConfigModal({ isOpen, onClose, onSave, initialC
                 {allowedSchemes.map((scheme) => (
                   <div
                     key={scheme}
-                    className="flex items-center gap-1 bg-[#2a2a2a] border border-[#3a3a3a] rounded-md px-2 py-1 text-sm text-white"
+                    className="flex items-center gap-1 bg-[#072448] border border-white/15 rounded-md px-2 py-1 text-sm text-white"
                   >
                     <span>{scheme}</span>
                     <button
@@ -179,8 +179,8 @@ export default function URLFilterConfigModal({ isOpen, onClose, onSave, initialC
             </div>
             <button
               onClick={() => setBlockUserInfo(!blockUserInfo)}
-              className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
-                blockUserInfo ? 'bg-[#3b82f6]' : 'bg-[#2a2a2a]'
+              className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors border ${
+                blockUserInfo ? 'bg-[#3b82f6] border-[#3b82f6]' : 'bg-[#072448] border-white/15'
               }`}
             >
               <span
@@ -201,8 +201,8 @@ export default function URLFilterConfigModal({ isOpen, onClose, onSave, initialC
             </div>
             <button
               onClick={() => setAllowSubdomains(!allowSubdomains)}
-              className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
-                allowSubdomains ? 'bg-[#3b82f6]' : 'bg-[#2a2a2a]'
+              className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors border ${
+                allowSubdomains ? 'bg-[#3b82f6] border-[#3b82f6]' : 'bg-[#072448] border-white/15'
               }`}
             >
               <span
@@ -215,7 +215,7 @@ export default function URLFilterConfigModal({ isOpen, onClose, onSave, initialC
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-[#2a2a2a] flex items-center justify-between">
+        <div className="px-6 py-4 border-t border-white/15 flex items-center justify-between">
           <a
             href="https://docs.composio.dev/guardrails/url-filter"
             target="_blank"
@@ -228,13 +228,13 @@ export default function URLFilterConfigModal({ isOpen, onClose, onSave, initialC
           <div className="flex items-center gap-3">
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-md text-sm text-white font-medium transition-colors"
+              className="px-4 py-2 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-md text-sm text-white font-medium transition-colors"
             >
               Cancel
             </button>
             <button
               onClick={handleSave}
-              className="px-4 py-2 bg-white hover:bg-gray-100 text-black rounded-md text-sm font-medium transition-colors"
+              className="px-4 py-2 bg-[#3b82f6] hover:bg-[#2563eb] text-white rounded-md text-sm font-medium transition-colors"
             >
               Save
             </button>

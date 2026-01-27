@@ -111,21 +111,21 @@ export default function MCPConfigModal({ isOpen, onClose, onSave, initialConfig 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
       <div 
-        className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col"
+        className="bg-[#173153] border border-white/15 rounded-lg shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="px-6 py-4 border-b border-[#2a2a2a]">
+        <div className="px-6 py-4 border-b border-white/15">
           {dialogState === 'serverList' ? (
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold text-white">Add MCP server</h2>
               <button
                 onClick={() => setDialogState('addCustomServer')}
                 disabled={servers.length > 0}
-                className={`px-3 py-1.5 border border-[#3a3a3a] rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${
+                className={`px-3 py-1.5 border border-white/25 rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${
                   servers.length > 0
-                    ? 'bg-[#1a1a1a] text-[#6b7280] cursor-not-allowed opacity-50'
-                    : 'bg-[#2a2a2a] hover:bg-[#3a3a3a] text-white'
+                    ? 'bg-[#072448] text-[#6b7280] cursor-not-allowed opacity-50'
+                    : 'bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 text-white'
                 }`}
               >
                 <Zap className="w-4 h-4" />
@@ -162,7 +162,7 @@ export default function MCPConfigModal({ isOpen, onClose, onSave, initialConfig 
                     {servers.map((server) => (
                       <div
                         key={server.id}
-                        className="bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg p-3 hover:border-[#3a3a3a] transition-colors relative group"
+                        className="bg-[#072448] border border-white/15 rounded-lg p-3 hover:border-white/25 transition-colors relative group"
                       >
                         <div className="flex items-center justify-between mb-2">
                           <div className="w-8 h-8 rounded-lg bg-[#3b82f6] flex items-center justify-center">
@@ -205,10 +205,10 @@ export default function MCPConfigModal({ isOpen, onClose, onSave, initialConfig 
                       <button
                         key={server.id}
                         onClick={() => handleSelectPrebuiltServer(server)}
-                        className={`bg-[#0a0a0a] border rounded-lg p-3 transition-colors text-left ${
+                        className={`bg-[#072448] border rounded-lg p-3 transition-colors text-left ${
                           isAdded
                             ? 'border-[#3b82f6]'
-                            : 'border-[#2a2a2a] hover:border-[#3a3a3a]'
+                            : 'border-white/15 hover:border-white/25'
                         }`}
                       >
                         <div className="w-8 h-8 rounded-lg bg-[#3b82f6] flex items-center justify-center mb-2">
@@ -248,7 +248,7 @@ export default function MCPConfigModal({ isOpen, onClose, onSave, initialConfig 
                   value={formData.url}
                   onChange={(e) => setFormData({ ...formData, url: e.target.value })}
                   placeholder="https://mcp.example.com"
-                  className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+                  className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
                 />
               </div>
 
@@ -260,7 +260,7 @@ export default function MCPConfigModal({ isOpen, onClose, onSave, initialConfig 
                   value={formData.label}
                   onChange={(e) => setFormData({ ...formData, label: e.target.value })}
                   placeholder="my_mcp_server"
-                  className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+                  className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
                 />
               </div>
 
@@ -274,7 +274,7 @@ export default function MCPConfigModal({ isOpen, onClose, onSave, initialConfig 
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   placeholder="My MCP Server"
-                  className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+                  className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
                 />
               </div>
 
@@ -290,7 +290,7 @@ export default function MCPConfigModal({ isOpen, onClose, onSave, initialConfig 
                   <select
                     value={formData.authType}
                     onChange={(e) => setFormData({ ...formData, authType: e.target.value as any })}
-                    className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white text-sm focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] appearance-none cursor-pointer"
+                    className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white text-sm focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] appearance-none cursor-pointer"
                   >
                     <option value="access_token">Access token / API key</option>
                     <option value="api_key">API key</option>
@@ -305,7 +305,7 @@ export default function MCPConfigModal({ isOpen, onClose, onSave, initialConfig 
                       value={formData.accessToken}
                       onChange={(e) => setFormData({ ...formData, accessToken: e.target.value })}
                       placeholder="Add your access token"
-                      className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 pr-10 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+                      className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 pr-10 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
                     />
                     <button
                       onClick={() => setShowPassword(!showPassword)}
@@ -325,19 +325,19 @@ export default function MCPConfigModal({ isOpen, onClose, onSave, initialConfig 
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-[#2a2a2a] flex items-center justify-between">
+        <div className="px-6 py-4 border-t border-white/15 flex items-center justify-between">
           {dialogState === 'serverList' ? (
             <>
               <button
                 onClick={onClose}
-                className="px-4 py-2 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-md text-sm text-white font-medium transition-colors"
+                className="px-4 py-2 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-md text-sm text-white font-medium transition-colors"
               >
                 Cancel
               </button>
               {servers.length > 0 && (
                 <button
                   onClick={handleSave}
-                  className="px-4 py-2 bg-white hover:bg-gray-100 text-black rounded-md text-sm font-medium transition-colors"
+                  className="px-4 py-2 bg-[#3b82f6] hover:bg-[#2563eb] text-white rounded-md text-sm font-medium transition-colors"
                 >
                   Save
                 </button>
@@ -347,7 +347,7 @@ export default function MCPConfigModal({ isOpen, onClose, onSave, initialConfig 
             <>
               <button
                 onClick={() => setDialogState('serverList')}
-                className="px-4 py-2 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-md text-sm text-white font-medium transition-colors flex items-center gap-2"
+                className="px-4 py-2 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-md text-sm text-white font-medium transition-colors flex items-center gap-2"
               >
                 <ArrowLeft className="w-4 h-4" />
                 Back
@@ -372,8 +372,8 @@ export default function MCPConfigModal({ isOpen, onClose, onSave, initialConfig 
                 disabled={!formData.url || !formData.label}
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${
                   !formData.url || !formData.label
-                    ? 'bg-[#2a2a2a] text-[#6b7280] cursor-not-allowed'
-                    : 'bg-white hover:bg-gray-100 text-black'
+                    ? 'bg-[#072448] text-[#6b7280] cursor-not-allowed opacity-50'
+                    : 'bg-[#3b82f6] hover:bg-[#2563eb] text-white'
                 }`}
               >
                 <Zap className="w-4 h-4" />

@@ -31,11 +31,11 @@ export default function TopBar({
   }
 
   return (
-    <div className="h-14 bg-[#1a1a1a] border-b border-[#2a2a2a] flex items-center justify-between px-5">
+    <div className="h-14 bg-[#153051] border-b border-white/15 flex items-center justify-between px-5">
       <div className="flex items-center gap-3">
         <button
           onClick={handleBack}
-          className="p-2 hover:bg-[#2a2a2a] rounded-md transition-all text-[#9ca3af] hover:text-white group"
+          className="p-2 hover:bg-[#072448] rounded-md transition-all text-[#9ca3af] hover:text-white group"
           title="Back to Dashboard"
         >
           <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
@@ -43,7 +43,7 @@ export default function TopBar({
         {onToggleSidebar && (
           <button
             onClick={onToggleSidebar}
-            className="p-2 hover:bg-[#2a2a2a] rounded-md transition-colors text-[#9ca3af] hover:text-white"
+            className="p-2 hover:bg-[#072448] rounded-md transition-colors text-[#9ca3af] hover:text-white"
             title="Toggle Workflows Sidebar"
           >
             <Menu className="w-5 h-5" />
@@ -54,22 +54,22 @@ export default function TopBar({
           value={workflowName}
           onChange={(e) => onNameChange?.(e.target.value)}
           disabled={isReadOnly || !onNameChange}
-          className="bg-transparent border-none text-base font-semibold text-white focus:outline-none focus:ring-0 px-2 py-1 rounded hover:bg-[#2a2a2a] transition-colors placeholder:text-[#6b7280] disabled:opacity-50 disabled:cursor-not-allowed"
+          className="bg-transparent border-none text-base font-semibold text-white focus:outline-none focus:ring-0 px-2 py-1 rounded hover:bg-[#072448] focus:bg-[#072448] transition-colors placeholder:text-[#6b7280] disabled:opacity-50 disabled:cursor-not-allowed"
           placeholder="Workflow name"
         />
-        <span className="text-xs text-[#9ca3af] px-2.5 py-1 bg-[#2a2a2a] rounded-md font-medium">
+        <span className="text-xs text-[#9ca3af] px-2.5 py-1 bg-[#072448] border border-white/15 rounded-md font-medium">
           {workflowStatus === 'draft' ? 'Draft' : 'v1 • production'}
         </span>
       </div>
 
       <div className="flex items-center gap-1.5">
-        <button className="p-2 hover:bg-[#2a2a2a] rounded-md transition-colors text-[#9ca3af] hover:text-white">
+        <button className="p-2 hover:bg-[#072448] rounded-md transition-colors text-[#9ca3af] hover:text-white">
           <MoreVertical className="w-4 h-4" />
         </button>
-        <button className="p-2 hover:bg-[#2a2a2a] rounded-md transition-colors text-[#9ca3af] hover:text-white">
+        <button className="p-2 hover:bg-[#072448] rounded-md transition-colors text-[#9ca3af] hover:text-white">
           <Settings className="w-4 h-4" />
         </button>
-        <button
+        {/* <button
           onClick={onCode}
           className="flex items-center gap-2 px-3.5 py-1.5 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-md transition-colors text-white text-sm font-medium"
         >
@@ -82,7 +82,7 @@ export default function TopBar({
         >
           <Play className="w-4 h-4" />
           <span>Preview</span>
-        </button>
+        </button> */}
         {onDeploy && (
           <button
             onClick={onDeploy}

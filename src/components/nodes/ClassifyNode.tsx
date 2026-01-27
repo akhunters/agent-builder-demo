@@ -22,7 +22,7 @@ export default function ClassifyNode({ data }: { data: any }) {
         <div className="flex flex-col gap-1.5 mt-2">
           {categories.map((category: string, index: number) => (
             <div key={index} className="relative">
-              <div className="bg-[#2a2a2a] rounded-md px-2 py-1 border border-[#3a3a3a]/30">
+              <div className="bg-[#2a2a2a] rounded-md px-2 py-1">
                 <span className="text-white text-xs">{category}</span>
               </div>
               <Handle 

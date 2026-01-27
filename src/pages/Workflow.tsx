@@ -517,13 +517,13 @@ function FlowEditor() {
                 hasInitialized.current = true
               }
             }}
-            className="bg-black"
+            className="bg-[#072447]"
             defaultEdgeOptions={{
               style: { stroke: '#6b7280', strokeWidth: 2 },
               type: 'default',
             }}
           >
-            <Background color="#1a1a1a" gap={20} size={1} variant={BackgroundVariant.Dots} />
+            <Background color="rgba(255, 255, 255, 0.25)" gap={20} size={1} variant={BackgroundVariant.Dots} />
             <CenterFlow zoom={0.8} nodesCount={nodes.length} />
             <Panel position="bottom-center" className="!bottom-5 !left-1/2 !transform !-translate-x-1/2">
               <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-full px-2 py-1.5 shadow-lg flex items-center justify-center gap-1">

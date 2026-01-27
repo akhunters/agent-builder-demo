@@ -116,7 +116,7 @@ export default function Menu({ trigger, children, align = 'right', side = 'botto
     <div
       ref={menuRef}
       onClick={handleMenuClick}
-      className={`fixed z-[9999] bg-[#1a1a1a] border border-[#2a2a2a] rounded-md shadow-lg overflow-hidden min-w-[192px] ${className}`}
+      className={`fixed z-[9999] bg-[#173153] border border-white/15 rounded-md shadow-lg overflow-hidden min-w-[192px] ${className}`}
       style={{
         top: `${position.top}px`,
         left: `${position.left}px`,

@@ -20,7 +20,7 @@ export default function IfElseNode({ data }: { data: any }) {
 
       {/* If Condition - Compact */}
       <div className="mb-1.5 relative">
-        <div className="bg-[#2a2a2a] rounded-md px-2 py-1.5 border border-[#3a3a2a]/30">
+        <div className="bg-[#2a2a2a] rounded-md px-2 py-1.5">
           <div className="flex items-center gap-2">
             <span className="text-xs text-[#9ca3af] font-medium">If</span>
           </div>
@@ -40,7 +40,7 @@ export default function IfElseNode({ data }: { data: any }) {
       {/* Else Condition - Compact */}
       {hasElse && (
         <div className="relative">
-          <div className="bg-[#2a2a2a] rounded-md px-2 py-1.5 border border-[#3a3a2a]/30">
+          <div className="bg-[#2a2a2a] rounded-md px-2 py-1.5">
             <div className="flex items-center gap-2">
               <span className="text-xs text-[#9ca3af] font-medium">Else</span>
             </div>

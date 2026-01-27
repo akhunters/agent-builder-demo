@@ -96,11 +96,11 @@ export default function PIIConfigModal({ isOpen, onClose, onSave, initialConfig 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
       <div 
-        className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col"
+        className="bg-[#173153] border border-white/15 rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="px-6 py-4 border-b border-[#2a2a2a]">
+        <div className="px-6 py-4 border-b border-white/15">
           <h2 className="text-xl font-semibold text-white">Personally identifiable information (PII) guardrail</h2>
           <p className="text-sm text-[#9ca3af] mt-1">
             Detects sensitive personal data so you can block a request or mask the details before it reaches the model.
@@ -116,7 +116,7 @@ export default function PIIConfigModal({ isOpen, onClose, onSave, initialConfig 
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 action === 'mask'
                   ? 'bg-[#3b82f6] text-white'
-                  : 'bg-[#2a2a2a] text-[#9ca3af] hover:bg-[#3a3a3a]'
+                  : 'bg-transparent border border-white/15 text-[#9ca3af] hover:border-white/25 hover:bg-white/5'
               }`}
             >
               Mask
@@ -126,7 +126,7 @@ export default function PIIConfigModal({ isOpen, onClose, onSave, initialConfig 
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 action === 'block'
                   ? 'bg-[#3b82f6] text-white'
-                  : 'bg-[#2a2a2a] text-[#9ca3af] hover:bg-[#3a3a3a]'
+                  : 'bg-transparent border border-white/15 text-[#9ca3af] hover:border-white/25 hover:bg-white/5'
               }`}
             >
               Block
@@ -147,7 +147,7 @@ export default function PIIConfigModal({ isOpen, onClose, onSave, initialConfig 
                     handleClear()
                   }
                 }}
-                className="w-4 h-4 rounded border-[#3a3a3a] bg-[#0a0a0a] text-[#3b82f6] focus:ring-[#3b82f6] focus:ring-offset-0"
+                className="w-4 h-4 rounded border-white/25 bg-[#072448] text-[#3b82f6] focus:ring-[#3b82f6] focus:ring-offset-0"
               />
               <span className="text-sm text-white">Select all entities</span>
             </label>
@@ -166,13 +166,13 @@ export default function PIIConfigModal({ isOpen, onClose, onSave, initialConfig 
               {COMMON_ENTITIES.map((entity) => (
                 <label
                   key={entity}
-                  className="flex items-center gap-2 cursor-pointer hover:bg-[#2a2a2a] p-2 rounded-md transition-colors"
+                  className="flex items-center gap-2 cursor-pointer hover:bg-[#072448] p-2 rounded-md transition-colors"
                 >
                   <input
                     type="checkbox"
                     checked={selectedEntities.has(entity)}
                     onChange={() => handleToggleEntity(entity)}
-                    className="w-4 h-4 rounded border-[#3a3a3a] bg-[#0a0a0a] text-[#3b82f6] focus:ring-[#3b82f6] focus:ring-offset-0"
+                    className="w-4 h-4 rounded border-white/25 bg-[#072448] text-[#3b82f6] focus:ring-[#3b82f6] focus:ring-offset-0"
                   />
                   <span className="text-sm text-white">{entity}</span>
                 </label>
@@ -187,13 +187,13 @@ export default function PIIConfigModal({ isOpen, onClose, onSave, initialConfig 
               {USA_ENTITIES.map((entity) => (
                 <label
                   key={entity}
-                  className="flex items-center gap-2 cursor-pointer hover:bg-[#2a2a2a] p-2 rounded-md transition-colors"
+                  className="flex items-center gap-2 cursor-pointer hover:bg-[#072448] p-2 rounded-md transition-colors"
                 >
                   <input
                     type="checkbox"
                     checked={selectedEntities.has(entity)}
                     onChange={() => handleToggleEntity(entity)}
-                    className="w-4 h-4 rounded border-[#3a3a3a] bg-[#0a0a0a] text-[#3b82f6] focus:ring-[#3b82f6] focus:ring-offset-0"
+                    className="w-4 h-4 rounded border-white/25 bg-[#072448] text-[#3b82f6] focus:ring-[#3b82f6] focus:ring-offset-0"
                   />
                   <span className="text-sm text-white">{entity}</span>
                 </label>
@@ -203,7 +203,7 @@ export default function PIIConfigModal({ isOpen, onClose, onSave, initialConfig 
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-[#2a2a2a] flex items-center justify-between">
+        <div className="px-6 py-4 border-t border-white/15 flex items-center justify-between">
           <a
             href="https://docs.composio.dev/guardrails/pii"
             target="_blank"
@@ -216,7 +216,7 @@ export default function PIIConfigModal({ isOpen, onClose, onSave, initialConfig 
           <div className="flex items-center gap-3">
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-md text-sm text-white font-medium transition-colors"
+              className="px-4 py-2 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-md text-sm text-white font-medium transition-colors"
             >
               Cancel
             </button>

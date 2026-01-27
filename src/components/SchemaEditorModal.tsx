@@ -284,32 +284,32 @@ export default function SchemaEditorModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
-      <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl shadow-2xl w-full max-w-3xl mx-4 max-h-[90vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
+      <div className="bg-[#173153] border border-white/15 rounded-xl shadow-2xl w-full max-w-3xl mx-4 max-h-[90vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
-        <div className="p-6 border-b border-[#2a2a2a]">
+        <div className="p-6 border-b border-white/15">
           <div className="flex items-start justify-between mb-2">
             <div>
               <h2 className="text-xl font-semibold text-white mb-1">Structured output (JSON)</h2>
               <p className="text-sm text-[#9ca3af]">The model will generate a JSON object that matches this schema.</p>
             </div>
             <div className="flex items-center gap-2">
-              <div className="inline-flex rounded-lg bg-[#111827] border border-[#2a2a2a] text-xs font-medium overflow-hidden">
+              <div className="inline-flex rounded-lg bg-[#072448] border border-white/15 text-xs font-medium overflow-hidden">
                 <button
                   onClick={() => setSchemaView('simple')}
-                  className={`px-4 py-2 ${
+                  className={`px-4 py-2 transition-colors ${
                     schemaView === 'simple'
-                      ? 'bg-white text-black'
-                      : 'text-[#9ca3af] hover:text-white hover:bg-[#1f2937]'
+                      ? 'bg-[#3b82f6] text-white hover:bg-[#2563eb]'
+                      : 'bg-transparent text-[#9ca3af] hover:text-white hover:bg-white/5'
                   }`}
                 >
                   Simple
                 </button>
                 <button
                   onClick={() => setSchemaView('advanced')}
-                  className={`px-4 py-2 ${
+                  className={`px-4 py-2 transition-colors border-l border-white/15 ${
                     schemaView === 'advanced'
-                      ? 'bg-white text-black'
-                      : 'text-[#9ca3af] hover:text-white hover:bg-[#1f2937]'
+                      ? 'bg-[#3b82f6] text-white hover:bg-[#2563eb]'
+                      : 'bg-transparent text-[#9ca3af] hover:text-white hover:bg-white/5'
                   }`}
                 >
                   Advanced
@@ -331,8 +331,8 @@ export default function SchemaEditorModal({
             <div className="space-y-4">
               <div>
                 <h3 className="text-sm font-semibold text-white mb-3">Properties</h3>
-                <div className="border border-[#2a2a2a] rounded-lg overflow-hidden">
-                  <div className="grid grid-cols-12 gap-2 bg-[#0a0a0a] px-3 py-2 text-xs font-medium text-[#9ca3af] border-b border-[#2a2a2a]">
+                <div className="border border-white/15 rounded-lg overflow-hidden">
+                  <div className="grid grid-cols-12 gap-2 bg-[#072448] px-3 py-2 text-xs font-medium text-[#9ca3af] border-b border-white/15">
                     <div className="col-span-1"></div>
                     <div className="col-span-3">Name</div>
                     <div className="col-span-2">Type</div>
@@ -356,7 +356,7 @@ export default function SchemaEditorModal({
                                 newProps[index].name = sanitized
                                 setSchemaProperties(newProps)
                               }}
-                              className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded px-2 py-1 text-sm text-white focus:outline-none focus:border-[#3b82f6]"
+                              className="w-full bg-[#072448] border border-white/15 rounded px-2 py-1 text-sm text-white focus:outline-none focus:border-[#3b82f6]"
                               placeholder="Property name"
                             />
                           </div>
@@ -390,7 +390,7 @@ export default function SchemaEditorModal({
                                 }
                                 setSchemaProperties(newProps)
                               }}
-                              className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded px-2 py-1 text-sm text-white focus:outline-none focus:border-[#3b82f6]"
+                              className="w-full bg-[#072448] border border-white/15 rounded px-2 py-1 text-sm text-white focus:outline-none focus:border-[#3b82f6]"
                             >
                               <option value="STR">STR</option>
                               <option value="NUM">NUM</option>
@@ -409,7 +409,7 @@ export default function SchemaEditorModal({
                                 newProps[index].description = e.target.value
                                 setSchemaProperties(newProps)
                               }}
-                              className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded px-2 py-1 text-sm text-white focus:outline-none focus:border-[#3b82f6]"
+                              className="w-full bg-[#072448] border border-white/15 rounded px-2 py-1 text-sm text-white focus:outline-none focus:border-[#3b82f6]"
                               placeholder="Add description"
                             />
                           </div>
@@ -429,7 +429,7 @@ export default function SchemaEditorModal({
                         {/* Nested Array Items Row */}
                         {prop.type === 'ARR' && (
                           <>
-                            <div className="grid grid-cols-12 gap-2 px-3 py-3 items-center bg-[#0a0a0a]/50 pl-8">
+                            <div className="grid grid-cols-12 gap-2 px-3 py-3 items-center bg-[#072448]/50 pl-8">
                               <div className="col-span-1 flex items-center justify-center">
                                 <FileText className="w-4 h-4 text-[#10b981]" />
                               </div>
@@ -449,7 +449,7 @@ export default function SchemaEditorModal({
                                     }
                                     setSchemaProperties(newProps)
                                   }}
-                                  className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded px-2 py-1 text-sm text-white focus:outline-none focus:border-[#3b82f6]"
+                                  className="w-full bg-[#072448] border border-white/15 rounded px-2 py-1 text-sm text-white focus:outline-none focus:border-[#3b82f6]"
                                 >
                                   <option value="STR">STR</option>
                                   <option value="NUM">NUM</option>
@@ -468,7 +468,7 @@ export default function SchemaEditorModal({
                                     newProps[index].itemsDescription = e.target.value
                                     setSchemaProperties(newProps)
                                   }}
-                                  className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded px-2 py-1 text-sm text-white focus:outline-none focus:border-[#3b82f6]"
+                                  className="w-full bg-[#072448] border border-white/15 rounded px-2 py-1 text-sm text-white focus:outline-none focus:border-[#3b82f6]"
                                   placeholder="Add description"
                                 />
                               </div>
@@ -478,12 +478,12 @@ export default function SchemaEditorModal({
                             </div>
                             {/* Nested Enum Values for Array Items */}
                             {prop.itemsType === 'ENUM' && (
-                              <div className="px-3 py-3 bg-[#0a0a0a]/30 pl-12">
-                                <div className="flex flex-wrap items-center gap-2 min-h-[32px] bg-[#0a0a0a] border border-[#2a2a2a] rounded px-2 py-1.5">
+                              <div className="px-3 py-3 bg-[#072448]/30 pl-12">
+                                <div className="flex flex-wrap items-center gap-2 min-h-[32px] bg-[#072448] border border-white/15 rounded px-2 py-1.5">
                                   {(prop.itemsEnumValues || []).map((value, valueIndex) => (
                                     <div
                                       key={valueIndex}
-                                      className="flex items-center gap-1.5 bg-[#2a2a2a] rounded-full px-2.5 py-1 text-sm text-white"
+                                      className="flex items-center gap-1.5 bg-[#072448] border border-white/15 rounded-full px-2.5 py-1 text-sm text-white"
                                     >
                                       <span>{value}</span>
                                       <button
@@ -543,12 +543,12 @@ export default function SchemaEditorModal({
                         )}
                         {/* Nested Enum Values Row */}
                         {prop.type === 'ENUM' && (
-                          <div className="px-3 py-3 bg-[#0a0a0a]/50 pl-8">
-                            <div className="flex flex-wrap items-center gap-2 min-h-[32px] bg-[#0a0a0a] border border-[#2a2a2a] rounded px-2 py-1.5">
+                          <div className="px-3 py-3 bg-[#072448]/50 pl-8">
+                            <div className="flex flex-wrap items-center gap-2 min-h-[32px] bg-[#072448] border border-white/15 rounded px-2 py-1.5">
                               {(prop.enumValues || []).map((value, valueIndex) => (
                                 <div
                                   key={valueIndex}
-                                  className="flex items-center gap-1.5 bg-[#2a2a2a] rounded-full px-2.5 py-1 text-sm text-white"
+                                  className="flex items-center gap-1.5 bg-[#072448] border border-white/15 rounded-full px-2.5 py-1 text-sm text-white"
                                 >
                                   <span>{value}</span>
                                   <button
@@ -621,7 +621,7 @@ export default function SchemaEditorModal({
                       enumValues: undefined,
                     }])
                   }}
-                  className="mt-3 flex items-center gap-1 px-3 py-2 text-sm bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded text-white transition-colors"
+                  className="mt-3 flex items-center gap-1 px-3 py-2 text-sm bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded text-white transition-colors"
                 >
                   <Plus className="w-4 h-4" />
                   <span>Add property</span>
@@ -633,7 +633,7 @@ export default function SchemaEditorModal({
               <textarea
                 value={schemaAdvancedJson}
                 onChange={(e) => setSchemaAdvancedJson(e.target.value)}
-                className="w-full h-96 bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg px-4 py-3 text-sm font-mono text-white focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none"
+                className="w-full h-96 bg-[#072448] border border-white/15 rounded-lg px-4 py-3 text-sm font-mono text-white focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none"
                 placeholder='{\n  "type": "object",\n  "properties": {},\n  "additionalProperties": false,\n  "required": []\n}'
               />
             </div>
@@ -641,16 +641,16 @@ export default function SchemaEditorModal({
         </div>
 
         {/* Footer */}
-        <div className="p-6 border-t border-[#2a2a2a] flex items-center justify-end gap-3">
+        <div className="p-6 border-t border-white/15 flex items-center justify-end gap-3">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-md text-sm text-white transition-colors"
+            className="px-4 py-2 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-md text-sm text-white transition-colors"
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
-            className="px-4 py-2 bg-white text-black rounded-md text-sm font-medium hover:bg-gray-100 transition-colors"
+            className="px-4 py-2 bg-[#3b82f6] text-white rounded-md text-sm font-medium hover:bg-[#2563eb] transition-colors"
           >
             Add
           </button>

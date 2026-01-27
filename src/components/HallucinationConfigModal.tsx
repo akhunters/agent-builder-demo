@@ -54,11 +54,11 @@ export default function HallucinationConfigModal({ isOpen, onClose, onSave, init
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
       <div 
-        className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg shadow-2xl w-full max-w-lg overflow-hidden flex flex-col"
+        className="bg-[#173153] border border-white/15 rounded-lg shadow-2xl w-full max-w-lg overflow-hidden flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="px-6 py-4 border-b border-[#2a2a2a]">
+        <div className="px-6 py-4 border-b border-white/15">
           <h2 className="text-xl font-semibold text-white">Hallucination guardrail</h2>
           <p className="text-sm text-[#9ca3af] mt-1">
             Detect and flag hallucinations by verifying claims against trusted documents in your vector store.
@@ -77,7 +77,7 @@ export default function HallucinationConfigModal({ isOpen, onClose, onSave, init
                 value={vectorStoreId}
                 onChange={(e) => setVectorStoreId(e.target.value)}
                 placeholder="Enter vector store id"
-                className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md pl-9 pr-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+                className="w-full bg-[#072448] border border-white/15 rounded-md pl-9 pr-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
               />
             </div>
             <a
@@ -95,7 +95,7 @@ export default function HallucinationConfigModal({ isOpen, onClose, onSave, init
             <div className="relative">
               <button
                 onClick={() => setShowModelDropdown(!showModelDropdown)}
-                className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white text-sm flex items-center justify-between hover:border-[#3a3a3a] transition-colors"
+                className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white text-sm flex items-center justify-between hover:border-white/25 transition-colors"
               >
                 <span>{model}</span>
                 <ChevronDown className="w-4 h-4 text-[#6b7280]" />
@@ -106,7 +106,7 @@ export default function HallucinationConfigModal({ isOpen, onClose, onSave, init
                     className="fixed inset-0 z-10" 
                     onClick={() => setShowModelDropdown(false)}
                   />
-                  <div className="absolute z-20 w-full mt-1 bg-[#1a1a1a] border border-[#2a2a2a] rounded-md shadow-lg max-h-60 overflow-y-auto">
+                  <div className="absolute z-20 w-full mt-1 bg-[#173153] border border-white/15 rounded-md shadow-lg max-h-60 overflow-y-auto">
                     {MODELS.map((m) => (
                       <button
                         key={m}
@@ -114,7 +114,7 @@ export default function HallucinationConfigModal({ isOpen, onClose, onSave, init
                           setModel(m)
                           setShowModelDropdown(false)
                         }}
-                        className="w-full px-3 py-2 text-left text-sm text-white hover:bg-[#2a2a2a] transition-colors"
+                        className="w-full px-3 py-2 text-left text-sm text-white hover:bg-[#072448] transition-colors"
                       >
                         {m}
                       </button>
@@ -149,7 +149,7 @@ export default function HallucinationConfigModal({ isOpen, onClose, onSave, init
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-[#2a2a2a] flex items-center justify-between">
+        <div className="px-6 py-4 border-t border-white/15 flex items-center justify-between">
           <a
             href="https://docs.composio.dev/guardrails/hallucination"
             target="_blank"
@@ -162,13 +162,13 @@ export default function HallucinationConfigModal({ isOpen, onClose, onSave, init
           <div className="flex items-center gap-3">
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-md text-sm text-white font-medium transition-colors"
+              className="px-4 py-2 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-md text-sm text-white font-medium transition-colors"
             >
               Cancel
             </button>
             <button
               onClick={handleSave}
-              className="px-4 py-2 bg-white hover:bg-gray-100 text-black rounded-md text-sm font-medium transition-colors"
+              className="px-4 py-2 bg-[#3b82f6] hover:bg-[#2563eb] text-white rounded-md text-sm font-medium transition-colors"
             >
               Add
             </button>

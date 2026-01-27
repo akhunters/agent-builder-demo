@@ -181,8 +181,8 @@ export default function NodePalette({ onAddNode }: NodePaletteProps) {
   }
 
   return (
-    <div className="w-full h-full bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg flex flex-col shadow-2xl overflow-hidden m-2">
-      <div className="p-3 border-b border-[#2a2a2a]">
+    <div className="w-full h-full bg-[#173153] border border-white/15 rounded-lg flex flex-col shadow-2xl overflow-hidden m-2">
+      <div className="p-3 border-b border-white/15">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#6b7280]" />
           <input
@@ -190,7 +190,7 @@ export default function NodePalette({ onAddNode }: NodePaletteProps) {
             placeholder="Q Insert node..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md pl-9 pr-3 py-2 text-sm text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+            className="w-full bg-[#072448] border border-white/15 rounded-md pl-9 pr-3 py-2 text-sm text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
           />
         </div>
       </div>
@@ -222,7 +222,7 @@ export default function NodePalette({ onAddNode }: NodePaletteProps) {
                           draggable
                           onDragStart={(e) => handleDragStart(e, node.type)}
                           onClick={() => onAddNode(node.type, { x: 250, y: 250 })}
-                          className="node-palette-item flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-[#2a2a2a] cursor-move transition-all group hover:translate-x-1"
+                          className="node-palette-item flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-[#072448] cursor-move transition-all group hover:translate-x-1"
                         >
                           <div className={`w-7 h-7 rounded-md ${node.color} flex items-center justify-center flex-shrink-0 shadow-sm`}>
                             <Icon className="w-3.5 h-3.5 text-white" />

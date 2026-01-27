@@ -58,7 +58,7 @@ export default function CustomPromptCheckConfigModal({ isOpen, onClose, onSave, 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
       <div 
-        className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg shadow-2xl w-full max-w-lg overflow-hidden flex flex-col"
+        className="bg-[#173153] border border-[#2a2a2a] rounded-lg shadow-2xl w-full max-w-lg overflow-hidden flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -84,7 +84,7 @@ export default function CustomPromptCheckConfigModal({ isOpen, onClose, onSave, 
                 }}
                 placeholder="You are a customer support assistant. Raise the guardrail if questions aren't focused on customer inquiries, product support, and service-related questions."
                 rows={4}
-                className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none"
+                className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none"
               />
               <div className="absolute top-2 right-2 text-xs text-[#6b7280]">
                 {promptLength}/{MAX_PROMPT_LENGTH}
@@ -101,7 +101,7 @@ export default function CustomPromptCheckConfigModal({ isOpen, onClose, onSave, 
             <div className="relative">
               <button
                 onClick={() => setShowModelDropdown(!showModelDropdown)}
-                className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white text-sm flex items-center justify-between hover:border-[#3a3a3a] transition-colors"
+                className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white text-sm flex items-center justify-between hover:border-white/25 transition-colors"
               >
                 <span>{model}</span>
                 <ChevronDown className="w-4 h-4 text-[#6b7280]" />
@@ -112,7 +112,7 @@ export default function CustomPromptCheckConfigModal({ isOpen, onClose, onSave, 
                     className="fixed inset-0 z-10" 
                     onClick={() => setShowModelDropdown(false)}
                   />
-                  <div className="absolute z-20 w-full mt-1 bg-[#1a1a1a] border border-[#2a2a2a] rounded-md shadow-lg max-h-60 overflow-y-auto">
+                  <div className="absolute z-20 w-full mt-1 bg-[#173153] border border-[#2a2a2a] rounded-md shadow-lg max-h-60 overflow-y-auto">
                     {MODELS.map((m) => (
                       <button
                         key={m}
@@ -120,7 +120,7 @@ export default function CustomPromptCheckConfigModal({ isOpen, onClose, onSave, 
                           setModel(m)
                           setShowModelDropdown(false)
                         }}
-                        className="w-full px-3 py-2 text-left text-sm text-white hover:bg-[#2a2a2a] transition-colors"
+                        className="w-full px-3 py-2 text-left text-sm text-white hover:bg-[#072448] transition-colors"
                       >
                         {m}
                       </button>
@@ -168,13 +168,13 @@ export default function CustomPromptCheckConfigModal({ isOpen, onClose, onSave, 
           <div className="flex items-center gap-3">
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-md text-sm text-white font-medium transition-colors"
+              className="px-4 py-2 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-md text-sm text-white font-medium transition-colors"
             >
               Cancel
             </button>
             <button
               onClick={handleSave}
-              className="px-4 py-2 bg-white hover:bg-gray-100 text-black rounded-md text-sm font-medium transition-colors"
+              className="px-4 py-2 bg-[#3b82f6] hover:bg-[#2563eb] text-white rounded-md text-sm font-medium transition-colors"
             >
               Save
             </button>

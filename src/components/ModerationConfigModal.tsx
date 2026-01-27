@@ -101,11 +101,11 @@ export default function ModerationConfigModal({ isOpen, onClose, onSave, initial
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
       <div 
-        className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col"
+        className="bg-[#173153] border border-white/15 rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="px-6 py-4 border-b border-[#2a2a2a]">
+        <div className="px-6 py-4 border-b border-white/15">
           <h2 className="text-xl font-semibold text-white">Moderation guardrail</h2>
           <p className="text-sm text-[#9ca3af] mt-1">
             Flag text containing disallowed{' '}
@@ -129,26 +129,26 @@ export default function ModerationConfigModal({ isOpen, onClose, onSave, initial
                     handleClear()
                   }
                 }}
-                className="w-4 h-4 rounded border-[#3a3a3a] bg-[#0a0a0a] text-[#3b82f6] focus:ring-[#3b82f6] focus:ring-offset-0"
+                className="w-4 h-4 rounded border-white/25 bg-[#072448] text-[#3b82f6] focus:ring-[#3b82f6] focus:ring-offset-0"
               />
               <span className="text-sm text-white">Select all categories</span>
             </label>
             <div className="flex items-center gap-2">
               <button
                 onClick={handleSelectAll}
-                className="px-3 py-1.5 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-md text-sm text-white transition-colors"
+                className="px-3 py-1.5 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-md text-sm text-white transition-colors"
               >
                 All Categories
               </button>
               <button
                 onClick={handleSelectMostCritical}
-                className="px-3 py-1.5 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-md text-sm text-white transition-colors"
+                className="px-3 py-1.5 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-md text-sm text-white transition-colors"
               >
                 Most Critical
               </button>
               <button
                 onClick={handleClear}
-                className="px-3 py-1.5 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-md text-sm text-white transition-colors"
+                className="px-3 py-1.5 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-md text-sm text-white transition-colors"
               >
                 Clear
               </button>
@@ -165,13 +165,13 @@ export default function ModerationConfigModal({ isOpen, onClose, onSave, initial
                 {categories.map((category) => (
                   <label
                     key={category.key}
-                    className="flex items-start gap-3 cursor-pointer hover:bg-[#2a2a2a] p-2 rounded-md transition-colors"
+                    className="flex items-start gap-3 cursor-pointer hover:bg-[#072448] p-2 rounded-md transition-colors"
                   >
                     <input
                       type="checkbox"
                       checked={selectedCategories.has(category.key)}
                       onChange={() => handleToggleCategory(category.key)}
-                      className="w-4 h-4 rounded border-[#3a3a3a] bg-[#0a0a0a] text-[#3b82f6] focus:ring-[#3b82f6] focus:ring-offset-0 mt-0.5"
+                      className="w-4 h-4 rounded border-white/25 bg-[#072448] text-[#3b82f6] focus:ring-[#3b82f6] focus:ring-offset-0 mt-0.5"
                     />
                     <div className="flex-1">
                       <div className="text-sm font-medium text-white">{category.label}</div>
@@ -185,7 +185,7 @@ export default function ModerationConfigModal({ isOpen, onClose, onSave, initial
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-[#2a2a2a] flex items-center justify-between">
+        <div className="px-6 py-4 border-t border-white/15 flex items-center justify-between">
           <a
             href="https://docs.composio.dev/guardrails/moderation"
             target="_blank"
@@ -198,13 +198,13 @@ export default function ModerationConfigModal({ isOpen, onClose, onSave, initial
           <div className="flex items-center gap-3">
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-md text-sm text-white font-medium transition-colors"
+              className="px-4 py-2 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-md text-sm text-white font-medium transition-colors"
             >
               Cancel
             </button>
             <button
               onClick={handleSave}
-              className="px-4 py-2 bg-white hover:bg-gray-100 text-black rounded-md text-sm font-medium transition-colors"
+              className="px-4 py-2 bg-[#3b82f6] hover:bg-[#2563eb] text-white rounded-md text-sm font-medium transition-colors"
             >
               Save
             </button>

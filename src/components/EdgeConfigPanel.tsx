@@ -194,8 +194,8 @@ export default function EdgeConfigPanel({
   const targetInputSchema = getNodeInputSchema(targetNode)
 
   return (
-    <div className="w-96 bg-[#1a1a1a] border border-[#2a2a2a] flex flex-col shadow-2xl rounded-lg m-2 max-h-[calc(95vh-56px)] overflow-hidden scale-in">
-      <div className="p-4 border-b border-[#2a2a2a] flex items-center justify-between">
+    <div className="w-96 bg-[#173153] border border-white/15 flex flex-col shadow-2xl rounded-lg m-2 max-h-[calc(95vh-56px)] overflow-hidden scale-in">
+      <div className="p-4 border-b border-white/15 flex items-center justify-between">
         <div>
           <h3 className="text-base font-semibold text-white">Edge</h3>
           <p className="text-xs text-[#9ca3af] mt-1">Inspect connection</p>
@@ -238,7 +238,7 @@ export default function EdgeConfigPanel({
         </div>
 
         {/* Source Output Schema */}
-        <div className="pt-2 border-t border-[#2a2a2a]">
+        <div className="pt-2 border-t border-white/15">
           <button
             onClick={() => setShowSourceSchema(!showSourceSchema)}
             className="w-full flex items-center justify-between mb-2"
@@ -258,7 +258,7 @@ export default function EdgeConfigPanel({
           {showSourceSchema && (
             <div className="ml-4 mt-2">
               {sourceOutputSchema ? (
-                <div className="text-xs bg-[#0a0a0a] p-2 rounded border border-[#2a2a2a]">
+                <div className="text-xs bg-[#072448] p-2 rounded border border-white/15">
                   {formatSchemaForDisplay(sourceOutputSchema)}
                 </div>
               ) : (
@@ -269,7 +269,7 @@ export default function EdgeConfigPanel({
         </div>
 
         {/* Target Input Schema */}
-        <div className="pt-2 border-t border-[#2a2a2a]">
+        <div className="pt-2 border-t border-white/15">
           <button
             onClick={() => setShowTargetSchema(!showTargetSchema)}
             className="w-full flex items-center justify-between mb-2"
@@ -289,7 +289,7 @@ export default function EdgeConfigPanel({
           {showTargetSchema && (
             <div className="ml-4 mt-2">
               {targetInputSchema ? (
-                <div className="text-xs bg-[#0a0a0a] p-2 rounded border border-[#2a2a2a]">
+                <div className="text-xs bg-[#072448] p-2 rounded border border-white/15">
                   {formatSchemaForDisplay(targetInputSchema)}
                 </div>
               ) : (
@@ -303,7 +303,7 @@ export default function EdgeConfigPanel({
       {/* Delete Confirmation Modal */}
       {showDeleteConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg p-6 max-w-md mx-4">
+          <div className="bg-[#173153] border border-white/15 rounded-lg p-6 max-w-md mx-4">
             <h3 className="text-lg font-semibold text-white mb-2">Delete Edge?</h3>
             <p className="text-sm text-[#9ca3af] mb-4">
               Are you sure you want to delete this connection? This action cannot be undone.
@@ -311,7 +311,7 @@ export default function EdgeConfigPanel({
             <div className="flex items-center justify-end gap-3">
               <button
                 onClick={() => setShowDeleteConfirm(false)}
-                className="px-4 py-2 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-md text-sm text-white transition-colors"
+                className="px-4 py-2 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-md text-sm text-white transition-colors"
               >
                 Cancel
               </button>

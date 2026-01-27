@@ -106,7 +106,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
             type="text"
             value={data.name || ''}
             onChange={(e) => handleChange('name', e.target.value)}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+            className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
           />
         </div>
 
@@ -121,7 +121,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
             value={data.instructions || ''}
             onChange={(e) => handleChange('instructions', e.target.value)}
             rows={6}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none"
+            className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none"
             placeholder="Call the model with your instructions and tools."
           />
         </div>
@@ -132,7 +132,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
           <select
             value={data.model || 'gpt-5'}
             onChange={(e) => handleChange('model', e.target.value)}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+            className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
           >
             <option value="gpt-5">GPT-5</option>
             <option value="gpt-5-mini">GPT-5 Mini</option>
@@ -145,7 +145,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
           <select
             value={data.outputFormat || 'text'}
             onChange={(e) => handleChange('outputFormat', e.target.value)}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2.5 text-white text-sm focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] transition-colors cursor-pointer"
+            className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2.5 text-white text-sm focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] transition-colors cursor-pointer"
           >
             <option value="text">Text</option>
             <option value="json">JSON</option>
@@ -154,7 +154,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
           {data.outputFormat === 'json' && (
             <button
               onClick={() => setShowAgentSchemaModal(true)}
-              className="mt-2 px-3 py-1.5 bg-[#2a2a2a] hover:bg-[#3a3a3a] border border-[#3a3a3a] rounded-md text-sm text-white font-medium transition-colors flex items-center gap-2"
+              className="mt-2 px-3 py-1.5 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-md text-sm text-white font-medium transition-colors flex items-center gap-2"
             >
               {data.schema?.properties && Object.keys(data.schema.properties).length > 0 ? (
                 <>
@@ -178,7 +178,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
               align="right"
               side="bottom"
               trigger={
-                <button className="flex items-center gap-1 px-2 py-1 text-sm bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded">
+                <button className="flex items-center gap-1 px-2 py-1 text-sm bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded transition-colors">
                   <Plus className="w-3 h-3" />
                   <span>Add</span>
                 </button>
@@ -189,7 +189,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                   setEditingToolIndex(null)
                   setShowMCPConfigModal(true)
                 }}
-                className="w-full px-3 py-2 text-left text-sm text-white hover:bg-[#2a2a2a] transition-colors flex items-center gap-2"
+                className="w-full px-3 py-2 text-left text-sm text-white hover:bg-[#072448] transition-colors flex items-center gap-2"
               >
                 <Plug className="w-4 h-4 text-[#6b7280]" />
                 <span>MCP server</span>
@@ -199,7 +199,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                   setEditingToolIndex(null)
                   setShowFunctionConfigModal(true)
                 }}
-                className="w-full px-3 py-2 text-left text-sm text-white hover:bg-[#2a2a2a] transition-colors flex items-center gap-2"
+                className="w-full px-3 py-2 text-left text-sm text-white hover:bg-[#072448] transition-colors flex items-center gap-2"
               >
                 <Code className="w-4 h-4 text-[#6b7280]" />
                 <span>Function</span>
@@ -222,7 +222,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                 }
                 
                 return (
-                  <div key={index} className="flex items-center justify-between bg-[#0a0a0a] rounded px-2 py-1">
+                  <div key={index} className="flex items-center justify-between bg-[#072448] rounded px-2 py-1">
                     <div className="flex items-center gap-2">
                       {tool.type === 'function' ? (
                         <Code className="w-4 h-4 text-[#6b7280]" />
@@ -365,7 +365,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
           <span className="text-sm text-white">{label}</span>
           {showInfo && tooltip && (
             <Tooltip content={tooltip} position="left">
-              <button className="p-0.5 hover:bg-[#2a2a2a] rounded-full transition-colors">
+              <button className="p-0.5 hover:bg-[#072448] rounded-full transition-colors">
                 <Info className="w-3.5 h-3.5 text-[#6b7280]" />
               </button>
             </Tooltip>
@@ -378,15 +378,15 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                 e.stopPropagation()
                 onConfigure?.()
               }}
-              className="p-0.5 hover:bg-[#2a2a2a] rounded-full transition-colors"
+              className="p-0.5 hover:bg-[#072448] rounded-full transition-colors"
             >
               <Settings className="w-3.5 h-3.5 text-[#6b7280]" />
             </button>
           )}
           <button
             onClick={() => onChange(!checked)}
-            className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
-              checked ? 'bg-[#3b82f6]' : 'bg-[#2a2a2a]'
+            className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors border ${
+              checked ? 'bg-[#3b82f6] border-[#3b82f6]' : 'bg-[#072448] border-white/15'
             }`}
           >
             <span
@@ -413,7 +413,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
               setConfig(newConfig)
               onUpdate(node.id, newConfig)
             }}
-            className="flex-1 bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+            className="flex-1 bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
             placeholder="Guardrails"
           />
         </div>
@@ -421,7 +421,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
         {/* Input field - static chip */}
         <div>
           <label className="block text-sm font-medium mb-2 text-white">Input</label>
-          <div className="flex items-center gap-2 bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg px-3 py-2">
+          <div className="flex items-center gap-2 bg-[#072448] border border-white/15 rounded-lg px-3 py-2">
             <FileText className="w-4 h-4 text-[#10b981] flex-shrink-0" />
             <span className="text-white text-sm flex-1">input_as_text</span>
             <span className="text-[#6b7280] text-xs">string</span>
@@ -429,7 +429,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
         </div>
 
         {/* Guardrail toggles */}
-        <div className="space-y-1 border-t border-[#2a2a2a] pt-4">
+        <div className="space-y-1 border-t border-white/15 pt-4">
           <ToggleSwitch
             checked={data.pii ?? false}
             onChange={(checked) => handleChange('pii', checked)}
@@ -489,7 +489,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
         </div>
 
         {/* Continue on error */}
-        <div className="border-t border-[#2a2a2a] pt-4">
+        <div className="border-t border-white/15 pt-4">
           <ToggleSwitch
             checked={data.continueOnError ?? false}
             onChange={(checked) => handleChange('continueOnError', checked)}
@@ -649,7 +649,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                   newConditions[index] = { ...condition, name: e.target.value }
                   handleChange('conditions', newConditions)
                 }}
-                className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500 mb-2"
+                className="w-full bg-[#072448] border border-white/15 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500 mb-2"
               />
               <textarea
                 placeholder="Use Common Expression Language to create a custom expression"
@@ -669,7 +669,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
               const newConditions = [...(data.conditions || []), { expression: '' }]
               handleChange('conditions', newConditions)
             }}
-            className="flex items-center gap-1 px-2 py-1 text-sm bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded"
+            className="flex items-center gap-1 px-2 py-1 text-sm bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded transition-colors"
           >
             <Plus className="w-3 h-3" />
             <span>Add</span>
@@ -689,7 +689,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
             value={data.condition || ''}
             onChange={(e) => handleChange('condition', e.target.value)}
             rows={3}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none font-mono text-sm"
+            className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none font-mono text-sm"
             placeholder='state.boolean_var == "test"'
           />
           <p className="text-xs text-[#6b7280] mt-1">
@@ -713,7 +713,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
             type="text"
             value={data.label || data.name || 'User approval'}
             onChange={(e) => handleChange('label', e.target.value)}
-            className="flex-1 bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+            className="flex-1 bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
             placeholder="User approval"
           />
         </div>
@@ -723,7 +723,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
             value={data.message || ''}
             onChange={(e) => handleChange('message', e.target.value)}
             rows={4}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none"
+            className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none"
             placeholder="Describe the message to show the user. Eg. ok to proceed?"
           />
         </div>
@@ -741,7 +741,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
             value={data.expression || ''}
             onChange={(e) => handleChange('expression', e.target.value)}
             rows={4}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none font-mono text-sm"
+            className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none font-mono text-sm"
             placeholder="Use Common Expression Language to transform data"
           />
         </div>
@@ -750,7 +750,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
           <select
             value={data.outputType || 'json'}
             onChange={(e) => handleChange('outputType', e.target.value)}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2.5 text-white text-sm focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] transition-colors cursor-pointer"
+            className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2.5 text-white text-sm focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] transition-colors cursor-pointer"
           >
             <option value="json">JSON</option>
             <option value="text">Text</option>
@@ -773,7 +773,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
               const sanitized = sanitizeVariableName(e.target.value)
               handleChange('variableName', sanitized)
             }}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+            className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
             placeholder="my_variable"
           />
         </div>
@@ -783,7 +783,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
             value={data.value || ''}
             onChange={(e) => handleChange('value', e.target.value)}
             rows={4}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none font-mono text-sm"
+            className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none font-mono text-sm"
             placeholder="Enter the value or expression"
           />
         </div>
@@ -801,7 +801,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
             value={data.content || ''}
             onChange={(e) => handleChange('content', e.target.value)}
             rows={6}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none"
+            className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none"
             placeholder="Add your note here..."
           />
         </div>
@@ -819,7 +819,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
             type="text"
             value={data.query || ''}
             onChange={(e) => handleChange('query', e.target.value)}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+            className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
             placeholder="Enter search query"
           />
         </div>
@@ -829,7 +829,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
             type="number"
             value={data.maxResults || ''}
             onChange={(e) => handleChange('maxResults', e.target.value ? parseInt(e.target.value) : undefined)}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+            className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
             placeholder="Optional: max number of results"
             min="1"
           />
@@ -840,7 +840,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
             type="text"
             value={data.vectorStoreId || ''}
             onChange={(e) => handleChange('vectorStoreId', e.target.value)}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+            className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
             placeholder="Optional: vector store identifier"
           />
         </div>
@@ -869,7 +869,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
               type="text"
               value={data.name || ''}
               onChange={(e) => handleChange('name', e.target.value)}
-              className="flex-1 bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+              className="flex-1 bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
             />
           </div>
         </div>
@@ -877,12 +877,12 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
         <div>
           <div className="flex items-center gap-3">
             <label className="text-sm font-medium text-white whitespace-nowrap">Input</label>
-            <div className="flex items-center gap-2 flex-1 bg-[#2a2a2a] border border-[#3a3a3a] rounded-lg px-3 py-2">
+            <div className="flex items-center gap-2 flex-1 bg-[#072448] border border-white/15 rounded-lg px-3 py-2">
               <div className="w-4 h-4 rounded bg-[#10b981] flex items-center justify-center flex-shrink-0">
                 <FileText className="w-3 h-3 text-white" />
               </div>
               <span className="text-white text-sm">{data.input || 'input_as_text'}</span>
-              <div className="bg-[#1a1a1a] rounded px-2 py-0.5">
+              <div className="bg-[#072448] border border-white/15 rounded px-2 py-0.5">
                 <span className="text-white text-xs">STRING</span>
               </div>
               <div className="flex items-center gap-1 ml-auto">
@@ -905,7 +905,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
           <div className="space-y-2">
             {(data.categories || []).map((category, index) => (
               <div key={index} className="flex items-center gap-2">
-                <div className="flex-1 bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg px-3 py-2 text-white">
+                <div className="flex-1 bg-[#072448] border border-white/15 rounded-lg px-3 py-2 text-white">
                   {category}
                 </div>
                 <button
@@ -926,7 +926,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
               const newCategories = [...(data.categories || []), `Category ${(data.categories?.length || 0) + 1}`]
               handleChange('categories', newCategories)
             }}
-            className="mt-2 flex items-center gap-1 px-2 py-1 text-sm bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded text-white"
+            className="mt-2 flex items-center gap-1 px-2 py-1 text-sm bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded text-white transition-colors"
           >
             <Plus className="w-3 h-3" />
             <span>Add</span>
@@ -938,7 +938,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
           <select
             value={data.classifier || 'gpt-4.1'}
             onChange={(e) => handleChange('classifier', e.target.value)}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2.5 text-white text-sm focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] transition-colors cursor-pointer"
+            className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2.5 text-white text-sm focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] transition-colors cursor-pointer"
           >
             <option value="gpt-4.1">GPT-4.1</option>
             <option value="gpt-5">GPT-5</option>
@@ -977,7 +977,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                       handleChange('examples', newExamples)
                     }}
                     rows={2}
-                    className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none text-sm"
+                    className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none text-sm"
                     placeholder="Write an example input..."
                   />
                   <MessageCircle className="absolute bottom-2 right-2 w-4 h-4 text-[#10b981]" />
@@ -989,7 +989,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                     newExamples[index] = { ...example, category: e.target.value }
                     handleChange('examples', newExamples)
                   }}
-                  className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2.5 text-white text-sm focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] transition-colors cursor-pointer"
+                  className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2.5 text-white text-sm focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] transition-colors cursor-pointer"
                 >
                   <option value="">Select category</option>
                   {(data.categories || []).map((cat) => (
@@ -1006,7 +1006,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
               const newExamples = [...(data.examples || []), { input: '', category: '' }]
               handleChange('examples', newExamples)
             }}
-            className="mt-2 flex items-center gap-1 px-2 py-1 text-sm bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded text-white"
+            className="mt-2 flex items-center gap-1 px-2 py-1 text-sm bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded text-white transition-colors"
           >
             <Plus className="w-3 h-3" />
             <span>Add example</span>
@@ -1030,7 +1030,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
             {inputVariables.map((variable, index) => (
               <div
                 key={index}
-                className="flex items-center gap-2 bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg px-3 py-2"
+                className="flex items-center gap-2 bg-[#072448] border border-white/15 rounded-lg px-3 py-2"
               >
                 <FileText className="w-4 h-4 text-[#10b981] flex-shrink-0" />
                 <span className="text-white text-sm flex-1">{variable.name}</span>
@@ -1061,7 +1061,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                 return (
                   <div
                     key={`${variable.name}-${index}`}
-                    className="flex items-center gap-3 bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg px-3 py-2"
+                    className="flex items-center gap-3 bg-[#072448] border border-white/15 rounded-lg px-3 py-2"
                   >
                     <div className="flex-shrink-0">
                       {getStateVariableIcon(variable.type)}
@@ -1151,7 +1151,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
               })
               setListInputValue('')
             }}
-            className="flex items-center gap-1 px-3 py-2 text-sm bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded text-white transition-colors"
+            className="flex items-center gap-1 px-3 py-2 text-sm bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded text-white transition-colors"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Add</span>
@@ -1160,7 +1160,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
 
         {/* State variable editor panel */}
         {editingStateVarIndex !== null && stateVarDraft && (
-          <div className="mt-2 bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg p-4 space-y-4">
+          <div className="mt-2 bg-[#072448] border border-white/15 rounded-lg p-4 space-y-4">
             <div className="flex items-center justify-between">
               <h4 className="text-sm font-semibold text-white">
                 {editingStateVarIndex < stateVariables.length
@@ -1179,8 +1179,8 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
             </div>
 
             {/* Type tabs */}
-            <div className="inline-flex rounded-lg bg-[#111827] border border-[#2a2a2a] text-xs font-medium overflow-hidden">
-              {(['string', 'number', 'boolean', 'object', 'list'] as const).map((type) => (
+            <div className="inline-flex rounded-lg bg-[#072448] border border-white/15 text-xs font-medium overflow-hidden">
+              {(['string', 'number', 'boolean', 'object', 'list'] as const).map((type, index) => (
                 <button
                   key={type}
                   onClick={() => {
@@ -1192,10 +1192,12 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                       setListInputValue('')
                     }
                   }}
-                  className={`px-3 py-1.5 ${
+                  className={`px-3 py-1.5 transition-colors ${
+                    index > 0 ? 'border-l border-white/15' : ''
+                  } ${
                     stateVarDraft.type === type
-                      ? 'bg-white text-black'
-                      : 'text-[#9ca3af] hover:text-white hover:bg-[#1f2937]'
+                      ? 'bg-[#3b82f6] text-white hover:bg-[#2563eb]'
+                      : 'bg-transparent text-[#9ca3af] hover:text-white hover:bg-white/5'
                   }`}
                 >
                   {type === 'list' ? 'List' : type.charAt(0).toUpperCase() + type.slice(1)}
@@ -1215,7 +1217,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                     setStateVarDraft((prev) => (prev ? { ...prev, name: sanitized } : prev))
                   }}
                   placeholder="Enter the variable name"
-                  className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+                  className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
                 />
               </div>
               {stateVarDraft.type !== 'object' && (
@@ -1231,7 +1233,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                           prev ? { ...prev, defaultValue: e.target.value === 'true' } : prev
                         )
                       }
-                      className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white text-sm focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+                      className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white text-sm focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
                     >
                       <option value="true">True</option>
                       <option value="false">False</option>
@@ -1269,7 +1271,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                         }
                       }}
                       placeholder="0"
-                      className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+                      className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
                     />
                   ) : stateVarDraft.type === 'list' ? (
                     <div>
@@ -1290,7 +1292,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                           )
                         }}
                         placeholder="item1, item2, item3"
-                        className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+                        className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
                       />
                       <p className="text-xs text-[#6b7280] mt-1">Enter comma-separated values</p>
                     </div>
@@ -1304,7 +1306,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                         )
                       }
                       placeholder="Default value"
-                      className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+                      className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
                     />
                   )}
                 </div>
@@ -1373,7 +1375,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                       }
                       setShowSchemaModal(true)
                     }}
-                    className="w-full flex items-center gap-2 px-3 py-2 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-md text-white text-sm transition-colors"
+                    className="w-full flex items-center gap-2 px-3 py-2 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-md text-white text-sm transition-colors"
                   >
                     {(() => {
                       const existingVar = editingStateVarIndex < stateVariables.length 
@@ -1489,7 +1491,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                     // Only disable if object type and no schema with properties
                     return !hasProperties
                   })()}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                     (() => {
                       if (stateVarDraft.type !== 'object') return false
                       // Check current config state to get latest schema updates
@@ -1501,8 +1503,8 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                       const hasProperties = hasSchema && existingVar?.schema?.properties && Object.keys(existingVar.schema.properties).length > 0
                       return !hasProperties
                     })()
-                      ? 'bg-[#6b7280] text-[#9ca3af] cursor-not-allowed'
-                      : 'bg-white text-black hover:bg-gray-100'
+                      ? 'bg-[#072448] text-[#6b7280] cursor-not-allowed opacity-50'
+                      : 'bg-[#3b82f6] text-white hover:bg-[#2563eb]'
                   }`}
                 >
                   Save
@@ -1711,32 +1713,32 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
 
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowSchemaModal(false)}>
-        <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl shadow-2xl w-full max-w-3xl mx-4 max-h-[90vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
+        <div className="bg-[#173153] border border-white/15 rounded-xl shadow-2xl w-full max-w-3xl mx-4 max-h-[90vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
           {/* Header */}
-          <div className="p-6 border-b border-[#2a2a2a]">
+          <div className="p-6 border-b border-white/15">
             <div className="flex items-start justify-between mb-2">
               <div>
                 <h2 className="text-xl font-semibold text-white mb-1">Structured output (JSON)</h2>
                 <p className="text-sm text-[#9ca3af]">The model will generate a JSON object that matches this schema.</p>
               </div>
               <div className="flex items-center gap-2">
-                <div className="inline-flex rounded-lg bg-[#111827] border border-[#2a2a2a] text-xs font-medium overflow-hidden">
+                <div className="inline-flex rounded-lg bg-[#072448] border border-white/15 text-xs font-medium overflow-hidden">
                   <button
                     onClick={() => setSchemaView('simple')}
-                    className={`px-4 py-2 ${
+                    className={`px-4 py-2 transition-colors ${
                       schemaView === 'simple'
-                        ? 'bg-white text-black'
-                        : 'text-[#9ca3af] hover:text-white hover:bg-[#1f2937]'
+                        ? 'bg-[#3b82f6] text-white hover:bg-[#2563eb]'
+                        : 'bg-transparent text-[#9ca3af] hover:text-white hover:bg-white/5'
                     }`}
                   >
                     Simple
                   </button>
                   <button
                     onClick={() => setSchemaView('advanced')}
-                    className={`px-4 py-2 ${
+                    className={`px-4 py-2 transition-colors border-l border-white/15 ${
                       schemaView === 'advanced'
-                        ? 'bg-white text-black'
-                        : 'text-[#9ca3af] hover:text-white hover:bg-[#1f2937]'
+                        ? 'bg-[#3b82f6] text-white hover:bg-[#2563eb]'
+                        : 'bg-transparent text-[#9ca3af] hover:text-white hover:bg-white/5'
                     }`}
                   >
                     Advanced
@@ -1758,8 +1760,8 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
               <div className="space-y-4">
                 <div>
                   <h3 className="text-sm font-semibold text-white mb-3">Properties</h3>
-                  <div className="border border-[#2a2a2a] rounded-lg overflow-hidden">
-                    <div className="grid grid-cols-12 gap-2 bg-[#0a0a0a] px-3 py-2 text-xs font-medium text-[#9ca3af] border-b border-[#2a2a2a]">
+                  <div className="border border-white/15 rounded-lg overflow-hidden">
+                    <div className="grid grid-cols-12 gap-2 bg-[#072448] px-3 py-2 text-xs font-medium text-[#9ca3af] border-b border-white/15">
                       <div className="col-span-1"></div>
                       <div className="col-span-3">Name</div>
                       <div className="col-span-2">Type</div>
@@ -1783,7 +1785,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                                   newProps[index].name = sanitized
                                   setSchemaProperties(newProps)
                                 }}
-                                className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded px-2 py-1 text-sm text-white focus:outline-none focus:border-[#3b82f6]"
+                                className="w-full bg-[#072448] border border-white/15 rounded px-2 py-1 text-sm text-white focus:outline-none focus:border-[#3b82f6]"
                                 placeholder="Property name"
                               />
                             </div>
@@ -1817,7 +1819,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                                   }
                                   setSchemaProperties(newProps)
                                 }}
-                                className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded px-2 py-1 text-sm text-white focus:outline-none focus:border-[#3b82f6]"
+                                className="w-full bg-[#072448] border border-white/15 rounded px-2 py-1 text-sm text-white focus:outline-none focus:border-[#3b82f6]"
                               >
                                 <option value="STR">STR</option>
                                 <option value="NUM">NUM</option>
@@ -1836,7 +1838,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                                   newProps[index].description = e.target.value
                                   setSchemaProperties(newProps)
                                 }}
-                                className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded px-2 py-1 text-sm text-white focus:outline-none focus:border-[#3b82f6]"
+                                className="w-full bg-[#072448] border border-white/15 rounded px-2 py-1 text-sm text-white focus:outline-none focus:border-[#3b82f6]"
                                 placeholder="Add description"
                               />
                             </div>
@@ -1856,7 +1858,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                           {/* Nested Array Items Row */}
                           {prop.type === 'ARR' && (
                             <>
-                              <div className="grid grid-cols-12 gap-2 px-3 py-3 items-center bg-[#0a0a0a]/50 pl-8">
+                              <div className="grid grid-cols-12 gap-2 px-3 py-3 items-center bg-[#072448]/50 pl-8">
                                 <div className="col-span-1 flex items-center justify-center">
                                   <FileText className="w-4 h-4 text-[#10b981]" />
                                 </div>
@@ -1876,7 +1878,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                                       }
                                       setSchemaProperties(newProps)
                                     }}
-                                    className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded px-2 py-1 text-sm text-white focus:outline-none focus:border-[#3b82f6]"
+                                    className="w-full bg-[#072448] border border-white/15 rounded px-2 py-1 text-sm text-white focus:outline-none focus:border-[#3b82f6]"
                                   >
                                     <option value="STR">STR</option>
                                     <option value="NUM">NUM</option>
@@ -1895,7 +1897,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                                       newProps[index].itemsDescription = e.target.value
                                       setSchemaProperties(newProps)
                                     }}
-                                    className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded px-2 py-1 text-sm text-white focus:outline-none focus:border-[#3b82f6]"
+                                    className="w-full bg-[#072448] border border-white/15 rounded px-2 py-1 text-sm text-white focus:outline-none focus:border-[#3b82f6]"
                                     placeholder="Add description"
                                   />
                                 </div>
@@ -1905,12 +1907,12 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                               </div>
                               {/* Nested Enum Values for Array Items */}
                               {prop.itemsType === 'ENUM' && (
-                                <div className="px-3 py-3 bg-[#0a0a0a]/30 pl-12">
-                                  <div className="flex flex-wrap items-center gap-2 min-h-[32px] bg-[#0a0a0a] border border-[#2a2a2a] rounded px-2 py-1.5">
+                                <div className="px-3 py-3 bg-[#072448]/30 pl-12">
+                                  <div className="flex flex-wrap items-center gap-2 min-h-[32px] bg-[#072448] border border-white/15 rounded px-2 py-1.5">
                                     {(prop.itemsEnumValues || []).map((value, valueIndex) => (
                                       <div
                                         key={valueIndex}
-                                        className="flex items-center gap-1.5 bg-[#2a2a2a] rounded-full px-2.5 py-1 text-sm text-white"
+                                        className="flex items-center gap-1.5 bg-[#072448] border border-white/15 rounded-full px-2.5 py-1 text-sm text-white"
                                       >
                                         <span>{value}</span>
                                         <button
@@ -1970,12 +1972,12 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                           )}
                           {/* Nested Enum Values Row */}
                           {prop.type === 'ENUM' && (
-                            <div className="px-3 py-3 bg-[#0a0a0a]/50 pl-8">
-                              <div className="flex flex-wrap items-center gap-2 min-h-[32px] bg-[#0a0a0a] border border-[#2a2a2a] rounded px-2 py-1.5">
+                            <div className="px-3 py-3 bg-[#072448]/50 pl-8">
+                              <div className="flex flex-wrap items-center gap-2 min-h-[32px] bg-[#072448] border border-white/15 rounded px-2 py-1.5">
                                 {(prop.enumValues || []).map((value, valueIndex) => (
                                   <div
                                     key={valueIndex}
-                                    className="flex items-center gap-1.5 bg-[#2a2a2a] rounded-full px-2.5 py-1 text-sm text-white"
+                                    className="flex items-center gap-1.5 bg-[#072448] border border-white/15 rounded-full px-2.5 py-1 text-sm text-white"
                                   >
                                     <span>{value}</span>
                                     <button
@@ -2048,7 +2050,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                         enumValues: undefined,
                       }])
                     }}
-                    className="mt-3 flex items-center gap-1 px-3 py-2 text-sm bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded text-white transition-colors"
+                    className="mt-3 flex items-center gap-1 px-3 py-2 text-sm bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded text-white transition-colors"
                   >
                     <Plus className="w-4 h-4" />
                     <span>Add property</span>
@@ -2060,7 +2062,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                 <textarea
                   value={schemaAdvancedJson}
                   onChange={(e) => setSchemaAdvancedJson(e.target.value)}
-                  className="w-full h-96 bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg px-4 py-3 text-sm font-mono text-white focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none"
+                  className="w-full h-96 bg-[#072448] border border-white/15 rounded-lg px-4 py-3 text-sm font-mono text-white focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none"
                   placeholder='{\n  "type": "object",\n  "properties": {},\n  "additionalProperties": false,\n  "required": []\n}'
                 />
               </div>
@@ -2068,14 +2070,14 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
           </div>
 
           {/* Footer */}
-          <div className="p-6 border-t border-[#2a2a2a] flex items-center justify-end gap-3">
+          <div className="p-6 border-t border-white/15 flex items-center justify-end gap-3">
             <button
               onClick={() => {
                 setShowSchemaModal(false)
                 setSchemaProperties([])
                 setSchemaAdvancedJson('')
               }}
-              className="px-4 py-2 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-md text-sm text-white transition-colors"
+              className="px-4 py-2 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-md text-sm text-white transition-colors"
             >
               Cancel
             </button>
@@ -2114,7 +2116,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
 
                 setShowSchemaModal(false)
               }}
-              className="px-4 py-2 bg-white text-black rounded-md text-sm font-medium hover:bg-gray-100 transition-colors"
+              className="px-4 py-2 bg-[#3b82f6] text-white rounded-md text-sm font-medium hover:bg-[#2563eb] transition-colors"
             >
               Update
             </button>
@@ -2133,7 +2135,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
         <div className="space-y-4">
           {/* Selected Server Display */}
           {selectedServer ? (
-            <div className="bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg p-3">
+            <div className="bg-[#072448] border border-white/15 rounded-lg p-3">
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg bg-[#3b82f6] flex items-center justify-center flex-shrink-0">
                   <Plug className="w-4 h-4 text-white" />
@@ -2215,7 +2217,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
           <label className="block text-sm font-medium mb-3 text-white">Output</label>
           <button
             onClick={() => setShowEndSchemaModal(true)}
-            className="w-full flex items-center gap-2 px-3 py-2 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-md text-white text-sm transition-colors"
+            className="w-full flex items-center gap-2 px-3 py-2 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-md text-white text-sm transition-colors"
           >
             {data.schema ? (
               <>
@@ -2292,8 +2294,8 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
           setShowAgentSchemaModal(false)
         }}
       />
-      <div className="w-96 bg-[#1a1a1a] border border-[#2a2a2a] flex flex-col shadow-2xl rounded-lg m-2 max-h-[calc(95vh-56px)] overflow-hidden scale-in">
-      <div className="p-4 border-b border-[#2a2a2a] flex items-center justify-between">
+      <div className="w-96 bg-[#173153] border border-white/15 flex flex-col shadow-2xl rounded-lg m-2 max-h-[calc(95vh-56px)] overflow-hidden scale-in">
+      <div className="p-4 border-b border-white/15 flex items-center justify-between">
         <div>
           <h3 className="text-base font-semibold text-white">
             {node.type === 'guardrails' ? 'Guardrails' : String(config.label ?? node.type)}
@@ -2387,10 +2389,10 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
         {renderConfig()}
       </div>
 
-      <div className="p-4 border-t border-[#2a2a2a] flex items-center justify-end gap-3">
+      <div className="p-4 border-t border-white/15 flex items-center justify-end gap-3">
         <button 
           onClick={onClose}
-          className="px-4 py-2 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-md text-sm text-white font-medium transition-colors"
+          className="px-4 py-2 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-md text-sm text-white font-medium transition-colors"
         >
           Close
         </button>
@@ -2405,7 +2407,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
       {/* Delete Confirmation Modal */}
       {showDeleteConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg shadow-2xl p-6 max-w-md w-full mx-4">
+          <div className="bg-[#173153] border border-white/15 rounded-lg shadow-2xl p-6 max-w-md w-full mx-4">
             <h3 className="text-lg font-semibold text-white mb-2">Delete Node</h3>
             <p className="text-sm text-[#9ca3af] mb-6">
               Are you sure you want to delete "{config.label || node.type}"? This action cannot be undone.
@@ -2413,7 +2415,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
             <div className="flex items-center justify-end gap-3">
               <button
                 onClick={() => setShowDeleteConfirm(false)}
-                className="px-4 py-2 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-md text-sm text-white font-medium transition-colors"
+                className="px-4 py-2 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-md text-sm text-white font-medium transition-colors"
               >
                 Cancel
               </button>

@@ -17,7 +17,7 @@ export default function UserApprovalNode({ data }: { data: any }) {
       {/* Body with Approve/Reject buttons */}
       <div className="px-3 py-2.5 space-y-2">
         <div className="relative">
-          <div className="bg-[#2a2a2a] rounded-md px-3 py-2 border border-[#3a3a3a]/30">
+          <div className="bg-[#2a2a2a] rounded-md px-3 py-2">
             <span className="text-white text-sm">Approve</span>
           </div>
           <Handle 
@@ -29,7 +29,7 @@ export default function UserApprovalNode({ data }: { data: any }) {
           />
         </div>
         <div className="relative">
-          <div className="bg-[#2a2a2a] rounded-md px-3 py-2 border border-[#3a3a3a]/30">
+          <div className="bg-[#2a2a2a] rounded-md px-3 py-2">
             <span className="text-white text-sm">Reject</span>
           </div>
           <Handle 

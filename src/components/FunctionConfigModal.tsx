@@ -140,11 +140,11 @@ export default function FunctionConfigModal({ isOpen, onClose, onSave, initialCo
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
       <div 
-        className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col"
+        className="bg-[#173153] border border-white/15 rounded-lg shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="px-6 py-4 border-b border-[#2a2a2a]">
+        <div className="px-6 py-4 border-b border-white/15">
           <h2 className="text-xl font-semibold text-white">Function</h2>
           <p className="text-sm text-[#9ca3af] mt-1">
             The model will intelligently decide to call functions based on input it receives from the user.
@@ -160,7 +160,7 @@ export default function FunctionConfigModal({ isOpen, onClose, onSave, initialCo
               <div className="relative">
                   <button
                     onClick={() => setShowExamples(!showExamples)}
-                    className="px-3 py-1.5 bg-[#2a2a2a] hover:bg-[#3a3a3a] border border-[#3a3a3a] rounded-md text-sm text-white font-medium transition-colors flex items-center gap-2"
+                    className="px-3 py-1.5 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-md text-sm text-white font-medium transition-colors flex items-center gap-2"
                   >
                     Examples
                     <ChevronDown className="w-4 h-4" />
@@ -171,12 +171,12 @@ export default function FunctionConfigModal({ isOpen, onClose, onSave, initialCo
                         className="fixed inset-0 z-10" 
                         onClick={() => setShowExamples(false)}
                       />
-                      <div className="absolute right-0 mt-1 z-20 w-56 bg-[#1a1a1a] border border-[#2a2a2a] rounded-md shadow-lg overflow-hidden">
+                      <div className="absolute right-0 mt-1 z-20 w-56 bg-[#173153] border border-white/15 rounded-md shadow-lg overflow-hidden">
                         {EXAMPLE_FUNCTIONS.map((example) => (
                           <button
                             key={example.name}
                             onClick={() => handleExampleSelect(example)}
-                            className="w-full px-3 py-2 text-left text-sm text-white hover:bg-[#2a2a2a] transition-colors"
+                            className="w-full px-3 py-2 text-left text-sm text-white hover:bg-[#072448] transition-colors"
                           >
                             {example.name}
                           </button>
@@ -193,11 +193,11 @@ export default function FunctionConfigModal({ isOpen, onClose, onSave, initialCo
               onChange={(e) => setDefinition(e.target.value)}
               placeholder='{\n  "name": "function_name",\n  "description": "Function description",\n  "parameters": {}\n}'
               rows={15}
-              className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white text-sm font-mono placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none"
+              className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white text-sm font-mono placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none"
             />
 
             {/* Info Bar */}
-            <div className="mt-3 bg-[#2a2a2a] border border-[#3a3a3a] rounded-md px-3 py-2 flex items-start gap-2">
+            <div className="mt-3 bg-[#072448] border border-white/15 rounded-md px-3 py-2 flex items-start gap-2">
               <Info className="w-4 h-4 text-[#6b7280] flex-shrink-0 mt-0.5" />
               <div className="flex-1 text-sm text-[#9ca3af]">
                 Add{' '}
@@ -214,16 +214,16 @@ export default function FunctionConfigModal({ isOpen, onClose, onSave, initialCo
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-[#2a2a2a] flex items-center justify-end gap-3">
+        <div className="px-6 py-4 border-t border-white/15 flex items-center justify-end gap-3">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-md text-sm text-white font-medium transition-colors"
+            className="px-4 py-2 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-md text-sm text-white font-medium transition-colors"
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
-            className="px-4 py-2 bg-white hover:bg-gray-100 text-black rounded-md text-sm font-medium transition-colors"
+            className="px-4 py-2 bg-[#3b82f6] hover:bg-[#2563eb] text-white rounded-md text-sm font-medium transition-colors"
           >
             Add
           </button>
