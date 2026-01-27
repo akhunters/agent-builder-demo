@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import React from 'react'
-import { X, Trash2, ChevronUp, ChevronDown, List, Square, Play, Shield, FolderSearch, Plug, GitBranch, RotateCcw, UserCheck, ArrowRightLeft, CircleDot, FileText } from 'lucide-react'
+import { X, Trash2, ChevronUp, ChevronDown, List, Square, Play, Shield, FolderSearch, Plug, GitBranch, RotateCcw, ThumbsUp, ArrowRightLeft, CircleDot, FileText } from 'lucide-react'
 import { Edge, Node } from '@xyflow/react'
 import { ClassifyNodeData, EndNodeData, JSONSchema } from '@/types'
 
@@ -80,7 +80,7 @@ const getNodeIcon = (nodeType: string) => {
     case 'userApproval':
       return (
         <div className="w-5 h-5 rounded-full bg-[#f97316] flex items-center justify-center flex-shrink-0">
-          <UserCheck className="w-3 h-3 text-white fill-white" />
+          <ThumbsUp className="w-3 h-3 text-white fill-white" />
         </div>
       )
     case 'transform':

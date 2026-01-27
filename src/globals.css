@@ -54,7 +54,8 @@ body {
 }
 
 /* Glass-like border effect for nodes */
-.xyflow__node > div {
+.xyflow__node > div,
+.react-flow__node > div {
   box-shadow: 
     0 2px 8px rgba(0, 0, 0, 0.4),
     0 0 0 1px rgba(255, 255, 255, 0.08),
@@ -94,8 +95,12 @@ body {
   fill: none;
 }
 
-.xyflow__edge.selected .xyflow__edge-path {
-  stroke: #60a5fa;
+.xyflow__edge.selected .xyflow__edge-path,
+.react-flow__edge.selected .react-flow__edge-path,
+.xyflow__edge.edge-selected .xyflow__edge-path,
+.react-flow__edge.edge-selected .react-flow__edge-path {
+  stroke: #9ca3af !important;
+  stroke-width: 3 !important;
 }
 
 .xyflow__edge {
@@ -575,11 +580,21 @@ button:active svg {
     inset 0 -1px 0 rgba(0, 0, 0, 0.3);
 }
 
-.xyflow__node.selected {
+.xyflow__node.selected,
+.react-flow__node.selected {
   transform: scale(1.02);
+}
+
+.xyflow__node.selected > div,
+.react-flow__node.selected > div,
+.xyflow__node.node-selected > div,
+.react-flow__node.node-selected > div {
+  border: 2px solid #9ca3af !important;
   box-shadow: 
-    0 6px 16px rgba(59, 130, 246, 0.3),
-    0 0 0 2px rgba(59, 130, 246, 0.5);
+    0 2px 8px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(156, 163, 175, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
 }
 
 /* Edge animations */

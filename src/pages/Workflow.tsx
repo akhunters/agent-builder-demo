@@ -14,6 +14,8 @@ import {
   ReactFlowProvider,
   BackgroundVariant,
   useReactFlow,
+  applyNodeChanges,
+  applyEdgeChanges,
 } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
 import NodePalette from '@/components/NodePalette'
@@ -136,6 +138,29 @@ function FlowEditor() {
     ]
   )
   const [edges, setEdges, onEdgesChange] = useEdgesState(workflow?.edges || [])
+
+  // Memoize nodes and edges with selected state
+  const nodesWithSelection = useMemo(() => {
+    return nodes.map(node => {
+      const isSelected = selectedNode?.id === node.id
+      return {
+        ...node,
+        selected: isSelected,
+        className: isSelected ? `${node.className || ''} node-selected`.trim() : node.className
+      }
+    })
+  }, [nodes, selectedNode])
+
+  const edgesWithSelection = useMemo(() => {
+    return edges.map(edge => {
+      const isSelected = selectedEdge?.id === edge.id
+      return {
+        ...edge,
+        selected: isSelected,
+        className: isSelected ? `${edge.className || ''} edge-selected`.trim() : edge.className
+      }
+    })
+  }, [edges, selectedEdge])
   const reactFlowInstance = useRef<any>(null)
   const hasInitialized = useRef(false)
 
@@ -450,11 +475,19 @@ function FlowEditor() {
         />
         <div className="flex-1 relative" ref={reactFlowWrapper}>
           <ReactFlow
-            nodes={nodes}
-            edges={edges}
+            nodes={nodesWithSelection}
+            edges={edgesWithSelection}
             nodeTypes={nodeTypes}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
+            onNodesChange={(changes) => {
+              onNodesChange(changes)
+              // Force re-render to update selection
+              setNodes((nds) => nds)
+            }}
+            onEdgesChange={(changes) => {
+              onEdgesChange(changes)
+              // Force re-render to update selection
+              setEdges((eds) => eds)
+            }}
             onConnect={onConnect}
             onNodeClick={onNodeClick}
             onEdgeClick={onEdgeClick}

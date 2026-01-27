@@ -1,10 +1,22 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { X, Plus, Trash2, Edit2, Copy, Check, Link, MessageCircle, Code, Sparkles, FileText, Wand2, Type, CheckSquare, Grid3x3, Brackets, Braces } from 'lucide-react'
+import { X, Plus, Trash2, Edit2, Copy, Check, Link, MessageCircle, Code, Sparkles, FileText, Wand2, Type, CheckSquare, Grid3x3, Brackets, Braces, Info, Settings, ChevronDown, Plug } from 'lucide-react'
 import { Node } from '@xyflow/react'
 import { AgentNodeData, GuardrailsNodeData, IfElseNodeData, WhileNodeData, UserApprovalNodeData, TransformNodeData, SetStateNodeData, NoteNodeData, FileSearchNodeData, MCPNodeData, ClassifyNodeData, StartNodeData, EndNodeData, JSONSchema } from '@/types'
 import SchemaEditorModal from './SchemaEditorModal'
+import Tooltip from './Tooltip'
+import Menu from './Menu'
+import PIIConfigModal from './PIIConfigModal'
+import ModerationConfigModal from './ModerationConfigModal'
+import JailbreakConfigModal from './JailbreakConfigModal'
+import HallucinationConfigModal from './HallucinationConfigModal'
+import NSFWConfigModal from './NSFWConfigModal'
+import URLFilterConfigModal from './URLFilterConfigModal'
+import PromptInjectionConfigModal from './PromptInjectionConfigModal'
+import CustomPromptCheckConfigModal from './CustomPromptCheckConfigModal'
+import FunctionConfigModal from './FunctionConfigModal'
+import MCPConfigModal from './MCPConfigModal'
 
 interface NodeConfigPanelProps {
   node: Node
@@ -17,6 +29,17 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
   const [config, setConfig] = useState<Record<string, any>>((node.data || {}) as Record<string, any>)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [showMCPModal, setShowMCPModal] = useState(false)
+  const [showPIIConfigModal, setShowPIIConfigModal] = useState(false)
+  const [showModerationConfigModal, setShowModerationConfigModal] = useState(false)
+  const [showJailbreakConfigModal, setShowJailbreakConfigModal] = useState(false)
+  const [showHallucinationConfigModal, setShowHallucinationConfigModal] = useState(false)
+  const [showNSFWConfigModal, setShowNSFWConfigModal] = useState(false)
+  const [showURLFilterConfigModal, setShowURLFilterConfigModal] = useState(false)
+  const [showPromptInjectionConfigModal, setShowPromptInjectionConfigModal] = useState(false)
+  const [showCustomPromptCheckConfigModal, setShowCustomPromptCheckConfigModal] = useState(false)
+  const [showFunctionConfigModal, setShowFunctionConfigModal] = useState(false)
+  const [showMCPConfigModal, setShowMCPConfigModal] = useState(false)
+  const [editingToolIndex, setEditingToolIndex] = useState<number | null>(null)
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
   const [editingStateVarIndex, setEditingStateVarIndex] = useState<number | null>(null)
@@ -27,6 +50,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
   } | null>(null)
   const [listInputValue, setListInputValue] = useState<string>('')
   const [showSchemaModal, setShowSchemaModal] = useState(false)
+  const [showAgentSchemaModal, setShowAgentSchemaModal] = useState(false)
   const [schemaView, setSchemaView] = useState<'simple' | 'advanced'>('simple')
   const [schemaProperties, setSchemaProperties] = useState<Array<{
     name: string
@@ -102,17 +126,6 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium mb-2">Include chat history</label>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={data.includeChatHistory ?? true}
-              onChange={(e) => handleChange('includeChatHistory', e.target.checked)}
-            />
-            <span className="text-sm text-white">On</span>
-          </label>
-        </div>
 
         <div>
           <label className="block text-sm font-medium mb-2">Model</label>
@@ -128,19 +141,6 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">Reasoning effort</label>
-          <select
-            value={data.reasoning || 'medium'}
-            onChange={(e) => handleChange('reasoning', e.target.value)}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2.5 text-white text-sm focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] transition-colors cursor-pointer"
-          >
-            <option value="minimum">Minimum</option>
-            <option value="medium">Medium</option>
-            <option value="maximum">Maximum</option>
-          </select>
-        </div>
-
-        <div>
           <label className="block text-sm font-medium mb-2">Output format</label>
           <select
             value={data.outputFormat || 'text'}
@@ -151,126 +151,483 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
             <option value="json">JSON</option>
             <option value="widgets">Widgets</option>
           </select>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-2">Verbosity</label>
-          <select
-            value={data.verbosity || 'medium'}
-            onChange={(e) => handleChange('verbosity', e.target.value)}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2.5 text-white text-sm focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] transition-colors cursor-pointer"
-          >
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-2">Summary</label>
-          <select
-            value={data.summary || 'null'}
-            onChange={(e) => handleChange('summary', e.target.value)}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2.5 text-white text-sm focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] transition-colors cursor-pointer"
-          >
-            <option value="null">Null</option>
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </select>
+          {data.outputFormat === 'json' && (
+            <button
+              onClick={() => setShowAgentSchemaModal(true)}
+              className="mt-2 px-3 py-1.5 bg-[#2a2a2a] hover:bg-[#3a3a3a] border border-[#3a3a3a] rounded-md text-sm text-white font-medium transition-colors flex items-center gap-2"
+            >
+              {data.schema?.properties && Object.keys(data.schema.properties).length > 0 ? (
+                <>
+                  <Edit2 className="w-4 h-4" />
+                  Edit schema
+                </>
+              ) : (
+                <>
+                  <Plus className="w-4 h-4" />
+                  Add schema
+                </>
+              )}
+            </button>
+          )}
         </div>
 
         <div>
           <div className="flex items-center justify-between mb-2">
             <label className="block text-sm font-medium">Tools</label>
-            <button className="flex items-center gap-1 px-2 py-1 text-sm bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded">
-              <Plus className="w-3 h-3" />
-              <span>Add</span>
-            </button>
+            <Menu
+              align="right"
+              side="bottom"
+              trigger={
+                <button className="flex items-center gap-1 px-2 py-1 text-sm bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded">
+                  <Plus className="w-3 h-3" />
+                  <span>Add</span>
+                </button>
+              }
+            >
+              <button
+                onClick={() => {
+                  setEditingToolIndex(null)
+                  setShowMCPConfigModal(true)
+                }}
+                className="w-full px-3 py-2 text-left text-sm text-white hover:bg-[#2a2a2a] transition-colors flex items-center gap-2"
+              >
+                <Plug className="w-4 h-4 text-[#6b7280]" />
+                <span>MCP server</span>
+              </button>
+              <button
+                onClick={() => {
+                  setEditingToolIndex(null)
+                  setShowFunctionConfigModal(true)
+                }}
+                className="w-full px-3 py-2 text-left text-sm text-white hover:bg-[#2a2a2a] transition-colors flex items-center gap-2"
+              >
+                <Code className="w-4 h-4 text-[#6b7280]" />
+                <span>Function</span>
+              </button>
+            </Menu>
           </div>
           {data.tools && data.tools.length > 0 ? (
             <div className="space-y-2">
-              {data.tools.map((tool: any, index: number) => (
-                <div key={index} className="flex items-center justify-between bg-[#0a0a0a] rounded px-2 py-1">
-                  <span className="text-sm">{tool.type}</span>
-                  <button className="p-1 hover:bg-[#2a2a2a] rounded">
-                    <X className="w-3 h-3" />
-                  </button>
-                </div>
-              ))}
+              {data.tools.map((tool: any, index: number) => {
+                let displayName = tool.type
+                if (tool.type === 'function' && tool.config?.definition) {
+                  try {
+                    const parsed = JSON.parse(tool.config.definition)
+                    displayName = parsed.name || 'Function'
+                  } catch {
+                    displayName = 'Function'
+                  }
+                } else if (tool.type === 'mcp') {
+                  displayName = tool.config?.servers?.[0]?.label || tool.config?.serverName || 'MCP server'
+                }
+                
+                return (
+                  <div key={index} className="flex items-center justify-between bg-[#0a0a0a] rounded px-2 py-1">
+                    <div className="flex items-center gap-2">
+                      {tool.type === 'function' ? (
+                        <Code className="w-4 h-4 text-[#6b7280]" />
+                      ) : tool.type === 'mcp' ? (
+                        <Plug className="w-4 h-4 text-[#6b7280]" />
+                      ) : null}
+                      <span className="text-sm text-white">{displayName}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      {(tool.type === 'function' || tool.type === 'mcp') && (
+                        <button
+                          onClick={() => {
+                            setEditingToolIndex(index)
+                            if (tool.type === 'function') {
+                              setShowFunctionConfigModal(true)
+                            } else {
+                              setShowMCPConfigModal(true)
+                            }
+                          }}
+                          className="p-1 hover:bg-[#2a2a2a] rounded"
+                          title={tool.type === 'function' ? 'Edit function' : 'Edit MCP server'}
+                        >
+                          <Edit2 className="w-3 h-3 text-[#6b7280]" />
+                        </button>
+                      )}
+                      <button 
+                        onClick={() => {
+                          const newTools = data.tools.filter((_: any, i: number) => i !== index)
+                          handleChange('tools', newTools)
+                        }}
+                        className="p-1 hover:bg-[#2a2a2a] rounded"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           ) : (
             <div className="text-sm text-[#6b7280]">No tools added</div>
           )}
         </div>
+
+        {/* Function Configuration Modal */}
+        <FunctionConfigModal
+          isOpen={showFunctionConfigModal}
+          onClose={() => {
+            setShowFunctionConfigModal(false)
+            setEditingToolIndex(null)
+          }}
+          onSave={(functionConfig) => {
+            const tools = [...(data.tools || [])]
+            if (editingToolIndex !== null) {
+              // Update existing function
+              tools[editingToolIndex] = {
+                ...tools[editingToolIndex],
+                config: functionConfig
+              }
+            } else {
+              // Add new function
+              tools.push({
+                type: 'function',
+                config: functionConfig
+              })
+            }
+            handleChange('tools', tools)
+            setShowFunctionConfigModal(false)
+            setEditingToolIndex(null)
+          }}
+          initialConfig={
+            editingToolIndex !== null && data.tools?.[editingToolIndex]?.config
+              ? data.tools[editingToolIndex].config
+              : undefined
+          }
+        />
+
+        {/* MCP Configuration Modal */}
+        <MCPConfigModal
+          isOpen={showMCPConfigModal}
+          onClose={() => {
+            setShowMCPConfigModal(false)
+            setEditingToolIndex(null)
+          }}
+          onSave={(mcpConfig) => {
+            const tools = [...(data.tools || [])]
+            if (editingToolIndex !== null) {
+              // Update existing MCP tool
+              tools[editingToolIndex] = {
+                ...tools[editingToolIndex],
+                config: mcpConfig
+              }
+            } else {
+              // Add new MCP tool
+              tools.push({
+                type: 'mcp',
+                config: mcpConfig
+              })
+            }
+            handleChange('tools', tools)
+            setShowMCPConfigModal(false)
+            setEditingToolIndex(null)
+          }}
+          initialConfig={
+            editingToolIndex !== null && data.tools?.[editingToolIndex]?.config
+              ? data.tools[editingToolIndex].config
+              : undefined
+          }
+        />
       </div>
     )
   }
 
   const renderGuardrailsConfig = () => {
     const data = config as GuardrailsNodeData
+
+    const tooltipContent: Record<string, string> = {
+      'Personally identifiable information': 'Detects and blocks personally identifiable information (PII) such as names, emails, phone numbers, and addresses.',
+      'Moderation': 'Classifies and blocks harmful content (e.g., hate/harassment or sexual content).',
+      'Jailbreak': 'Detects attempts to bypass safety guidelines or restrictions.',
+      'Hallucination': 'Identifies potentially false or unsubstantiated claims in generated content.',
+      'NSFW Text': 'Filters out not safe for work (NSFW) text content.',
+      'URL Filter': 'Blocks or filters specific URLs or domains.',
+      'Prompt Injection Detection': 'Detects attempts to inject malicious prompts or instructions.',
+      'Custom Prompt Check': 'Applies custom validation rules to prompts.',
+      'Continue on error': 'Allows the workflow to continue even if a guardrail check fails.',
+    }
+
+    const ToggleSwitch = ({ checked, onChange, label, showInfo = true, showSettings = true, tooltip, onConfigure }: {
+      checked: boolean
+      onChange: (checked: boolean) => void
+      label: string
+      showInfo?: boolean
+      showSettings?: boolean
+      tooltip?: string
+      onConfigure?: () => void
+    }) => (
+      <div className="flex items-center justify-between py-2 relative">
+        <div className="flex items-center gap-2 flex-1 min-w-0">
+          <span className="text-sm text-white">{label}</span>
+          {showInfo && tooltip && (
+            <Tooltip content={tooltip} position="left">
+              <button className="p-0.5 hover:bg-[#2a2a2a] rounded-full transition-colors">
+                <Info className="w-3.5 h-3.5 text-[#6b7280]" />
+              </button>
+            </Tooltip>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          {showSettings && (
+            <button 
+              onClick={(e) => {
+                e.stopPropagation()
+                onConfigure?.()
+              }}
+              className="p-0.5 hover:bg-[#2a2a2a] rounded-full transition-colors"
+            >
+              <Settings className="w-3.5 h-3.5 text-[#6b7280]" />
+            </button>
+          )}
+          <button
+            onClick={() => onChange(!checked)}
+            className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
+              checked ? 'bg-[#3b82f6]' : 'bg-[#2a2a2a]'
+            }`}
+          >
+            <span
+              className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${
+                checked ? 'translate-x-4' : 'translate-x-0.5'
+              }`}
+            />
+          </button>
+        </div>
+      </div>
+    )
+
     return (
       <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-2">Input</label>
+        {/* Name field */}
+        <div className="flex items-center gap-3">
+          <label className="text-sm font-medium text-white whitespace-nowrap">Name</label>
           <input
             type="text"
-            value="input_as_text"
-            disabled
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg px-3 py-2 text-gray-400"
+            value={data.name || data.label || 'Guardrails'}
+            onChange={(e) => {
+              const newName = e.target.value
+              const newConfig = { ...config, name: newName, label: newName }
+              setConfig(newConfig)
+              onUpdate(node.id, newConfig)
+            }}
+            className="flex-1 bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+            placeholder="Guardrails"
           />
         </div>
 
+        {/* Input field - static chip */}
         <div>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={data.pii ?? false}
-              onChange={(e) => handleChange('pii', e.target.checked)}
-            />
-            <span className="text-sm">Personally identifiable information (PII)</span>
-          </label>
-        </div>
-
-        <div>
-          <div className="flex items-center justify-between mb-2">
-            <label className="text-sm">Moderation</label>
-            <button className="p-1 hover:bg-[#2a2a2a] rounded">
-              <Edit2 className="w-3 h-3" />
-            </button>
+          <label className="block text-sm font-medium mb-2 text-white">Input</label>
+          <div className="flex items-center gap-2 bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg px-3 py-2">
+            <FileText className="w-4 h-4 text-[#10b981] flex-shrink-0" />
+            <span className="text-white text-sm flex-1">input_as_text</span>
+            <span className="text-[#6b7280] text-xs">string</span>
           </div>
-          <select
-            value={data.moderation || 'off'}
-            onChange={(e) => handleChange('moderation', e.target.value)}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2.5 text-white text-sm focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] transition-colors cursor-pointer"
-          >
-            <option value="off">Off</option>
-            <option value="critical">Critical</option>
-            <option value="mostCritical">Most Critical</option>
-          </select>
         </div>
 
-        <div>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={data.jailbreak ?? false}
-              onChange={(e) => handleChange('jailbreak', e.target.checked)}
-            />
-            <span className="text-sm text-white">Jailbreak</span>
-          </label>
+        {/* Guardrail toggles */}
+        <div className="space-y-1 border-t border-[#2a2a2a] pt-4">
+          <ToggleSwitch
+            checked={data.pii ?? false}
+            onChange={(checked) => handleChange('pii', checked)}
+            label="Personally identifiable information"
+            tooltip={tooltipContent['Personally identifiable information']}
+            onConfigure={() => setShowPIIConfigModal(true)}
+          />
+          <ToggleSwitch
+            checked={data.moderation !== 'off'}
+            onChange={(checked) => handleChange('moderation', checked ? 'critical' : 'off')}
+            label="Moderation"
+            tooltip={tooltipContent['Moderation']}
+            onConfigure={() => setShowModerationConfigModal(true)}
+          />
+          <ToggleSwitch
+            checked={data.jailbreak ?? false}
+            onChange={(checked) => handleChange('jailbreak', checked)}
+            label="Jailbreak"
+            tooltip={tooltipContent['Jailbreak']}
+            onConfigure={() => setShowJailbreakConfigModal(true)}
+          />
+          <ToggleSwitch
+            checked={data.hallucination ?? false}
+            onChange={(checked) => handleChange('hallucination', checked)}
+            label="Hallucination"
+            tooltip={tooltipContent['Hallucination']}
+            onConfigure={() => setShowHallucinationConfigModal(true)}
+          />
+          <ToggleSwitch
+            checked={data.nsfwText ?? false}
+            onChange={(checked) => handleChange('nsfwText', checked)}
+            label="NSFW Text"
+            tooltip={tooltipContent['NSFW Text']}
+            onConfigure={() => setShowNSFWConfigModal(true)}
+          />
+          <ToggleSwitch
+            checked={data.urlFilter ?? false}
+            onChange={(checked) => handleChange('urlFilter', checked)}
+            label="URL Filter"
+            tooltip={tooltipContent['URL Filter']}
+            onConfigure={() => setShowURLFilterConfigModal(true)}
+          />
+          <ToggleSwitch
+            checked={data.promptInjectionDetection ?? false}
+            onChange={(checked) => handleChange('promptInjectionDetection', checked)}
+            label="Prompt Injection Detection"
+            tooltip={tooltipContent['Prompt Injection Detection']}
+            onConfigure={() => setShowPromptInjectionConfigModal(true)}
+          />
+          <ToggleSwitch
+            checked={data.customPromptCheck ?? false}
+            onChange={(checked) => handleChange('customPromptCheck', checked)}
+            label="Custom Prompt Check"
+            tooltip={tooltipContent['Custom Prompt Check']}
+            onConfigure={() => setShowCustomPromptCheckConfigModal(true)}
+          />
         </div>
 
-        <div>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={data.hallucination ?? false}
-              onChange={(e) => handleChange('hallucination', e.target.checked)}
-            />
-            <span className="text-sm text-white">Hallucination</span>
-          </label>
+        {/* Continue on error */}
+        <div className="border-t border-[#2a2a2a] pt-4">
+          <ToggleSwitch
+            checked={data.continueOnError ?? false}
+            onChange={(checked) => handleChange('continueOnError', checked)}
+            label="Continue on error"
+            tooltip={tooltipContent['Continue on error']}
+            showSettings={false}
+          />
         </div>
+
+        {/* PII Configuration Modal */}
+        <PIIConfigModal
+          isOpen={showPIIConfigModal}
+          onClose={() => setShowPIIConfigModal(false)}
+          onSave={(piiConfig) => {
+            const newConfig = {
+              ...config,
+              piiConfig: {
+                action: piiConfig.action,
+                selectedEntities: Array.from(piiConfig.selectedEntities),
+              },
+            }
+            setConfig(newConfig)
+            onUpdate(node.id, newConfig)
+          }}
+          initialConfig={data.piiConfig ? {
+            action: data.piiConfig.action,
+            selectedEntities: new Set(data.piiConfig.selectedEntities || []),
+          } : undefined}
+        />
+
+        {/* Moderation Configuration Modal */}
+        <ModerationConfigModal
+          isOpen={showModerationConfigModal}
+          onClose={() => setShowModerationConfigModal(false)}
+          onSave={(moderationConfig) => {
+            const newConfig = {
+              ...config,
+              moderationConfig: {
+                selectedCategories: Array.from(moderationConfig.selectedCategories),
+              },
+            }
+            setConfig(newConfig)
+            onUpdate(node.id, newConfig)
+          }}
+          initialConfig={data.moderationConfig ? {
+            selectedCategories: new Set(data.moderationConfig.selectedCategories || []),
+          } : undefined}
+        />
+
+        {/* Jailbreak Configuration Modal */}
+        <JailbreakConfigModal
+          isOpen={showJailbreakConfigModal}
+          onClose={() => setShowJailbreakConfigModal(false)}
+          onSave={(jailbreakConfig) => {
+            const newConfig = {
+              ...config,
+              jailbreakConfig,
+            }
+            setConfig(newConfig)
+            onUpdate(node.id, newConfig)
+          }}
+          initialConfig={data.jailbreakConfig}
+        />
+
+        {/* Hallucination Configuration Modal */}
+        <HallucinationConfigModal
+          isOpen={showHallucinationConfigModal}
+          onClose={() => setShowHallucinationConfigModal(false)}
+          onSave={(hallucinationConfig) => {
+            const newConfig = {
+              ...config,
+              hallucinationConfig,
+            }
+            setConfig(newConfig)
+            onUpdate(node.id, newConfig)
+          }}
+          initialConfig={data.hallucinationConfig}
+        />
+
+        {/* NSFW Configuration Modal */}
+        <NSFWConfigModal
+          isOpen={showNSFWConfigModal}
+          onClose={() => setShowNSFWConfigModal(false)}
+          onSave={(nsfwConfig) => {
+            const newConfig = {
+              ...config,
+              nsfwConfig,
+            }
+            setConfig(newConfig)
+            onUpdate(node.id, newConfig)
+          }}
+          initialConfig={data.nsfwConfig}
+        />
+
+        {/* URL Filter Configuration Modal */}
+        <URLFilterConfigModal
+          isOpen={showURLFilterConfigModal}
+          onClose={() => setShowURLFilterConfigModal(false)}
+          onSave={(urlFilterConfig) => {
+            const newConfig = {
+              ...config,
+              urlFilterConfig,
+            }
+            setConfig(newConfig)
+            onUpdate(node.id, newConfig)
+          }}
+          initialConfig={data.urlFilterConfig}
+        />
+
+        {/* Prompt Injection Configuration Modal */}
+        <PromptInjectionConfigModal
+          isOpen={showPromptInjectionConfigModal}
+          onClose={() => setShowPromptInjectionConfigModal(false)}
+          onSave={(promptInjectionConfig) => {
+            const newConfig = {
+              ...config,
+              promptInjectionConfig,
+            }
+            setConfig(newConfig)
+            onUpdate(node.id, newConfig)
+          }}
+          initialConfig={data.promptInjectionConfig}
+        />
+
+        {/* Custom Prompt Check Configuration Modal */}
+        <CustomPromptCheckConfigModal
+          isOpen={showCustomPromptCheckConfigModal}
+          onClose={() => setShowCustomPromptCheckConfigModal(false)}
+          onSave={(customPromptCheckConfig) => {
+            const newConfig = {
+              ...config,
+              customPromptCheckConfig,
+            }
+            setConfig(newConfig)
+            onUpdate(node.id, newConfig)
+          }}
+          initialConfig={data.customPromptCheckConfig}
+        />
       </div>
     )
   }
@@ -327,26 +684,20 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
     return (
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium mb-2 text-white">Condition</label>
+          <label className="block text-sm font-medium mb-2 text-white">Expression</label>
           <textarea
             value={data.condition || ''}
             onChange={(e) => handleChange('condition', e.target.value)}
             rows={3}
             className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none font-mono text-sm"
-            placeholder="Use Common Expression Language to create a condition"
+            placeholder='state.boolean_var == "test"'
           />
-          <p className="text-xs text-[#6b7280] mt-1">Loop will continue while this condition is true</p>
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-2 text-white">Max Iterations (optional)</label>
-          <input
-            type="number"
-            value={data.maxIterations || ''}
-            onChange={(e) => handleChange('maxIterations', e.target.value ? parseInt(e.target.value) : undefined)}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
-            placeholder="Unlimited"
-            min="1"
-          />
+          <p className="text-xs text-[#6b7280] mt-1">
+            Use Common Expression Language to create a custom expression.{' '}
+            <a href="#" className="text-[#3b82f6] underline" onClick={(e) => e.preventDefault()}>
+              Learn more.
+            </a>
+          </p>
         </div>
       </div>
     )
@@ -356,6 +707,16 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
     const data = config as UserApprovalNodeData
     return (
       <div className="space-y-4">
+        <div className="flex items-center gap-3">
+          <label className="text-sm font-medium text-white whitespace-nowrap">Name</label>
+          <input
+            type="text"
+            value={data.label || data.name || 'User approval'}
+            onChange={(e) => handleChange('label', e.target.value)}
+            className="flex-1 bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+            placeholder="User approval"
+          />
+        </div>
         <div>
           <label className="block text-sm font-medium mb-2 text-white">Message</label>
           <textarea
@@ -363,18 +724,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
             onChange={(e) => handleChange('message', e.target.value)}
             rows={4}
             className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none"
-            placeholder="Enter the message to show to the user for approval"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-2 text-white">Timeout (seconds, optional)</label>
-          <input
-            type="number"
-            value={data.timeout || ''}
-            onChange={(e) => handleChange('timeout', e.target.value ? parseInt(e.target.value) : undefined)}
-            className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
-            placeholder="No timeout"
-            min="1"
+            placeholder="Describe the message to show the user. Eg. ok to proceed?"
           />
         </div>
       </div>
@@ -1776,153 +2126,82 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
 
   const renderMCPConfig = () => {
     const data = config as MCPNodeData
-    const platforms = [
-      { id: 'chatgpt', name: 'ChatGPT', icon: MessageCircle },
-      { id: 'claude-desktop', name: 'Claude Desktop', icon: Sparkles },
-      { id: 'cursor', name: 'Cursor', icon: Code },
-      { id: 'vscode', name: 'VS Code', icon: Code },
-      { id: 'claude-code', name: 'Claude Code', icon: Sparkles },
-      { id: 'mcp-url', name: 'MCP URL', icon: Link },
-      { id: 'whatsapp', name: 'WhatsApp', icon: MessageCircle },
-    ]
-
-    const mcpUrl = data.serverName || 'https://rube.app/mcp'
+    const selectedServer = data.mcpConfig?.servers?.[0]
 
     return (
       <>
         <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-2 text-white">Server Name</label>
-            <input
-              type="text"
-              value={data.serverName || ''}
-              onChange={(e) => handleChange('serverName', e.target.value)}
-              className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
-              placeholder="Enter MCP server name"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-2 text-white">Tool Name</label>
-            <input
-              type="text"
-              value={data.toolName || ''}
-              onChange={(e) => handleChange('toolName', e.target.value)}
-              className="w-full bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
-              placeholder="Enter tool name"
-            />
-          </div>
-          <button
-            onClick={() => setShowMCPModal(true)}
-            className="w-full px-4 py-2.5 bg-[#3b82f6] hover:bg-[#2563eb] rounded-md text-sm text-white font-medium transition-colors"
-          >
-            Configure MCP Platform
-          </button>
-        </div>
-
-        {/* MCP Platform Selection Modal */}
-        {showMCPModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowMCPModal(false)}>
-            <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl shadow-2xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-              {/* Header */}
-              <div className="p-6 border-b border-[#2a2a2a] flex items-center justify-between">
-                <h2 className="text-xl font-semibold text-white">Select Platform</h2>
-                <button
-                  onClick={() => setShowMCPModal(false)}
-                  className="p-1.5 hover:bg-[#2a2a2a] rounded-md transition-colors text-[#9ca3af] hover:text-white"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              <div className="p-6 space-y-6">
-                {/* Platform Selection */}
-                <div>
-                  <h3 className="text-base font-semibold text-white mb-4">Select Platform</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {platforms.map((platform) => {
-                      const Icon = platform.icon
-                      const isSelected = selectedPlatform === platform.id
-                      return (
-                        <button
-                          key={platform.id}
-                          onClick={() => setSelectedPlatform(platform.id)}
-                          className={`px-4 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-2 ${
-                            isSelected
-                              ? 'bg-[#3b82f6]/20 border-2 border-[#3b82f6] text-[#3b82f6]'
-                              : 'bg-[#0a0a0a] border border-[#2a2a2a] text-[#9ca3af] hover:border-[#3a3a3a] hover:text-white'
-                          }`}
-                        >
-                          <Icon className="w-4 h-4" />
-                          {platform.name}
-                          {isSelected && <Check className="w-4 h-4" />}
-                        </button>
-                      )
-                    })}
-                  </div>
-                  <button
-                    onClick={() => setSelectedPlatform('auth-headers')}
-                    className={`mt-3 px-4 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-2 ${
-                      selectedPlatform === 'auth-headers'
-                        ? 'bg-[#f97316]/20 border-2 border-[#f97316] text-[#f97316]'
-                        : 'bg-[#0a0a0a] border border-[#f97316] text-[#f97316] hover:bg-[#f97316]/10'
-                    }`}
-                  >
-                    <Link className="w-4 h-4" />
-                    Auth Headers (N8N & More)
-                    {selectedPlatform === 'auth-headers' && <Check className="w-4 h-4" />}
-                  </button>
+          {/* Selected Server Display */}
+          {selectedServer ? (
+            <div className="bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg p-3">
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-[#3b82f6] flex items-center justify-center flex-shrink-0">
+                  <Plug className="w-4 h-4 text-white" />
                 </div>
-
-                {/* Installation Guide */}
-                <div className="border-t border-[#2a2a2a] pt-6">
-                  <h3 className="text-base font-semibold text-white mb-4">Installation Guide</h3>
-                  
-                  {/* Step 1 */}
-                  <div className="mb-6">
-                    <div className="flex items-start gap-4">
-                      <div className="w-8 h-8 rounded-full bg-[#2a2a2a] flex items-center justify-center flex-shrink-0">
-                        <span className="text-sm font-semibold text-white">1</span>
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm text-[#9ca3af] mb-3">Copy the MCP URL with custom auth headers enabled</p>
-                        <div className="flex gap-2">
-                          <input
-                            type="text"
-                            value={mcpUrl}
-                            readOnly
-                            className="flex-1 bg-[#0a0a0a] border border-[#2a2a2a] rounded-md px-3 py-2 text-white text-sm"
-                          />
-                          <button
-                            onClick={() => handleCopy(mcpUrl)}
-                            className="px-4 py-2 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-md text-sm text-white font-medium transition-colors flex items-center gap-2"
-                          >
-                            {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                            {copied ? 'Copied' : 'Copy'}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
+                <div className="flex-1 min-w-0 overflow-hidden">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-sm font-medium text-white truncate">{selectedServer.label}</span>
+                    {selectedServer.isPrebuilt && (
+                      <span className="text-xs px-1.5 py-0.5 bg-[#3b82f6]/20 text-[#3b82f6] rounded flex-shrink-0">Prebuilt</span>
+                    )}
                   </div>
-
-                  {/* Step 2 */}
-                  <div>
-                    <div className="flex items-start gap-4">
-                      <div className="w-8 h-8 rounded-full bg-[#2a2a2a] flex items-center justify-center flex-shrink-0">
-                        <span className="text-sm font-semibold text-white">2</span>
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm text-[#9ca3af] mb-3">Generate a signed token for Authorization header</p>
-                        <button className="px-4 py-2.5 bg-black hover:bg-[#0a0a0a] rounded-md text-sm text-white font-medium transition-colors">
-                          Generate Token
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                  {selectedServer.description && (
+                    <p className="text-xs text-[#9ca3af] line-clamp-2 break-words">{selectedServer.description}</p>
+                  )}
+                </div>
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setShowMCPConfigModal(true)
+                    }}
+                    className="p-1.5 hover:bg-[#2a2a2a] rounded transition-colors flex-shrink-0"
+                    title="Configure server"
+                    type="button"
+                  >
+                    <Edit2 className="w-4 h-4 text-[#6b7280]" />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleChange('mcpConfig', undefined)
+                      handleChange('serverName', undefined)
+                    }}
+                    className="p-1.5 hover:bg-[#2a2a2a] rounded transition-colors flex-shrink-0"
+                    title="Remove server"
+                    type="button"
+                  >
+                    <X className="w-4 h-4 text-[#6b7280]" />
+                  </button>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          ) : (
+            /* Add Server Button */
+            <button
+              onClick={() => setShowMCPConfigModal(true)}
+              className="w-full px-4 py-2.5 bg-[#3b82f6] hover:bg-[#2563eb] rounded-md text-sm text-white font-medium transition-colors flex items-center justify-center gap-2"
+            >
+              <Plug className="w-4 h-4" />
+              Add MCP Server
+            </button>
+          )}
+        </div>
+
+        {/* MCP Configuration Modal */}
+        <MCPConfigModal
+          isOpen={showMCPConfigModal}
+          onClose={() => setShowMCPConfigModal(false)}
+          onSave={(mcpConfig) => {
+            handleChange('mcpConfig', mcpConfig)
+            // Also update serverName for backward compatibility
+            if (mcpConfig.servers && mcpConfig.servers.length > 0) {
+              handleChange('serverName', mcpConfig.servers[0].label)
+            }
+            setShowMCPConfigModal(false)
+          }}
+          initialConfig={data.mcpConfig}
+        />
       </>
     )
   }
@@ -2004,10 +2283,21 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
           setShowEndSchemaModal(false)
         }}
       />
+      <SchemaEditorModal
+        isOpen={showAgentSchemaModal}
+        initialSchema={(config as AgentNodeData).schema}
+        onClose={() => setShowAgentSchemaModal(false)}
+        onSave={(schema: JSONSchema) => {
+          handleChange('schema', schema)
+          setShowAgentSchemaModal(false)
+        }}
+      />
       <div className="w-96 bg-[#1a1a1a] border border-[#2a2a2a] flex flex-col shadow-2xl rounded-lg m-2 max-h-[calc(95vh-56px)] overflow-hidden scale-in">
       <div className="p-4 border-b border-[#2a2a2a] flex items-center justify-between">
         <div>
-          <h3 className="text-base font-semibold text-white">{String(config.label ?? node.type)}</h3>
+          <h3 className="text-base font-semibold text-white">
+            {node.type === 'guardrails' ? 'Guardrails' : String(config.label ?? node.type)}
+          </h3>
           {node.type === 'agent' && (
             <p className="text-xs text-[#9ca3af] mt-1">
               Call the model with your instructions and tools.
@@ -2015,7 +2305,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
           )}
           {node.type === 'guardrails' && (
             <p className="text-xs text-[#9ca3af] mt-1">
-              Add safety checks for input and output.
+              Run moderation, PII, jailbreak, or hallucination checks
             </p>
           )}
           {node.type === 'ifElse' && (
@@ -2025,12 +2315,12 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
           )}
           {node.type === 'while' && (
             <p className="text-xs text-[#9ca3af] mt-1">
-              Loop until condition is true
+              Loop while a condition is true
             </p>
           )}
           {node.type === 'userApproval' && (
             <p className="text-xs text-[#9ca3af] mt-1">
-              Add human-in-the-loop approval
+              Pause for a human to approve or reject a step
             </p>
           )}
           {node.type === 'transform' && (
