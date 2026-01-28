@@ -527,7 +527,7 @@ function FlowEditor() {
             <Background color="rgba(255, 255, 255, 0.25)" gap={20} size={1} variant={BackgroundVariant.Dots} />
             <CenterFlow zoom={0.8} nodesCount={nodes.length} />
             <Panel position="bottom-center" className="!bottom-5 !left-1/2 !transform !-translate-x-1/2">
-              <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-full px-2 py-1.5 shadow-lg flex items-center justify-center gap-1">
+              <div className="bg-[#1a1a1a] border border-white/15 rounded-full px-2 py-1.5 shadow-lg flex items-center justify-center gap-1">
                 <Controls showInteractive={false} />
               </div>
             </Panel>
@@ -542,7 +542,7 @@ function FlowEditor() {
           )}
           
           {(isViewMode || isTemplate) && (
-            <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-20 bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg px-4 py-2">
+            <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-20 bg-[#1a1a1a] border border-white/15 rounded-lg px-4 py-2">
               <p className="text-sm text-white">
                 {isTemplate ? 'Template View - Read Only' : 'View Mode - Read Only'}
               </p>

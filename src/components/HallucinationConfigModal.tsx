@@ -80,13 +80,6 @@ export default function HallucinationConfigModal({ isOpen, onClose, onSave, init
                 className="w-full bg-[#072448] border border-white/15 rounded-md pl-9 pr-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
               />
             </div>
-            <a
-              href="#"
-              className="text-sm text-[#3b82f6] hover:text-[#60a5fa] transition-colors flex items-center gap-1 mt-2"
-            >
-              Browse vector stores
-              <ExternalLink className="w-3.5 h-3.5" />
-            </a>
           </div>
 
           {/* Model Selection */}
