@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ExternalLink, Plus, X } from 'lucide-react'
+import { Plus, X } from 'lucide-react'
 
 interface URLFilterConfig {
   allowedUrls: string[]
@@ -216,15 +216,7 @@ export default function URLFilterConfigModal({ isOpen, onClose, onSave, initialC
 
         {/* Footer */}
         <div className="px-6 py-4 border-t border-white/15 flex items-center justify-between">
-          <a
-            href="https://docs.composio.dev/guardrails/url-filter"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-[#3b82f6] hover:text-[#60a5fa] transition-colors flex items-center gap-1"
-          >
-            Learn how it works
-            <ExternalLink className="w-3.5 h-3.5" />
-          </a>
+          <div></div>
           <div className="flex items-center gap-3">
             <button
               onClick={onClose}

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ExternalLink, ChevronDown } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 
 interface PromptInjectionConfig {
   model: string
@@ -124,15 +124,7 @@ export default function PromptInjectionConfigModal({ isOpen, onClose, onSave, in
 
         {/* Footer */}
         <div className="px-6 py-4 border-t border-white/15 flex items-center justify-between">
-          <a
-            href="https://docs.composio.dev/guardrails/prompt-injection"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-[#3b82f6] hover:text-[#60a5fa] transition-colors flex items-center gap-1"
-          >
-            Learn how it works
-            <ExternalLink className="w-3.5 h-3.5" />
-          </a>
+          <div></div>
           <div className="flex items-center gap-3">
             <button
               onClick={onClose}
