@@ -552,6 +552,7 @@ function FlowEditor() {
             <div className="absolute top-14 right-0 bottom-[5%] z-20 flex flex-col justify-end">
               <NodeConfigPanel
                 node={selectedNode}
+                nodes={nodes}
                 onUpdate={handleNodeUpdate}
                 onDelete={handleNodeDelete}
                 onClose={() => setSelectedNode(null)}

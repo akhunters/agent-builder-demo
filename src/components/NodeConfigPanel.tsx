@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { X, Plus, Trash2, Edit2, Copy, Check, Link, MessageCircle, Code, Sparkles, FileText, Wand2, Type, CheckSquare, Grid3x3, Brackets, Braces, Info, Settings, ChevronDown, Plug } from 'lucide-react'
 import { Node } from '@xyflow/react'
-import { AgentNodeData, GuardrailsNodeData, IfElseNodeData, WhileNodeData, UserApprovalNodeData, TransformNodeData, SetStateNodeData, NoteNodeData, FileSearchNodeData, MCPNodeData, ClassifyNodeData, StartNodeData, EndNodeData, JSONSchema } from '@/types'
+import { AgentNodeData, GuardrailsNodeData, IfElseNodeData, WhileNodeData, UserApprovalNodeData, TransformNodeData, SetStateNodeData, NoteNodeData, FileSearchNodeData, MCPNodeData, ClassifyNodeData, StartNodeData, StartNodeStateVariable, EndNodeData, JSONSchema } from '@/types'
 import SchemaEditorModal from './SchemaEditorModal'
 import Tooltip from './Tooltip'
 import Menu from './Menu'
@@ -18,15 +18,18 @@ import CustomPromptCheckConfigModal from './CustomPromptCheckConfigModal'
 import FunctionConfigModal from './FunctionConfigModal'
 import MCPConfigModal from './MCPConfigModal'
 import TransformConfigForm from './TransformConfigForm'
+import SetStateConfigForm from './SetStateConfigForm'
+import VariableFormPopup from './VariableFormPopup'
 
 interface NodeConfigPanelProps {
   node: Node
+  nodes?: Node[]
   onUpdate: (nodeId: string, data: any) => void
   onDelete: (nodeId: string) => void
   onClose: () => void
 }
 
-export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: NodeConfigPanelProps) {
+export default function NodeConfigPanel({ node, nodes = [], onUpdate, onDelete, onClose }: NodeConfigPanelProps) {
   const [config, setConfig] = useState<Record<string, any>>((node.data || {}) as Record<string, any>)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [showMCPModal, setShowMCPModal] = useState(false)
@@ -44,12 +47,8 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
   const [editingStateVarIndex, setEditingStateVarIndex] = useState<number | null>(null)
-  const [stateVarDraft, setStateVarDraft] = useState<{
-    name: string
-    type: 'string' | 'number' | 'boolean' | 'object' | 'list'
-    defaultValue: string | number | boolean | string[] | undefined
-  } | null>(null)
-  const [listInputValue, setListInputValue] = useState<string>('')
+  const [showVariableFormPopup, setShowVariableFormPopup] = useState(false)
+  const [editingVariable, setEditingVariable] = useState<StartNodeStateVariable | null>(null)
   const [showSchemaModal, setShowSchemaModal] = useState(false)
   const [showAgentSchemaModal, setShowAgentSchemaModal] = useState(false)
   const [schemaView, setSchemaView] = useState<'simple' | 'advanced'>('simple')
@@ -72,8 +71,8 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
   useEffect(() => {
     setConfig(node.data)
     setEditingStateVarIndex(null)
-    setStateVarDraft(null)
-    setListInputValue('')
+    setShowVariableFormPopup(false)
+    setEditingVariable(null)
     setShowSchemaModal(false)
     setSchemaProperties([])
     setSchemaAdvancedJson('')
@@ -754,31 +753,21 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
   const renderSetStateConfig = () => {
     const data = config as SetStateNodeData
     return (
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-2 text-white">Variable Name</label>
-          <input
-            type="text"
-            value={data.variableName || ''}
-            onChange={(e) => {
-              const sanitized = sanitizeVariableName(e.target.value)
-              handleChange('variableName', sanitized)
-            }}
-            className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
-            placeholder="my_variable"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-2 text-white">Value</label>
-          <textarea
-            value={data.value || ''}
-            onChange={(e) => handleChange('value', e.target.value)}
-            rows={4}
-            className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none font-mono text-sm"
-            placeholder="Enter the value or expression"
-          />
-        </div>
-      </div>
+      <SetStateConfigForm
+        data={data}
+        nodeId={node.id}
+        nodes={nodes}
+        onChange={(updates) => {
+          // Merge all updates at once to avoid race conditions
+          const newConfig = { ...config, ...updates }
+          setConfig(newConfig)
+          onUpdate(node.id, newConfig)
+        }}
+        onUpdateStartNode={(startNodeId, startNodeData) => {
+          // Update the start node when a new variable is added
+          onUpdate(startNodeId, startNodeData)
+        }}
+      />
     )
   }
 
@@ -1075,38 +1064,12 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                     <button
                       onClick={() => {
                         setEditingStateVarIndex(index)
-                        const varType = (variable.type as any) || 'string'
-                        let defaultValue: string | number | boolean | string[] | undefined = undefined
-                        
-                        if (varType === 'boolean') {
-                          defaultValue = (variable.defaultValue === true || variable.defaultValue === 'true' || variable.defaultValue === 'True') ? true : false ? true : false
-                        } else if (varType === 'number') {
-                          defaultValue = variable.defaultValue !== undefined ? Number(variable.defaultValue) : undefined
-                        } else if (varType === 'list') {
-                          if (Array.isArray(variable.defaultValue)) {
-                            defaultValue = variable.defaultValue
-                            setListInputValue(variable.defaultValue.join(', '))
-                          } else if (typeof variable.defaultValue === 'string' && variable.defaultValue) {
-                            defaultValue = variable.defaultValue.split(',').map(item => item.trim())
-                            setListInputValue(variable.defaultValue)
-                          } else {
-                            defaultValue = []
-                            setListInputValue('')
-                          }
-                        } else {
-                          defaultValue = variable.defaultValue !== undefined 
-                            ? String(variable.defaultValue) 
-                            : undefined
-                        }
-                        
-                        setStateVarDraft({
-                          name: variable.name || '',
-                          type: varType,
-                          defaultValue: defaultValue,
-                        })
+                        setEditingVariable(variable)
+                        setShowVariableFormPopup(true)
                       }}
                       className="p-1.5 hover:bg-[#2a2a2a] rounded text-[#6b7280] hover:text-white transition-colors"
                       title="Configure state variable"
+                      data-variable-form-trigger
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
@@ -1117,7 +1080,8 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                         handleChange('stateVariables', newStateVars)
                         if (editingStateVarIndex === index) {
                           setEditingStateVarIndex(null)
-                          setStateVarDraft(null)
+                          setEditingVariable(null)
+                          setShowVariableFormPopup(false)
                         }
                       }}
                       className="p-1.5 hover:bg-[#2a2a2a] rounded text-[#6b7280] hover:text-white transition-colors"
@@ -1133,376 +1097,52 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
 
           <button
             onClick={() => {
-              const index = stateVariables.length
-              setEditingStateVarIndex(index)
-              setStateVarDraft({
-                name: '',
-                type: 'string',
-                defaultValue: undefined,
-              })
-              setListInputValue('')
+              setEditingStateVarIndex(stateVariables.length)
+              setEditingVariable(null)
+              setShowVariableFormPopup(true)
             }}
             className="flex items-center gap-1 px-3 py-2 text-sm bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded text-white transition-colors"
+            data-variable-form-trigger
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Add</span>
           </button>
         </div>
 
-        {/* State variable editor panel */}
-        {editingStateVarIndex !== null && stateVarDraft && (
-          <div className="mt-2 bg-[#072448] border border-white/15 rounded-lg p-4 space-y-4">
-            <div className="flex items-center justify-between">
-              <h4 className="text-sm font-semibold text-white">
-                {editingStateVarIndex < stateVariables.length
-                  ? 'Edit state variable'
-                  : 'Add state variable'}
-              </h4>
-              <button
-                onClick={() => {
-                  setEditingStateVarIndex(null)
-                  setStateVarDraft(null)
-                }}
-                className="p-1 hover:bg-[#2a2a2a] rounded text-[#6b7280] hover:text-white transition-colors"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            {/* Type tabs */}
-            <div className="inline-flex rounded-lg bg-[#072448] border border-white/15 text-xs font-medium overflow-hidden">
-              {(['string', 'number', 'boolean', 'object', 'list'] as const).map((type, index) => (
-                <button
-                  key={type}
-                  onClick={() => {
-                    setStateVarDraft((prev) =>
-                      prev ? { ...prev, type, defaultValue: prev.defaultValue } : prev
-                    )
-                    // Reset list input when type changes
-                    if (type === 'list') {
-                      setListInputValue('')
-                    }
-                  }}
-                  className={`px-3 py-1.5 transition-colors ${
-                    index > 0 ? 'border-l border-white/15' : ''
-                  } ${
-                    stateVarDraft.type === type
-                      ? 'bg-[#3b82f6] text-white hover:bg-[#2563eb]'
-                      : 'bg-transparent text-[#9ca3af] hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  {type === 'list' ? 'List' : type.charAt(0).toUpperCase() + type.slice(1)}
-                </button>
-              ))}
-            </div>
-
-            {/* Name & default value */}
-            <div className="space-y-3">
-              <div>
-                <label className="block text-xs font-medium mb-1.5 text-white">Name</label>
-                <input
-                  type="text"
-                  value={stateVarDraft.name}
-                  onChange={(e) => {
-                    const sanitized = sanitizeVariableName(e.target.value)
-                    setStateVarDraft((prev) => (prev ? { ...prev, name: sanitized } : prev))
-                  }}
-                  placeholder="Enter the variable name"
-                  className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
-                />
-              </div>
-              {stateVarDraft.type !== 'object' && (
-                <div>
-                  <label className="block text-xs font-medium mb-1.5 text-white">
-                    Default value <span className="text-[#6b7280]">Optional</span>
-                  </label>
-                  {stateVarDraft.type === 'boolean' ? (
-                    <select
-                      value={stateVarDraft.defaultValue === true || stateVarDraft.defaultValue === 'true' ? 'true' : 'false'}
-                      onChange={(e) =>
-                        setStateVarDraft((prev) =>
-                          prev ? { ...prev, defaultValue: e.target.value === 'true' } : prev
-                        )
-                      }
-                      className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white text-sm focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
-                    >
-                      <option value="true">True</option>
-                      <option value="false">False</option>
-                    </select>
-                  ) : stateVarDraft.type === 'number' ? (
-                    <input
-                      type="text"
-                      inputMode="numeric"
-                      value={stateVarDraft.defaultValue === '' || stateVarDraft.defaultValue === undefined 
-                        ? '' 
-                        : (typeof stateVarDraft.defaultValue === 'number' 
-                          ? String(stateVarDraft.defaultValue)
-                          : (typeof stateVarDraft.defaultValue === 'string' ? stateVarDraft.defaultValue : ''))}
-                      onChange={(e) => {
-                        const value = e.target.value
-                        // Only allow digits, single decimal point, and optional minus sign at start
-                        const sanitized = value.replace(/[^0-9.-]/g, '').replace(/(\..*)\./g, '$1').replace(/^-?/, (match) => value.startsWith('-') ? '-' : '')
-                        if (sanitized === '' || sanitized === '-') {
-                          setStateVarDraft((prev) =>
-                            prev ? { ...prev, defaultValue: undefined } : prev
-                          )
-                        } else {
-                          const numValue = Number(sanitized)
-                          if (!isNaN(numValue)) {
-                            setStateVarDraft((prev) =>
-                              prev ? { ...prev, defaultValue: numValue } : prev
-                            )
-                          }
-                        }
-                      }}
-                      onKeyDown={(e) => {
-                        // Prevent 'e', 'E', '+', and other non-numeric characters
-                        if (e.key === 'e' || e.key === 'E' || e.key === '+' || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-                          e.preventDefault()
-                        }
-                      }}
-                      placeholder="0"
-                      className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
-                    />
-                  ) : stateVarDraft.type === 'list' ? (
-                    <div>
-                      <input
-                        type="text"
-                        value={listInputValue}
-                        onChange={(e) => {
-                          // Allow free typing with commas
-                          setListInputValue(e.target.value)
-                        }}
-                        onBlur={() => {
-                          // Convert to array when user leaves the field
-                          const arrayValue = listInputValue === '' 
-                            ? [] 
-                            : listInputValue.split(',').map(item => item.trim()).filter(item => item !== '')
-                          setStateVarDraft((prev) =>
-                            prev ? { ...prev, defaultValue: arrayValue } : prev
-                          )
-                        }}
-                        placeholder="item1, item2, item3"
-                        className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
-                      />
-                      <p className="text-xs text-[#6b7280] mt-1">Enter comma-separated values</p>
-                    </div>
-                  ) : (
-                    <input
-                      type="text"
-                      value={stateVarDraft.defaultValue !== undefined ? String(stateVarDraft.defaultValue) : ''}
-                      onChange={(e) =>
-                        setStateVarDraft((prev) =>
-                          prev ? { ...prev, defaultValue: e.target.value } : prev
-                        )
-                      }
-                      placeholder="Default value"
-                      className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white text-sm placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
-                    />
-                  )}
-                </div>
-              )}
-              {stateVarDraft.type === 'object' && (
-                <div>
-                  <label className="block text-xs font-medium mb-1.5 text-white">Schema</label>
-                  <button
-                    onClick={() => {
-                      // Load existing schema if editing
-                      const existingVar = editingStateVarIndex < stateVariables.length 
-                        ? stateVariables[editingStateVarIndex] 
-                        : null
-                      if (existingVar?.schema) {
-                        // Convert schema to properties array for Simple view
-                        const props = Object.entries(existingVar.schema.properties || {}).map(([name, def]: [string, any]) => {
-                          // Check if it's an enum type (has enum array)
-                          const hasEnum = def.enum && Array.isArray(def.enum) && def.enum.length > 0
-                          const shortType = mapJsonTypeToShort(def.type, hasEnum) as 'STR' | 'NUM' | 'BOOL' | 'ENUM' | 'OBJ' | 'ARR'
-                          // Ensure default value is set based on type if not present
-                          let defaultValue = def.default
-                          if (defaultValue === undefined) {
-                            if (shortType === 'BOOL') defaultValue = true
-                            else if (shortType === 'NUM') defaultValue = 0
-                            else if (shortType === 'STR') defaultValue = ''
-                            else if (shortType === 'ARR') defaultValue = []
-                            else if (shortType === 'OBJ') defaultValue = {}
-                          }
-                          
-                          // Extract array items information
-                          let itemsType: 'STR' | 'NUM' | 'BOOL' | 'ENUM' | 'OBJ' | 'ARR' | undefined = undefined
-                          let itemsDescription: string | undefined = undefined
-                          let itemsEnumValues: string[] | undefined = undefined
-                          if (shortType === 'ARR' && def.items) {
-                            const itemsHasEnum = def.items.enum && Array.isArray(def.items.enum) && def.items.enum.length > 0
-                            itemsType = mapJsonTypeToShort(def.items.type, itemsHasEnum) as 'STR' | 'NUM' | 'BOOL' | 'ENUM' | 'OBJ' | 'ARR'
-                            itemsDescription = def.items.description || ''
-                            if (itemsHasEnum) {
-                              itemsEnumValues = def.items.enum.map((v: any) => String(v))
-                            }
-                          }
-                          
-                          // Extract enum values
-                          let enumValues: string[] | undefined = undefined
-                          if (shortType === 'ENUM' && def.enum && Array.isArray(def.enum)) {
-                            enumValues = def.enum.map((v: any) => String(v))
-                          }
-                          
-                          return {
-                            name,
-                            type: shortType,
-                            description: def.description || '',
-                            default: defaultValue,
-                            required: (existingVar.schema?.required || []).includes(name),
-                            itemsType,
-                            itemsDescription,
-                            itemsEnumValues,
-                            enumValues,
-                          }
-                        })
-                        setSchemaProperties(props)
-                        setSchemaAdvancedJson(JSON.stringify(existingVar.schema, null, 2))
-                      } else {
-                        setSchemaProperties([])
-                        setSchemaAdvancedJson('')
-                      }
-                      setShowSchemaModal(true)
-                    }}
-                    className="w-full flex items-center gap-2 px-3 py-2 bg-transparent border border-white/15 hover:border-white/25 hover:bg-white/5 rounded-md text-white text-sm transition-colors"
-                  >
-                    {(() => {
-                      const existingVar = editingStateVarIndex < stateVariables.length 
-                        ? stateVariables[editingStateVarIndex] 
-                        : null
-                      const hasSchema = existingVar?.schema !== undefined
-                      return hasSchema ? (
-                        <>
-                          <Edit2 className="w-4 h-4" />
-                          <span>Edit schema</span>
-                        </>
-                      ) : (
-                        <>
-                          <Plus className="w-4 h-4" />
-                          <span>Add schema</span>
-                        </>
-                      )
-                    })()}
-                  </button>
-                </div>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              {(() => {
-                // Check current config state, not just stateVariables, to get latest schema updates
-                const currentStateVars = (config as StartNodeData).stateVariables || []
-                const existingVar = editingStateVarIndex < currentStateVars.length 
-                  ? currentStateVars[editingStateVarIndex] 
-                  : null
-                const hasSchema = existingVar?.schema !== undefined
-                const hasProperties = hasSchema && existingVar?.schema?.properties && Object.keys(existingVar.schema.properties).length > 0
-                const isObjectWithoutProperties = stateVarDraft.type === 'object' && !hasProperties
-                
-                return isObjectWithoutProperties ? (
-                  <div className="bg-[#fef3c7] border border-[#fbbf24] rounded-md px-3 py-2 text-sm text-[#92400e]">
-                    <p>Object type requires at least one property in the schema. Please add a schema with at least one property.</p>
-                  </div>
-                ) : null
-              })()}
-              <div className="flex justify-end">
-                <button
-                  onClick={() => {
-                    if (!stateVarDraft.name.trim()) {
-                      return
-                    }
-                    
-                    // Use current config state to get latest schema updates (including schema changes from modal)
-                    const currentStateVars = (config as StartNodeData).stateVariables || []
-                    
-                    // Validate object type has schema with properties
-                    const existingVar = editingStateVarIndex < currentStateVars.length 
-                      ? currentStateVars[editingStateVarIndex] 
-                      : null
-                    const hasSchema = existingVar?.schema !== undefined
-                    const hasProperties = hasSchema && existingVar?.schema?.properties && Object.keys(existingVar.schema.properties).length > 0
-                    
-                    if (stateVarDraft.type === 'object' && !hasProperties) {
-                      // Don't allow saving - show error (already shown above)
-                      return
-                    }
-                    
-                    const newStateVars = [...currentStateVars]
-                    
-                    // Process default value based on type
-                    let processedDefaultValue = stateVarDraft.defaultValue
-                    if (stateVarDraft.type === 'boolean') {
-                      processedDefaultValue = stateVarDraft.defaultValue === true || stateVarDraft.defaultValue === 'true'
-                    } else if (stateVarDraft.type === 'number') {
-                      processedDefaultValue = stateVarDraft.defaultValue === '' || stateVarDraft.defaultValue === undefined 
-                        ? undefined 
-                        : Number(stateVarDraft.defaultValue)
-                    } else if (stateVarDraft.type === 'list') {
-                      processedDefaultValue = Array.isArray(stateVarDraft.defaultValue) && stateVarDraft.defaultValue.length > 0
-                        ? stateVarDraft.defaultValue
-                        : undefined
-                    } else if (stateVarDraft.type === 'string') {
-                      processedDefaultValue = stateVarDraft.defaultValue === '' ? undefined : String(stateVarDraft.defaultValue)
-                    }
-
-                    if (editingStateVarIndex < currentStateVars.length) {
-                      // Editing existing variable - preserve schema from current config
-                      const currentVar = currentStateVars[editingStateVarIndex]
-                      newStateVars[editingStateVarIndex] = {
-                        name: stateVarDraft.name.trim(),
-                        type: stateVarDraft.type,
-                        defaultValue: processedDefaultValue,
-                        schema: currentVar?.schema || undefined,
-                      }
-                    } else {
-                      // Adding new variable
-                      newStateVars.push({
-                        name: stateVarDraft.name.trim(),
-                        type: stateVarDraft.type,
-                        defaultValue: processedDefaultValue,
-                        schema: undefined,
-                      })
-                    }
-                    handleChange('stateVariables', newStateVars)
-                    setEditingStateVarIndex(null)
-                    setStateVarDraft(null)
-                    setListInputValue('')
-                  }}
-                  disabled={(() => {
-                    if (stateVarDraft.type !== 'object') return false
-                    // Check current config state to get latest schema updates
-                    const currentStateVars = (config as StartNodeData).stateVariables || []
-                    const existingVar = editingStateVarIndex < currentStateVars.length 
-                      ? currentStateVars[editingStateVarIndex] 
-                      : null
-                    const hasSchema = existingVar?.schema !== undefined
-                    const hasProperties = hasSchema && existingVar?.schema?.properties && Object.keys(existingVar.schema.properties).length > 0
-                    // Only disable if object type and no schema with properties
-                    return !hasProperties
-                  })()}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                    (() => {
-                      if (stateVarDraft.type !== 'object') return false
-                      // Check current config state to get latest schema updates
-                      const currentStateVars = (config as StartNodeData).stateVariables || []
-                      const existingVar = editingStateVarIndex < currentStateVars.length 
-                        ? currentStateVars[editingStateVarIndex] 
-                        : null
-                      const hasSchema = existingVar?.schema !== undefined
-                      const hasProperties = hasSchema && existingVar?.schema?.properties && Object.keys(existingVar.schema.properties).length > 0
-                      return !hasProperties
-                    })()
-                      ? 'bg-[#072448] text-[#6b7280] cursor-not-allowed opacity-50'
-                      : 'bg-[#3b82f6] text-white hover:bg-[#2563eb]'
-                  }`}
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-          </div>
+        {/* Variable Form Popup */}
+        {showVariableFormPopup && node.type === 'start' && (
+          <VariableFormPopup
+            isOpen={showVariableFormPopup}
+            nodeId={node.id}
+            variable={editingVariable}
+            onSave={(variable) => {
+              const currentStateVars = (config as StartNodeData).stateVariables || []
+              const newStateVars = [...currentStateVars]
+              
+              if (editingStateVarIndex !== null && editingStateVarIndex < currentStateVars.length) {
+                // Editing existing variable - preserve schema if it exists
+                const currentVar = currentStateVars[editingStateVarIndex]
+                newStateVars[editingStateVarIndex] = {
+                  ...variable,
+                  schema: variable.schema || currentVar?.schema || undefined,
+                }
+              } else {
+                // Adding new variable
+                newStateVars.push(variable)
+              }
+              
+              handleChange('stateVariables', newStateVars)
+              setEditingStateVarIndex(null)
+              setEditingVariable(null)
+              setShowVariableFormPopup(false)
+            }}
+            onCancel={() => {
+              setEditingStateVarIndex(null)
+              setEditingVariable(null)
+              setShowVariableFormPopup(false)
+            }}
+            existingVariables={stateVariables}
+          />
         )}
       </div>
     )
@@ -2087,7 +1727,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                 }
 
                 // Update the state variable with the schema
-                if (editingStateVarIndex !== null && stateVarDraft) {
+                if (editingStateVarIndex !== null && editingVariable) {
                   const newStateVars = [...(config as StartNodeData).stateVariables || []]
                   if (editingStateVarIndex < newStateVars.length) {
                     newStateVars[editingStateVarIndex] = {
@@ -2096,9 +1736,9 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
                     }
                   } else {
                     newStateVars.push({
-                      name: stateVarDraft.name,
-                      type: stateVarDraft.type,
-                      defaultValue: stateVarDraft.defaultValue,
+                      name: editingVariable.name,
+                      type: editingVariable.type,
+                      defaultValue: editingVariable.defaultValue,
                       schema: finalSchema,
                     })
                   }
@@ -2285,7 +1925,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
           setShowAgentSchemaModal(false)
         }}
       />
-      <div className="w-96 bg-[#173153] border border-white/15 flex flex-col shadow-2xl rounded-lg m-2 max-h-[calc(95vh-56px)] overflow-hidden scale-in">
+      <div className="w-96 bg-[#173153] border border-white/15 flex flex-col shadow-2xl rounded-lg m-2 max-h-[calc(95vh-56px)] overflow-hidden scale-in" data-node-config-panel>
       <div className="p-4 border-b border-white/15 flex items-center justify-between">
         <div>
           <h3 className="text-base font-semibold text-white">
