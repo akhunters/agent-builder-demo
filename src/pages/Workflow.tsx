@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
+import { createPortal } from 'react-dom'
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import {
   ReactFlow,
@@ -548,8 +549,8 @@ function FlowEditor() {
             </div>
           )}
 
-          {selectedNode && (
-            <div className="absolute top-14 right-0 bottom-[5%] z-20 flex flex-col justify-end">
+          {selectedNode && typeof window !== 'undefined' && createPortal(
+            <div className="fixed top-14 right-0 z-20">
               <NodeConfigPanel
                 node={selectedNode}
                 nodes={nodes}
@@ -557,11 +558,12 @@ function FlowEditor() {
                 onDelete={handleNodeDelete}
                 onClose={() => setSelectedNode(null)}
               />
-            </div>
+            </div>,
+            document.body
           )}
 
-          {selectedEdge && (
-            <div className="absolute top-14 right-0 bottom-[5%] z-20 flex flex-col justify-end">
+          {selectedEdge && typeof window !== 'undefined' && createPortal(
+            <div className="fixed top-14 right-0 z-20">
               <EdgeConfigPanel
                 edge={selectedEdge}
                 sourceNode={nodes.find((n) => n.id === selectedEdge.source) || null}
@@ -569,7 +571,8 @@ function FlowEditor() {
                 onDelete={handleEdgeDelete}
                 onClose={() => setSelectedEdge(null)}
               />
-            </div>
+            </div>,
+            document.body
           )}
         </div>
       </div>

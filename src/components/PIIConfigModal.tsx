@@ -110,27 +110,29 @@ export default function PIIConfigModal({ isOpen, onClose, onSave, initialConfig 
         {/* Content */}
         <div className="flex-1 overflow-y-auto px-6 py-4">
           {/* Action Toggles */}
-          <div className="flex gap-2 mb-6">
-            <button
-              onClick={() => setAction('mask')}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                action === 'mask'
-                  ? 'bg-[#3b82f6] text-white'
-                  : 'bg-transparent border border-white/15 text-[#9ca3af] hover:border-white/25 hover:bg-white/5'
-              }`}
-            >
-              Mask
-            </button>
-            <button
-              onClick={() => setAction('block')}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                action === 'block'
-                  ? 'bg-[#3b82f6] text-white'
-                  : 'bg-transparent border border-white/15 text-[#9ca3af] hover:border-white/25 hover:bg-white/5'
-              }`}
-            >
-              Block
-            </button>
+          <div className="flex mb-6">
+            <div className="inline-flex border border-white/15 rounded-md overflow-hidden">
+              <button
+                onClick={() => setAction('mask')}
+                className={`px-4 py-2 text-sm font-medium transition-colors ${
+                  action === 'mask'
+                    ? 'bg-[#3b82f6] text-white'
+                    : 'bg-transparent text-[#9ca3af] hover:bg-white/5'
+                }`}
+              >
+                Mask
+              </button>
+              <button
+                onClick={() => setAction('block')}
+                className={`px-4 py-2 text-sm font-medium transition-colors border-l border-white/15 ${
+                  action === 'block'
+                    ? 'bg-[#3b82f6] text-white'
+                    : 'bg-transparent text-[#9ca3af] hover:bg-white/5'
+                }`}
+              >
+                Block
+              </button>
+            </div>
           </div>
 
           {/* Select All / Clear */}
