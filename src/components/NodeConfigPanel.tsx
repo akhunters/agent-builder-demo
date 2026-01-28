@@ -17,6 +17,7 @@ import PromptInjectionConfigModal from './PromptInjectionConfigModal'
 import CustomPromptCheckConfigModal from './CustomPromptCheckConfigModal'
 import FunctionConfigModal from './FunctionConfigModal'
 import MCPConfigModal from './MCPConfigModal'
+import TransformConfigForm from './TransformConfigForm'
 
 interface NodeConfigPanelProps {
   node: Node
@@ -734,29 +735,19 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
   const renderTransformConfig = () => {
     const data = config as TransformNodeData
     return (
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-2 text-white">Expression</label>
-          <textarea
-            value={data.expression || ''}
-            onChange={(e) => handleChange('expression', e.target.value)}
-            rows={4}
-            className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2 text-white placeholder:text-[#6b7280] focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] resize-none font-mono text-sm"
-            placeholder="Use Common Expression Language to transform data"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-2 text-white">Output Format</label>
-          <select
-            value={data.outputType || 'json'}
-            onChange={(e) => handleChange('outputType', e.target.value)}
-            className="w-full bg-[#072448] border border-white/15 rounded-md px-3 py-2.5 text-white text-sm focus:outline-none focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] transition-colors cursor-pointer"
-          >
-            <option value="json">JSON</option>
-            <option value="text">Text</option>
-          </select>
-        </div>
-      </div>
+      <TransformConfigForm
+        data={data}
+        nodeId={node.id}
+        onChange={(updates) => {
+          // Merge all updates at once to avoid race conditions
+          const newConfig = { ...config, ...updates }
+          setConfig(newConfig)
+          onUpdate(node.id, newConfig)
+        }}
+        onDelete={() => {
+          setShowDeleteConfirm(true)
+        }}
+      />
     )
   }
 
@@ -2298,7 +2289,7 @@ export default function NodeConfigPanel({ node, onUpdate, onDelete, onClose }: N
       <div className="p-4 border-b border-white/15 flex items-center justify-between">
         <div>
           <h3 className="text-base font-semibold text-white">
-            {node.type === 'guardrails' ? 'Guardrails' : String(config.label ?? node.type)}
+            {node.type === 'guardrails' ? 'Guardrails' : node.type === 'transform' ? 'Transform' : String(config.label ?? node.type)}
           </h3>
           {node.type === 'agent' && (
             <p className="text-xs text-[#9ca3af] mt-1">

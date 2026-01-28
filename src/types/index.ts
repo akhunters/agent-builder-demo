@@ -112,8 +112,15 @@ export interface UserApprovalNodeData extends NodeData {
 }
 
 export interface TransformNodeData extends NodeData {
-  expression: string
+  mode?: 'expressions' | 'object'
+  expressions?: Array<{
+    key: string
+    value: string
+  }>
+  schema?: JSONSchema
   outputType?: 'json' | 'text'
+  // Legacy support
+  expression?: string
 }
 
 export interface SetStateNodeData extends NodeData {
